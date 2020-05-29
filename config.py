@@ -11,7 +11,7 @@ class Config(object):
     ADMINS = ['bwilson@co.clatsop.or.us']
  
     PORTAL          = os.environ.get('PORTAL')
-    FEATURELAYER    = os.environt.get('FEATURELAYER')
+    FEATURELAYER    = os.environ.get('FEATURELAYER')
     PORTAL_USER     = os.environ.get('PORTAL_USER')
     PORTAL_PASSWORD = os.environ.get('PORTAL_PASSWORD')
     pass
