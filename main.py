@@ -97,10 +97,12 @@ if __name__ == "__main__":
     inx = "Country/Other"
     df = df.set_index(inx, drop=True)
     print(df)
+    print()
 
     usa_df = df.loc["USA"]
     print(usa_df)
-    
+    print()
+
     world_df = df.loc['World']
     print(world_df)
 
