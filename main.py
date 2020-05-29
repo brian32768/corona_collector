@@ -80,8 +80,8 @@ if __name__ == "__main__":
         portal = GIS(portalUrl, portalUser, portalPasswd)
         layer = connect(portal)
     except Exception as e:
-        print("Could not connect to portal.", e)
-        print(portalUrl, portalUser, portalPasswd)
+        print("Could not connect to portal. \"%s\"" % e)
+        print("Make sure the environment variables are set correctly.")
         exit(-1)
     
 # Get data from Worldometer
@@ -125,7 +125,7 @@ if __name__ == "__main__":
         result = update(layer, last_updated, usa_df, -98,39) # We're not in Kansas anymore
         result = update(layer, last_updated, world_df, 0, 0) # Null Island
     except Exception as e:
-        print("Could not write data to portal.", e)
+        print("Could not write data to portal. \"%s\"" % e)
         exit(-1)
 
 # That's all!
