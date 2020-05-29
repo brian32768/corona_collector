@@ -9,15 +9,25 @@ thanks please see:
 
 ## Set up environment
 
-   conda create --name covid --clone arcgispro-py3-vscode
-   conda install --file requirements.txt
+THere is no longer any need to clone ESRI's arcgispro environment,
+the requirements.txt file pulls what is needed from conda forge.
+
+   conda create --name covid
+   conda activate covid
+   conda install -c esri --file requirements.txt
+
+You have to put a portal user and password into .env
+
+   cp sample.env .env
+
+You have to create a suitable feature class as the target for output.
+I did this in the catalog in ArcGISPro and then published it to my Portal.
 
 ## Run
 
    python main.py
 
-This will generate a new cases.json file
-and store the data into a feature class.
+This will store the data into a feature class.
 
 ## Deploy
 

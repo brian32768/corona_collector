@@ -1,4 +1,3 @@
-from config import Config
 from worldometer_gateway import WorldOMeterGateway
 from parser_service import ParserService
 from datetime import datetime, timezone, timedelta
@@ -7,9 +6,11 @@ import os
 from arcgis.gis import GIS
 import pandas as pd
 
-rest = "https://delta.co.clatsop.or.us/server/rest/services/TESTING_Brian/SDE_inventory_sandbox/FeatureServer"
-portalUrl = "https://delta.co.clatsop.or.us/portal"
-featurelayer = 'covid19_cases'
+from config import Config
+portalUrl    = Config.PORTAL
+portalUser   = Config.PORTAL_USER
+portalPasswd = Config.PORTAL_PASSWORD
+featurelayer = Config.FEATURELAYER
 
 time_format = "%m/%d/%Y %H:%M"
 
@@ -47,7 +48,7 @@ def update(layer, last_update, df, x=0, y=0):
 
     n = {"attributes": {
             "utc_date":     utc,
-            "editor":       Config.PORTAL_USER,
+            "editor":       portalUser,
             "source":       "worldometer",
 
             "last_update":  last_update,
@@ -73,7 +74,7 @@ def update(layer, last_update, df, x=0, y=0):
 
 if __name__ == "__main__":
 
-    portal = GIS(portalUrl, Config.PORTAL_USER, Config.PORTAL_PASSWORD)
+    portal = GIS(portalUrl, portalUser, portalPasswd)
     layer = connect(portal)
 
     worldometer_gateway = WorldOMeterGateway()

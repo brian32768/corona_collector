@@ -9,8 +9,10 @@ class Config(object):
     MAIL_USERNAME = os.environ.get('MAIL_USERNAME')
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     ADMINS = ['bwilson@co.clatsop.or.us']
-
-    PORTAL_USER = os.environ.get('PORTAL_USER')
+ 
+    PORTAL          = os.environ.get('PORTAL')
+    FEATURELAYER    = os.environt.get('FEATURELAYER')
+    PORTAL_USER     = os.environ.get('PORTAL_USER')
     PORTAL_PASSWORD = os.environ.get('PORTAL_PASSWORD')
     pass
 
