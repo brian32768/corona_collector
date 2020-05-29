@@ -41,6 +41,7 @@ def s2i(s):
     return None
 
 def update(layer, last_update, df, x=0, y=0):
+    """ Write a dataframe to the feature layer. """
 
     utc = datetime.utcnow()
 
@@ -74,23 +75,28 @@ def update(layer, last_update, df, x=0, y=0):
 
 if __name__ == "__main__":
 
-    portal = GIS(portalUrl, portalUser, portalPasswd)
-    layer = connect(portal)
+# Open portal to make sure it's there!
+    try:
+        portal = GIS(portalUrl, portalUser, portalPasswd)
+        layer = connect(portal)
+    except Exception as e:
+        print("Could not connect to portal.", e)
+        exit(-1)
+    
+# Get data from Worldometer
 
-    worldometer_gateway = WorldOMeterGateway()
-    parser_service = ParserService()
-
-    latest_data = worldometer_gateway.fetch()
+    try:
+        worldometer_gateway = WorldOMeterGateway()
+        parser_service = ParserService()
+        latest_data = worldometer_gateway.fetch()
+    except Exception as e:
+        print("Could not fetch data.", e)
+        exit(-1)
+        
     df = parser_service.create_df_worldometer(latest_data)
     last_updated = parser_service.parse_last_updated(latest_data)
 
-    dt_local = datetime.now()
-    local_tz = timezone(timedelta(hours=-7))
-    try:
-        dt_local = last_updated.astimezone(tz=local_tz)
-    except Exception as e:
-        print("Time zone conversion problem, ", e)
-    dt_local.replace(second=0, microsecond=0)
+# Clean the data
 
     del df['Population']
     del df['#']
@@ -110,11 +116,15 @@ if __name__ == "__main__":
     print(last_updated)
     #print(local_tz)
 
-# Instead of putting the dataframe out to a JSON file
+# We used to write to a JSON file
 #    df.to_json(r"./cases.json", orient="index", indent=2)
-
-# put it into a feature layer
-    result = update(layer, last_updated, usa_df, -98,39) # We're not in Kansas anymore
-    result = update(layer, last_updated, world_df, 0, 0) # Null Island
+#
+# now put it into a feature layer
+    try:
+        result = update(layer, last_updated, usa_df, -98,39) # We're not in Kansas anymore
+        result = update(layer, last_updated, world_df, 0, 0) # Null Island
+    except Exception as e:
+        print("Could not write data to portal.", e)
+        exit(-1)
 
 # That's all!
