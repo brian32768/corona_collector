@@ -7,7 +7,7 @@ from arcgis.gis import GIS
 import pandas as pd
 
 from config import Config
-portalUrl    = Config.PORTAL
+portalUrl    = Config.PORTAL_URL
 portalUser   = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
 featurelayer = Config.FEATURELAYER
@@ -81,6 +81,7 @@ if __name__ == "__main__":
         layer = connect(portal)
     except Exception as e:
         print("Could not connect to portal.", e)
+        print(portalUrl, portalUser, portalPasswd)
         exit(-1)
     
 # Get data from Worldometer
@@ -92,7 +93,7 @@ if __name__ == "__main__":
     except Exception as e:
         print("Could not fetch data.", e)
         exit(-1)
-        
+
     df = parser_service.create_df_worldometer(latest_data)
     last_updated = parser_service.parse_last_updated(latest_data)
 
