@@ -4,7 +4,6 @@ class Config(object):
     SECRET_KEY=os.environ.get('NO_TIME_LIKE_THE_present') or "12345678"
  
     PORTAL_URL      = os.environ.get('PORTAL_URL')
-    FEATURELAYER    = os.environ.get('FEATURELAYER')
     PORTAL_USER     = os.environ.get('PORTAL_USER')
     PORTAL_PASSWORD = os.environ.get('PORTAL_PASSWORD')
     pass

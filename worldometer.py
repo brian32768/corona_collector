@@ -1,3 +1,9 @@
+"""
+
+    Collect data from Worldometer for World and USA
+    Append it to a feature layer on our portal.
+
+"""
 from worldometer_gateway import WorldOMeterGateway
 from parser_service import ParserService
 from datetime import datetime, timezone, timedelta
@@ -5,46 +11,20 @@ from datetime import datetime, timezone, timedelta
 import os
 from arcgis.gis import GIS
 import pandas as pd
+from utils import connect, s2i
 
 from config import Config
 portalUrl    = Config.PORTAL_URL
 portalUser   = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
-featurelayer = Config.FEATURELAYER
+featurelayer = "covid19_cases"
 
 time_format = "%m/%d/%Y %H:%M"
 
-def connect(portal):
-
-    # Amusingly the GIS search function is sloppy and returns several...
-    # there does not appear to be an exact match option.
-
-    search_result = portal.content.search(featurelayer,
-                                          item_type="Feature Service")
-    if len(search_result) < 1:
-        error = "Feature service '%s' not found." % featurelayer
-        raise Exception(error)
-
-    # Search for the correct Feature Service
-    layer = None
-    for item in search_result:
-        #print(featurelayer, item)
-        if featurelayer == item.title:
-            layer = item.layers[0]
-
-    return layer
-
-def s2i(s):
-    """ Convert a string to an integer even if it has + and , in it. """
-    if s:
-        return int(float(s.replace(',', '')))
-    return None
-
-def update(layer, last_update, df, x=0, y=0):
+def append_to_database(layer, last_update, df, x=0, y=0):
     """ Write a dataframe to the feature layer. """
 
     utc = datetime.utcnow()
-
     name = df.name
 
     n = {"attributes": {
@@ -78,7 +58,7 @@ if __name__ == "__main__":
 # Open portal to make sure it's there!
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
-        layer = connect(portal)
+        layer = connect(portal, featurelayer)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
@@ -122,8 +102,8 @@ if __name__ == "__main__":
 #
 # now put it into a feature layer
     try:
-        result = update(layer, last_updated, usa_df, -98,39) # We're not in Kansas anymore
-        result = update(layer, last_updated, world_df, 0, 0) # Null Island
+        result = append_to_database(layer, last_updated, usa_df, -98,39) # We're not in Kansas anymore
+        result = append_to_database(layer, last_updated, world_df, 0, 0) # Null Island
     except Exception as e:
         print("Could not write data to portal. \"%s\"" % e)
         exit(-1)
