@@ -1,5 +1,5 @@
+#!/usr/bin/env -S conda run -n covid python
 """
-
     Collect data from the Oregon Health Agency feature service.
     Write it to a feature layer on our portal.
     

@@ -1,5 +1,5 @@
+#!/usr/bin/env -S conda run -n covid python
 """
-
     Collect data from Worldometer for World and USA
     Append it to a feature layer on our portal.
 
