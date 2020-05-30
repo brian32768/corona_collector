@@ -1,8 +1,7 @@
 #!/usr/bin/env -S conda run -n covid python
 """
-    Collect data from the Oregon Health Agency feature service.
-    Write it to a feature layer on our portal.
-    
+Collect data from the Oregon Health Agency feature service.
+Write it to a feature layer on our portal.
 """
 import os
 from arcgis.gis import GIS

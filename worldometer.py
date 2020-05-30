@@ -1,9 +1,9 @@
 #!/usr/bin/env -S conda run -n covid python
 """
-    Collect data from Worldometer for World and USA
-    Append it to a feature layer on our portal.
-
+Collect data from Worldometer for World and USA
+Append it to a feature layer on our portal.
 """
+
 from worldometer_gateway import WorldOMeterGateway
 from parser_service import ParserService
 from datetime import datetime, timezone, timedelta
