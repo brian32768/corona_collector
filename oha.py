@@ -64,7 +64,7 @@ def append_to_database(layer, last_updated, sdf):
             "attributes": attributes,
             "geometry": geometry
         })
-    print(new_features[0])
+    #print(new_features[0])
 
     results = layer.edit_features(adds=new_features)
     return results['addResults'][0]['success']
@@ -121,7 +121,7 @@ if __name__ == "__main__":
         'Deaths':        'deaths',
     }, inplace=True)
 
-    print(cases_df)
+    #print(cases_df)
 
     # We used to write to a JSON file
     #df.to_json(r"./oha.json", orient="index", indent=2)
