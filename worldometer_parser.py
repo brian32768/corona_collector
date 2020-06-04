@@ -3,7 +3,7 @@ import pandas as pd
 import re
 from datetime import datetime, timezone
 
-class ParserService:
+class WorldometerParser:
 
     @staticmethod
     def format_table_header_column(th):
@@ -23,12 +23,12 @@ class ParserService:
         return header.replace(", ", "/")
 
     @staticmethod
-    def create_df_worldometer(raw_data):
+    def create_df(raw_data):
         """
-        Parses the raw HTML response from Worldometer and returns a DataFrame from it
+        Parses the raw HTML response and returns as a DataFrame
 
         @Params:
-        raw_data (string): request.text from Worldometer
+        raw_data (string): request.text
 
         @Returns:
         DataFrame
@@ -40,7 +40,7 @@ class ParserService:
 
         countries_table = soup.find("table", attrs={"id": _id})
 
-        columns = [ParserService.format_table_header_column(th) for th
+        columns = [WorldometerParser.format_table_header_column(th) for th
                    in countries_table.find("thead").findAll("th")]
    
         #vars
@@ -76,10 +76,10 @@ class ParserService:
     @staticmethod
     def parse_last_updated(raw_data):
         """
-        Parses the raw HTML response from Worldometer and returns the lastest update time from the webpage
+        Parses the raw HTML and returns the lastest update time from the webpage
 
         @Params:
-        raw_data (string): request.text from Worldometer
+        raw_data (string): request.text
 
         @Returns:
         Last updated time (datetime object in UTC)
@@ -96,3 +96,21 @@ class ParserService:
             last_updated, 
             "Last updated: %B %d, %Y, %H:%M GMT").replace(tzinfo=timezone.utc)
 
+
+if __name__ == "__main__":
+    # Unit test using the file that's create in the _gateway unit test!
+
+    with open("./worldometer.html", "r", encoding="utf-8") as fp:
+        raw_data = fp.read()
+
+    parser = WorldometerParser()
+
+    df = parser.create_df(raw_data)
+    print(df)
+
+    last_updated = parser.parse_last_updated(raw_data)
+    print(last_updated)
+
+    print("Parser succeeded using worldometer.html data!")
+    exit(0)
+# That's all!

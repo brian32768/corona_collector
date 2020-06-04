@@ -1,3 +1,6 @@
+from datetime import datetime
+from pytz import timezone
+
 def connect(portal, featurelayer):
 
     # Amusingly the GIS search function is sloppy and returns several...
@@ -25,3 +28,8 @@ def s2i(s):
     if s:
         return int(float(s.replace(',', '')))
     return None
+
+
+def local2utc(t):
+    """ Change a datetime object from local to UTC """
+    return t.astimezone(timezone('UTC'))

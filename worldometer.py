@@ -1,11 +1,10 @@
 #!/usr/bin/env -S conda run -n covid python
 """
-Collect data from Worldometer for World and USA
-Append it to a feature layer on our portal.
+    Collect data from Worldometer for World and USA
+    Append it to a feature layer on our portal.
 """
-
-from worldometer_gateway import WorldOMeterGateway
-from parser_service import ParserService
+from html_gateway import HTMLGateway
+from worldometer_parser import WorldometerParser
 from datetime import datetime, timezone, timedelta
 
 import os
@@ -24,7 +23,7 @@ time_format = "%m/%d/%Y %H:%M"
 def append_to_database(layer, last_update, df, x=0, y=0):
     """ Write a dataframe to the feature layer. """
 
-    utc = datetime.utcnow()
+    utc = datetime.utcnow().replace(second=0,microsecond=0)
     name = df.name
 
     n = {"attributes": {
@@ -53,7 +52,22 @@ def append_to_database(layer, last_update, df, x=0, y=0):
     results = layer.edit_features(adds=[n])
     return results['addResults'][0]['success']
 
+#============================================================================
 if __name__ == "__main__":
+
+# Get data from Worldometer
+    try:
+        worldometer_gateway = HTMLGateway()
+        latest_data = worldometer_gateway.fetch(
+            "https://www.worldometers.info/coronavirus")
+    except Exception as e:
+        print("Could not fetch data.", e)
+        exit(-1)
+
+# Convert the data into a DataFrame
+    parser = WorldometerParser()
+    df = parser.create_df_worldometer(latest_data)
+    last_updated = parser.parse_last_updated(latest_data)
 
 # Open portal to make sure it's there!
     try:
@@ -63,20 +77,7 @@ if __name__ == "__main__":
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
         exit(-1)
-    
-# Get data from Worldometer
-
-    try:
-        worldometer_gateway = WorldOMeterGateway()
-        parser_service = ParserService()
-        latest_data = worldometer_gateway.fetch()
-    except Exception as e:
-        print("Could not fetch data.", e)
-        exit(-1)
-
-    df = parser_service.create_df_worldometer(latest_data)
-    last_updated = parser_service.parse_last_updated(latest_data)
-
+  
 # Clean the data
 
     del df['Population']
@@ -97,9 +98,6 @@ if __name__ == "__main__":
     print(last_updated)
     #print(local_tz)
 
-# We used to write to a JSON file
-#    df.to_json(r"./cases.json", orient="index", indent=2)
-#
 # now put it into a feature layer
     try:
         result = append_to_database(layer, last_updated, usa_df, -98,39) # We're not in Kansas anymore
