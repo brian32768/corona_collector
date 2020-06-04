@@ -66,7 +66,7 @@ if __name__ == "__main__":
 
 # Convert the data into a DataFrame
     parser = WorldometerParser()
-    df = parser.create_df_worldometer(latest_data)
+    df = parser.create_df(latest_data)
     last_updated = parser.parse_last_updated(latest_data)
 
 # Open portal to make sure it's there!
@@ -106,4 +106,5 @@ if __name__ == "__main__":
         print("Could not write data to portal. \"%s\"" % e)
         exit(-1)
 
+    print("All done!")
 # That's all!

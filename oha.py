@@ -32,7 +32,7 @@ geometry_table = {
     'Washington': {"x": -123.09, "y": 45.50},
 }
 
-def append_to_database(layer, last_updated, sdf):
+def append_to_database(layer, last_updated, df):
     """ Use the data fetched from OHA
         Add timestamp fields
         Append it to an existing database feature class, remapping fieldnames. """
@@ -41,24 +41,24 @@ def append_to_database(layer, last_updated, sdf):
 
     # This is the old file, we want to go to the new file though...
     
-    sdf['utc_date'] = last_updated
+    df['utc_date'] = last_updated
     #print(sdf)
 
     new_features = []
-    column_names = list(sdf.columns)
-    print(column_names)
+    column_names = list(df.columns)
+    #print(column_names)
 
-    for (index, row) in sdf.iterrows():
+    for (index, row) in df.iterrows():
         attributes = {}
         geometry = {}
         i = 0
         for item in row:
-            print(column_names[i], item)
+            #print(column_names[i], item)
             attributes[column_names[i]] = item
             if column_names[i] == 'county':
-                county = sdf['county'].iloc[0]
+                county = df['county'].iloc[0]
                 geometry = geometry_table[county]
-                print(county, geometry)
+                #print(county, geometry)
             i += 1
         new_features.append({
             "attributes": attributes,
@@ -94,7 +94,7 @@ if __name__ == "__main__":
 # Open portal to make sure it's there!
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
-        print("Logged in as " + str(portal.properties.user.username))
+        #print("Logged in as " + str(portal.properties.user.username))
         layer = connect(portal, featurelayer)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
