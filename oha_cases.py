@@ -19,7 +19,7 @@ from config import Config
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
-featurelayer = "covid19_oha_data"
+covid_cases_featurelayer = "covid19_oha_data"
 
 # Let's make up some geometry data here on the spot
 # These are centroids more or less
@@ -32,10 +32,35 @@ geometry_table = {
     'Washington': {"x": -123.09, "y": 45.50},
 }
 
-def append_to_database(layer, last_updated, df):
+def append_cases(layer, last_updated, df):
     """ Use the data fetched from OHA
         Add timestamp fields
         Append it to an existing database feature class, remapping fieldnames. """
+
+# Clean the Cases data
+
+    # Remove fields I don't need
+    del df['OBJECTID']
+    del df['instName']
+    del df['Recovered']
+    del df['Population']
+    del df['GlobalID']
+    del df['SHAPE']    # We ignore the MULTIPOLYON and write a point.
+    del df['Shape__Area']
+    del df['Shape__Length']
+
+    # Remap field names to what I use
+    df.rename(columns={
+        'altName':       'county',
+        'Cases':         'positive',
+        'NegativeTests': 'negative',
+        'Deaths':        'deaths',
+    }, inplace=True)
+
+    #print(df)
+
+    # We used to write to a JSON file
+    #df.to_json(r"./oha.json", orient="index", indent=2)
 
     utc = datetime.utcnow().replace(microsecond=0, second=0)
 
@@ -82,10 +107,8 @@ if __name__ == "__main__":
         print("Could not fetch data.", e)
         exit(-1)
 
-
 # Convert the data into a DataFrames
     parser = OHAParser()
-    hospital_df = parser.create_df(latest_data)
     last_updated = parser.parse_last_updated(latest_data)
 
 # Get the case data from OHA
@@ -95,41 +118,17 @@ if __name__ == "__main__":
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
         #print("Logged in as " + str(portal.properties.user.username))
-        layer = connect(portal, featurelayer)
+        layer = connect(portal, covid_cases_featurelayer)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
         exit(-1)
 
-# Clean the data
-
-    # Remove fields I don't need
-    del cases_df['OBJECTID']
-    del cases_df['instName']
-    del cases_df['Recovered']
-    del cases_df['Population']
-    del cases_df['GlobalID']
-    del cases_df['SHAPE']    # We ignore the MULTIPOLYON and write a point.
-    del cases_df['Shape__Area']
-    del cases_df['Shape__Length']
-
-    # Remap field names to what I use
-    cases_df.rename(columns={
-        'altName':       'county',
-        'Cases':         'positive',
-        'NegativeTests': 'negative',
-        'Deaths':        'deaths',
-    }, inplace=True)
-
-    #print(cases_df)
-
-    # We used to write to a JSON file
-    #df.to_json(r"./oha.json", orient="index", indent=2)
-
+# Append a new record
     try:
-        success = append_to_database(layer, last_updated, cases_df)
+        success = append_cases(layer, last_updated, cases_df)
     except Exception as e:
-        print("Could not write data. \"%s\"" % e)
+        print("Could not write Cases data. \"%s\"" % e)
         exit(-1)
 
     print("All done!")

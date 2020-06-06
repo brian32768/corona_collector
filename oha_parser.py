@@ -27,7 +27,7 @@ class OHAParser:
         return header.replace(", ", "/")
 
     @staticmethod
-    def create_df(raw_data):
+    def fetch_capacity_df(raw_data):
         """
         Parses the raw HTML response and returns a DataFrame
         containing hospital capacity and usage data.
@@ -47,14 +47,17 @@ class OHAParser:
         _id = "collapseDemographics"
 
         demographics_card = soup.find("div", attrs={"id": _id})
+        demographics_tables = demographics_card.findAll("table")
+
+        BEDCAPTABLE = 4
 
         columns = [OHAParser.format_table_header_column(th) for th
-                   in demographics_card.find("thead").findAll("th")]
-   
-        #vars
+                   in demographics_tables[BEDCAPTABLE].find("thead").findAll("th")]
+        print(columns)
+        
         parsed_data = []
         regx = r'(\n|\+|,)'
-        rows = demographics_card.find("tbody").find_all("tr")
+        rows = demographics_tables[BEDCAPTABLE].find("tbody").find_all("tr")
 
         def sort_alphabetically(element):
             sorted_element = element.findAll("td")[1].get_text().strip()
@@ -63,7 +66,7 @@ class OHAParser:
         rows.sort(key=sort_alphabetically)
         for row in rows:
             classname = re.sub(regx, "", row.findAll("td")[0].get_text())
-            if classname != 'Total':
+            if classname != 'Total': # Ignore the bottom line
                 #print("classname '%s' '%s'" % (classname, row))
                 parsed_data.append([data.get_text().strip() for data
                                     in row.findAll("td")])
@@ -113,14 +116,14 @@ class OHAParser:
         return datetime.utcnow()
 
 if __name__ == "__main__":
-    # Unit test using the file that's create in the _gateway unit test!
+    # Unit test using the file that's created in the html_gateway unit test!
 
     with open("./oha.html", "r", encoding="utf-8") as fp:
         raw_data = fp.read()
 
     parser = OHAParser()
 
-    df = parser.create_df(raw_data)
+    df = parser.fetch_capacity_df(raw_data)
     print(df)
 
     # This actually reads the data from ArcGIS.com not a file.
