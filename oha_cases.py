@@ -68,8 +68,8 @@ def append_cases(layer, last_updated, df):
 #        print(attributes)
 #        print(geometry)
 
-    #results = layer.edit_features(adds=new_features)
-    #return results['addResults'][0]['success']
+    results = layer.edit_features(adds=new_features)
+    return results['addResults'][0]['success']
     return False
 
 def append_county_cases(layer, last_updated, df):
