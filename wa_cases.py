@@ -66,6 +66,7 @@ def append_cases(layer, last_updated, df):
         raise Exception("Typo fix please %s" % e)
     #print(n)
 
+    print(df)
     results = layer.edit_features(adds=[n])
     return results['addResults'][0]['success']
 

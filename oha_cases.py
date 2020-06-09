@@ -83,13 +83,12 @@ def append_county_cases(layer, last_updated, df):
     }, inplace=True)
 
     # Delete all the columns I don't use
-    #print(df)
-    #print(list(df.columns))
     unwanted = ['OBJECTID', 'instName', 'Recovered',
                 'Shape__Area', 'Shape__Length', 'GlobalID', 'Population', 'SHAPE']
     for i in unwanted:
         del df[i]
 
+    print(df)
     return append_cases(layer, last_updated, df)
 
 
@@ -104,12 +103,11 @@ def append_state_cases(layer, last_updated, df):
     }, inplace=True)
 
     # Delete all the columns I don't use
-    print(df)
-    print(list(df.columns))
     unwanted = ['Positive tests', 'Total tested']
     for i in unwanted:
         del df[i]
 
+    print(df)
     return append_cases(layer, last_updated, df)
 
 def get_data():
