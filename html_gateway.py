@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 #from cookies import Cookies, Cookie
 #import html5lib
 #import mechanize
-#import requests
+import requests
 
 class HTMLGateway:
     
