@@ -2,3 +2,5 @@ arcgis
 bs4
 tzlocal
 autopep8
+cookies
+mechanize

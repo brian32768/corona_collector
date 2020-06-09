@@ -34,3 +34,8 @@ This will store the data into a feature class.
 I plan on installing it on a Debian machine and running it from
 cron every 4 hours.
 
+
+Source of data for OR and WA data
+
+OHA_URL=https://govstatus.egov.com/OR-OHA-COVID-19
+WA_URL=https://www.doh.wa.gov/Emergencies/NovelCoronavirusOutbreak2020COVID19/DataDashboard

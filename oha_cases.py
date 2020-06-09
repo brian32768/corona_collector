@@ -19,7 +19,7 @@ from config import Config
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
-covid_cases_featurelayer = "covid19_oha_data"
+covid_cases_featurelayer = "covid19_cases"
 
 # Let's make up some geometry data here on the spot
 # These are centroids more or less
@@ -37,37 +37,36 @@ def append_cases(layer, last_updated, df):
         Add timestamp fields
         Append it to an existing database feature class, remapping fieldnames. """
 
-# Clean the Cases data
-
-    # Remove fields I don't need
-    del df['OBJECTID']
-    del df['instName']
-    del df['Recovered']
-    del df['Population']
-    del df['GlobalID']
-    del df['SHAPE']    # We ignore the MULTIPOLYON and write a point.
-    del df['Shape__Area']
-    del df['Shape__Length']
+    try:
+        # Remove fields I don't need
+        del df['OBJECTID']
+        del df['instName']
+        del df['Recovered']
+        del df['Population']
+        del df['GlobalID']
+        del df['SHAPE']    # We ignore the MULTIPOLYON and write a point.
+        del df['Shape__Area']
+        del df['Shape__Length']
+    except Exception as e:
+        print("Data cleaning failed, ", e)
+        raise Exception("data cleaning failed; %s" % e)
 
     # Remap field names to what I use
     df.rename(columns={
-        'altName':       'county',
-        'Cases':         'positive',
-        'NegativeTests': 'negative',
-        'Deaths':        'deaths',
+        'altName':       'name',
+        'Cases':         'total_cases',
+        'NegativeTests': 'total_negative',
+        'Deaths':        'total_deaths',
     }, inplace=True)
-
-    #print(df)
-
-    # We used to write to a JSON file
-    #df.to_json(r"./oha.json", orient="index", indent=2)
 
     utc = datetime.utcnow().replace(microsecond=0, second=0)
 
-    # This is the old file, we want to go to the new file though...
-    
-    df['utc_date'] = last_updated
-    #print(sdf)
+    df['utc_date'] = utc
+    df['last_update'] = last_updated
+    df['editor'] = portalUser
+    df['source'] = 'OHA'
+
+    print(df)
 
     new_features = []
     column_names = list(df.columns)
@@ -80,10 +79,10 @@ def append_cases(layer, last_updated, df):
         for item in row:
             #print(column_names[i], item)
             attributes[column_names[i]] = item
-            if column_names[i] == 'county':
-                county = df['county'].iloc[0]
+            if column_names[i] == 'name':
+                county = df['name'].iloc[0]
                 geometry = geometry_table[county]
-                #print(county, geometry)
+                print(county, geometry)
             i += 1
         new_features.append({
             "attributes": attributes,

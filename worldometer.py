@@ -48,6 +48,7 @@ def append_to_database(layer, last_update, df, x=0, y=0):
             "x": x, "y": y
         }
     }
+    #print(n)
 
     results = layer.edit_features(adds=[n])
     return results['addResults'][0]['success']
@@ -106,5 +107,4 @@ if __name__ == "__main__":
         print("Could not write data to portal. \"%s\"" % e)
         exit(-1)
 
-    print("All done!")
 # That's all!
