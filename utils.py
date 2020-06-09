@@ -33,3 +33,6 @@ def s2i(s):
 def local2utc(t):
     """ Change a datetime object from local to UTC """
     return t.astimezone(timezone('UTC'))
+
+
+# That's all!

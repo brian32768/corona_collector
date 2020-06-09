@@ -74,6 +74,43 @@ class OHAParser:
         df = pd.DataFrame(parsed_data, columns=columns)
         return df.replace(to_replace=[""], value=0)
 
+    @staticmethod
+    def fetch_state_cases_df(raw_data):
+        """
+        Parses the raw HTML response and returns a DataFrame
+        containing state level cases.
+
+        Note this is currently the same table that the "last update" comes from.
+
+        @Params:
+        raw_data (string): request.text
+
+        @Returns:
+        DataFrame
+        """
+        soup = BeautifulSoup(raw_data, features="html.parser")
+        state_table = soup.find_all('tr')
+        columns = ['name']
+        parsed_data = ['OR']
+        interesting_rows = ['Total cases', 'Total deaths',
+                            'Positive tests', 'Negative tests', 'Total tested']
+        
+        for row in state_table:
+            data = row.findAll("td")
+            if len(data) == 2:
+                column = data[0].get_text().strip()
+                if column in interesting_rows:
+                    columns.append(column)
+                    value = data[1].get_text().strip()
+
+        # The value for total cases has a superscript on it that has to be removed
+                    if column == 'Total cases' and value[-1] == '1':
+                        value = value[:-1]
+
+                    parsed_data.append(value)
+                    
+        df = pd.DataFrame([parsed_data], columns=columns)
+        return df.replace(to_replace=[""], value=0)
 
     @staticmethod
     def fetch_feature_df():
@@ -83,7 +120,11 @@ class OHAParser:
         sourceUrl = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/COVID_Cases_Oregon_Public/FeatureServer/0"
 
         layer = arcgis.features.FeatureLayer(url=sourceUrl)
-        counties = "altName='Clatsop' OR altName='Columbia' OR altName='Tillamook' OR altName='Clackamas' OR altName='Multnomah' OR altName='Washington'"
+
+        # NB BECAUSE WE'RE MAINTAINING OUR OWN DATA FOR CLATSOP
+        # we ignore the date from OHA
+
+        counties = "altName='Columbia' OR altName='Tillamook' OR altName='Clackamas' OR altName='Multnomah' OR altName='Washington'"
         fields = "*"
 
         # NOTE we're asking for the data in Web Mercator, 3857
@@ -101,7 +142,7 @@ class OHAParser:
 
         @Returns:
         Last updated time (datetime object in UTC)
-        """
+        """        
         soup = BeautifulSoup(raw_data, features="html.parser")
         re_datestamp = re.compile(r'Data current as of (\S+,\s+\S+\s+[a|p]?)')
         try:
@@ -115,6 +156,7 @@ class OHAParser:
             print("Date parse failed.", e) 
         return datetime.utcnow()
 
+
 if __name__ == "__main__":
     # Unit test using the file that's created in the html_gateway unit test!
 
@@ -123,15 +165,20 @@ if __name__ == "__main__":
 
     parser = OHAParser()
 
-    df = parser.fetch_capacity_df(raw_data)
+    last_updated = parser.parse_last_updated(raw_data)
+    print(last_updated)
+
+    df = parser.fetch_state_cases_df(raw_data)
     print(df)
 
     # This actually reads the data from ArcGIS.com not a file.
     df = parser.fetch_feature_df()
     print(df)
 
-    last_updated = parser.parse_last_updated(raw_data)
-    print(last_updated)
+    df = parser.fetch_capacity_df(raw_data)
+    print(df)
 
-    print("Parser succeeded using oha.html data!")
+    print("Parser succeeded using stored data!")
     exit(0)
+
+# That's all!

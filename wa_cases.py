@@ -24,73 +24,42 @@ portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
 featurelayer = "covid19_cases"
 
-def append_cases(layer, last_updated, df, x,y):
+wa_centroid = {"x":-120.74, "y": 47.75}
+
+
+def append_cases(layer, last_updated, df):
     """ Use the data fetched from OHA
         Add timestamp fields
         Append it to an existing database feature class, remapping fieldnames. """
-
-    # Clean the Cases data
-
-    try:
-        del df['date']
-        del df['pending']
-        del df['hospitalizedCurrently']
-        del df['hospitalizedCumulative']
-        del df['hospitalizedIncrease']
-        del df['inIcuCurrently']
-        del df['inIcuCumulative']
-        del df['onVentilatorCurrently']
-        del df['onVentilatorCumulative']
-        del df['dataQualityGrade']
-        del df['lastUpdateEt']
-        del df['checkTimeEt']
-        del df['dateModified']
-        del df['hospitalized']
-        del df['dateChecked']
-        del df['fips']
-        del df['total']
-        del df['posNeg']
-        del df['hash']
-        del df['commercialScore']
-        del df['negativeRegularScore']
-        del df['negativeScore']
-        del df['positiveScore']
-        del df['score']
-        del df['grade']
-    except KeyError as e:
-        print(e)
-        raise Exception("Did the column names change? %s" % e)
 
     utc = datetime.utcnow().replace(microsecond=0, second=0)
 
     i = 1
     try:
         n = {"attributes": {
-                "utc_date":     utc,
-                "editor":       portalUser,
-                "source":       "covidtracking",
+            "utc_date":       utc,
+            "editor":         portalUser,
+            "source":         "covidtracking",
 
-                "last_update":  last_updated,
-                "name":         df.state[i],
+            "last_update":    last_updated,
+            "name":           df.state[i],
 
-                "total_cases":  s2i(df.positive[i]),
-                "new_cases":    s2i(df.positiveIncrease[i]),
+            "total_cases":    s2i(df.positive[i]),
+            "new_cases":      s2i(df.positiveIncrease[i]),
 
-                "total_negative":  s2i(df.negative[i]),
-                "new_negative":    s2i(df.negativeIncrease[i]),
+            "total_negative": s2i(df.negative[i]),
+            "new_negative":   s2i(df.negativeIncrease[i]),
 
-                "total_tests":  s2i(df.totalTestResults[i]),
-                "new_tests":    s2i(df.totalTestResultsIncrease[i]),
+            "total_tests":    s2i(df.totalTestResults[i]),
+            "new_tests":      s2i(df.totalTestResultsIncrease[i]),
 
-                "total_recovered": s2i(df.recovered[i]),
-                #"active_cases": s2i(dfActive Cases']),
+            "total_recovered": s2i(df.recovered[i]),
+            #"active_cases": s2i(dfActive Cases']),
 
-                "total_deaths": s2i(df.death[i]),
-                "new_deaths":   s2i(df.deathIncrease[i]),
-            },
-            "geometry": {
-                "x":x, "y":y
-            }
+            "total_deaths":   s2i(df.death[i]),
+            "new_deaths":     s2i(df.deathIncrease[i]),
+        },
+            "geometry": wa_centroid
         }
     except Exception as e:
         print("You typed a name wrong", e)
@@ -108,15 +77,15 @@ if __name__ == "__main__":
 # Get data from the wide world of web
     try:
         gateway = HTMLGateway()
-        latest_data = gateway.fetch(url)
+        raw_data = gateway.fetch(url)
     except Exception as e:
         print("Could not fetch data.", e)
         exit(-1)
 
 # Convert the data into a DataFrame
     parser = WAParser()
-    last_updated = parser.parse_last_updated(latest_data)
-    df = parser.fetch_cases(latest_data)
+    last_updated = parser.parse_last_updated(raw_data)
+    df = parser.fetch_cases(raw_data)
 
 # Open portal to make sure it's there!
     try:
@@ -129,7 +98,7 @@ if __name__ == "__main__":
         exit(-1)
 
     try:
-        success = append_cases(layer, last_updated, df, x=-120.74, y=47.75)
+        success = append_cases(layer, last_updated, df)
     except Exception as e:
         print("Could not write WA cases data. \"%s\"" % e)
         exit(-1)

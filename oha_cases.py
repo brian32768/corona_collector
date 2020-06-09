@@ -30,6 +30,7 @@ geometry_table = {
     'Multnomah':  {"x": -122.42, "y": 44.50},
     'Clackamas':  {"x": -122.17, "y": 45.25},
     'Washington': {"x": -123.09, "y": 45.50},
+    'OR':         {"x": -122.07, "y": 44.57},
 }
 
 def append_cases(layer, last_updated, df):
@@ -37,19 +38,41 @@ def append_cases(layer, last_updated, df):
         Add timestamp fields
         Append it to an existing database feature class, remapping fieldnames. """
 
-    try:
-        # Remove fields I don't need
-        del df['OBJECTID']
-        del df['instName']
-        del df['Recovered']
-        del df['Population']
-        del df['GlobalID']
-        del df['SHAPE']    # We ignore the MULTIPOLYON and write a point.
-        del df['Shape__Area']
-        del df['Shape__Length']
-    except Exception as e:
-        print("Data cleaning failed, ", e)
-        raise Exception("data cleaning failed; %s" % e)
+    utc = datetime.utcnow().replace(microsecond=0, second=0)
+
+    df['utc_date']    = utc
+    df['last_update'] = last_updated
+    df['editor']      = portalUser
+    df['source']      = 'OHA'
+
+    #print(df)
+
+    new_features = []
+    column_names = list(df.columns)
+    for (index, row) in df.iterrows():
+        attributes = {}
+        geometry = {}
+        i = 0
+        for item in row:
+            #print(column_names[i], item)
+            attributes[column_names[i]] = item
+            if column_names[i] == 'name':
+                name = df['name'].iloc[0]
+                geometry = geometry_table[name]
+                #print(county, geometry)
+            i += 1
+        new_features.append({
+            "attributes": attributes,
+            "geometry": geometry
+        })
+#        print(attributes)
+#        print(geometry)
+
+    #results = layer.edit_features(adds=new_features)
+    #return results['addResults'][0]['success']
+    return False
+
+def append_county_cases(layer, last_updated, df):
 
     # Remap field names to what I use
     df.rename(columns={
@@ -59,60 +82,61 @@ def append_cases(layer, last_updated, df):
         'Deaths':        'total_deaths',
     }, inplace=True)
 
-    utc = datetime.utcnow().replace(microsecond=0, second=0)
+    # Delete all the columns I don't use
+    #print(df)
+    #print(list(df.columns))
+    unwanted = ['OBJECTID', 'instName', 'Recovered',
+                'Shape__Area', 'Shape__Length', 'GlobalID', 'Population', 'SHAPE']
+    for i in unwanted:
+        del df[i]
 
-    df['utc_date'] = utc
-    df['last_update'] = last_updated
-    df['editor'] = portalUser
-    df['source'] = 'OHA'
+    return append_cases(layer, last_updated, df)
 
+
+def append_state_cases(layer, last_updated, df):
+
+    # Remap field names to what I use
+    df.rename(columns={
+        'Total cases':    'total_cases',
+        'Negative tests': 'total_negative',
+        'Total deaths':   'total_deaths',
+        'Total tests':    'total_tests'
+    }, inplace=True)
+
+    # Delete all the columns I don't use
     print(df)
+    print(list(df.columns))
+    unwanted = ['Positive tests', 'Total tested']
+    for i in unwanted:
+        del df[i]
 
-    new_features = []
-    column_names = list(df.columns)
-    #print(column_names)
+    return append_cases(layer, last_updated, df)
 
-    for (index, row) in df.iterrows():
-        attributes = {}
-        geometry = {}
-        i = 0
-        for item in row:
-            #print(column_names[i], item)
-            attributes[column_names[i]] = item
-            if column_names[i] == 'name':
-                county = df['name'].iloc[0]
-                geometry = geometry_table[county]
-                print(county, geometry)
-            i += 1
-        new_features.append({
-            "attributes": attributes,
-            "geometry": geometry
-        })
-    #print(new_features[0])
+def get_data():
+    """ Get hospital data from OHA """
 
-    results = layer.edit_features(adds=new_features)
-    return results['addResults'][0]['success']
+#    with open("./oha.html", "r", encoding="utf-8") as fp:
+#        return fp.read()
+    
+    gateway = HTMLGateway()
+    return gateway.fetch(url)
 
 #============================================================================
 if __name__ == "__main__":
 
     url = "https://govstatus.egov.com/OR-OHA-COVID-19"
-
-# Get hospital data from OHA
     try:
-        gateway = HTMLGateway()
-        latest_data = gateway.fetch(url)
+        raw_data = get_data()
     except Exception as e:
         print("Could not fetch data.", e)
         exit(-1)
 
-# Convert the data into a DataFrames
+# Convert the data into DataFrames
     parser = OHAParser()
-    last_updated = parser.parse_last_updated(latest_data)
-
-# Get the case data from OHA
-    cases_df = parser.fetch_feature_df()
-
+    last_updated = parser.parse_last_updated(raw_data)
+    state_cases_df = parser.fetch_state_cases_df(raw_data)
+    county_cases_df = parser.fetch_feature_df() # Reads feature class directly
+    
 # Open portal to make sure it's there!
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
@@ -123,14 +147,20 @@ if __name__ == "__main__":
         print("Make sure the environment variables are set correctly.")
         exit(-1)
 
-# Append a new record
+# Append new state record
     try:
-        success = append_cases(layer, last_updated, cases_df)
+        success = append_state_cases(layer, last_updated, state_cases_df)
     except Exception as e:
-        print("Could not write Cases data. \"%s\"" % e)
+        print("Could not write state Cases data. \"%s\"" % e)
         exit(-1)
 
-    print("All done!")
+# Append new county records
+    try:
+        success = append_county_cases(layer, last_updated, county_cases_df)
+    except Exception as e:
+        print("Could not write county Cases data. \"%s\"" % e)
+        exit(-1)
+
     exit(0)
 
 # That's all!
