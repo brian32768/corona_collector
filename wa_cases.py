@@ -5,7 +5,8 @@
 """
 from html_gateway import HTMLGateway
 from wa_parser import WAParser
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
+from pytz import timezone
 
 import os
 from arcgis.gis import GIS
@@ -26,13 +27,12 @@ featurelayer = "covid19_cases"
 
 wa_centroid = {"x":-120.74, "y": 47.75}
 
-
 def append_cases(layer, last_updated, df):
     """ Use the data fetched from OHA
         Add timestamp fields
         Append it to an existing database feature class, remapping fieldnames. """
 
-    utc = datetime.utcnow().replace(microsecond=0, second=0)
+    utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
 
     i = 1
     try:

@@ -5,7 +5,8 @@
 """
 from html_gateway import HTMLGateway
 from oha_parser import OHAParser
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
+from pytz import timezone
 
 import os
 from arcgis.gis import GIS
@@ -66,7 +67,8 @@ def update_beds(layer, last_updated, df):
     df.drop(['Ventilators'], inplace=True)
     #print(df)
  
-    utc = datetime.utcnow().replace(microsecond=0, second=0)
+    utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
+
     #df['utc_date'] = last_updated
     #print(df)
 

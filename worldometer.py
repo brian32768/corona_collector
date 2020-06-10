@@ -5,7 +5,8 @@
 """
 from html_gateway import HTMLGateway
 from worldometer_parser import WorldometerParser
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
+from pytz import timezone
 
 import os
 from arcgis.gis import GIS
@@ -23,7 +24,7 @@ time_format = "%m/%d/%Y %H:%M"
 def append_to_database(layer, last_update, df, x=0, y=0):
     """ Write a dataframe to the feature layer. """
 
-    utc = datetime.utcnow().replace(second=0,microsecond=0)
+    utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
     name = df.name
 
     n = {"attributes": {

@@ -5,7 +5,8 @@
 """
 from html_gateway import HTMLGateway
 from oha_parser import OHAParser
-from datetime import datetime, timezone, timedelta
+from datetime import datetime
+from pytz import timezone
 
 import os
 from arcgis.gis import GIS
@@ -38,7 +39,7 @@ def append_cases(layer, last_updated, df):
         Add timestamp fields
         Append it to an existing database feature class, remapping fieldnames. """
 
-    utc = datetime.utcnow().replace(microsecond=0, second=0)
+    utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
 
     df['utc_date']    = utc
     df['last_update'] = last_updated
