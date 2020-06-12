@@ -10,12 +10,12 @@ class Config(object):
     OHA_URL = os.environ.get('OHA_URL')
     WA_URL  = os.environ.get('WA_URL')
     
-    HOSCAP_URL = os.environ.get('HOSCAP_URL')
-    HOSCAP_PSH =  os.environ.get('HOSCAP_PSH ')
-    HOSCAP_PPMC =  os.environ.get('HOSCAP_PPMC ')
-    HOSCAP_CMH =  os.environ.get('HOSCAP_CMH ')
-    HOSCAP_USER =  os.environ.get('HOSCAP_USER ')
-    HOSCAP_PASSWORD =  os.environ.get('HOSCAP_PASSWORD ')
+    HOSCAP_LOGIN    = os.environ.get('HOSCAP_LOGIN')
+    HOSCAP_PSH      = os.environ.get('HOSCAP_PSH')
+    HOSCAP_PPMC     = os.environ.get('HOSCAP_PPMC')
+    HOSCAP_CMH      = os.environ.get('HOSCAP_CMH')
+    HOSCAP_USER     = os.environ.get('HOSCAP_USER')
+    HOSCAP_PASSWORD =  os.environ.get('HOSCAP_PASSWORD')
 
     pass
 

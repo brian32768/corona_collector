@@ -1,141 +1,200 @@
 #!/usr/bin/env -S conda run -n covid python
 """
-    Collect data from the Oregon Health Authority.
+    Collect data from Hoscap.
     Write it to a feature layer on our portal.
 """
-from html_gateway import HTMLGateway
-from oha_parser import OHAParser
-from datetime import datetime, timezone, timedelta
+from hoscap_gateway import HOSCAPGateway
+from hoscap_parser import HOSCAPParser
+from datetime import datetime, timezone
+from utils import local2utc
 
 import os
 from arcgis.gis import GIS
 import arcgis.features
 import pandas as pd
-from copy import deepcopy
 from utils import connect, s2i
 
 from config import Config
 
-VERSION = 'oha_beds.py 1.0'
+VERSION = 'hoscap.py 1.0'
 
 # Output data here
-portalUrl = Config.PORTAL_URL
-portalUser = Config.PORTAL_USER
+portalUrl    = Config.PORTAL_URL
+portalUser   = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
+hoscap_featurelayer = "covid19_inventory"
+ppe_featurelayer    = "covid19_ppe_inventory"
 
-public_featurelayer = "covid19_public_weekly_data"
+# 11 Jun 2020 09:54
+timeformat = "%d %b %Y %H:%M"
 
+# Let's make up some geometry data here on the spot
+# These are centroids more or less
+geometry_table = {
+    'CMH':   {"x": -123.819, "y": 46.189},
+    'PSH':   {"x": -123.912, "y": 45.989},
+}
 
-def update_beds(layer, last_updated, df):
-    """ Use the data fetched from OHA
-        Add timestamp fields
-        Update the record in an existing database feature class, remapping fieldnames. """
+def get_hoscap(gateway, facility, url):
+    parser = HOSCAPParser()
+    
+    CreateDate = datetime.utcnow().replace(tzinfo=timezone.utc)
+    STATUS = 1 # column containing the values
+    DATE = 3
 
-    labels = 'Hospital capacity and usage 5'
-    # I have a table with 3 columns
-    #print(df)
-    hoscap = df.drop([2]) # Ventilators
-    print(hoscap)
+    d = gateway.fetch(url)
+    covid_df = parser.covid(d)
+    local_update_time = covid_df.iloc[0][3]
+    last_updated = local2utc(datetime.strptime(local_update_time, timeformat))
+    print(local_update_time, '->utc->', last_updated)
+    print(covid_df)
 
-    # Split the table in two, based on columns.
-    avail_df = hoscap.loc[hoscap.index, [labels, 'Available']].set_index(labels)
-    #print(avail_df)
-    total_df = hoscap.loc[hoscap.index, [labels, 'Total staffed']].set_index(labels)
-    #print(total_df)
+    beds_df = parser.beds(d)
+    vents_df = parser.vents(d)
 
-    # Remap field names to what I use in the output feature class
+    situ_df = parser.situation(d)
+    staff = 0 if situ_df.iloc[7][STATUS] == 'No' else 1
 
-    def mapper(s) :
-        d = {
-            'Adult non-ICU\xa0beds':       'OHA_non_ICU_bed_avail',
-            'Pediatric non-ICU beds':   'OHA_Ped_non_ICU_bed_avail',
-            'Adult ICU beds':           'OHA_ICU_bed_avail',
-            'Pediatric NICU/PICU beds': 'OHA_Ped_ICU_bed_avail',
-        }
-        return d[s]
+    vents_total     = s2i(vents_df.iloc[0][STATUS])
+    vents_available = s2i(vents_df.iloc[1][STATUS])
+    # weirdly PSH always reports more available than total
+    # so avoid reporting this as a negative number
+    vents_in_use    = max([vents_total - vents_available, 0])
 
-    avail_df.rename(mapper, axis='index', inplace=True)
-    #print(avail_df)
-
-    total_df.rename({
-        'Adult non-ICU\xa0beds':       'OHA_non_ICU_bed_total',
-        'Pediatric non-ICU beds':   'OHA_Ped_non_ICU_bed_total',
-        'Adult ICU beds':           'OHA_ICU_bed_total',
-        'Pediatric NICU/PICU beds': 'OHA_Ped_ICU_bed_total',
-    }, axis='index', inplace=True)
-
-    total_df.rename(columns={'Total staffed': 'Available'}, inplace=True)
-    #print(total_df)
-
-    # Concat them into one dataframe
-    df = pd.concat([avail_df, total_df])
-    #print(df)
+    return {
+        'name': facility, 
+        'CreateDate'  : CreateDate,
+        'covid_date'  : last_updated,
+        
+        'covid_admits': s2i(covid_df.iloc[0][STATUS]),
+        'covid_icu_beds': s2i(covid_df.iloc[2][STATUS]),
+        'covid_vents' : s2i(covid_df.iloc[4][STATUS]),
+        'beds_total'  : s2i(beds_df.iloc[0][STATUS]),
+        'beds_icu'    : s2i(beds_df.iloc[1][STATUS]),
+        'vents_total' : s2i(vents_total),
+        'vents_surge' : s2i(vents_df.iloc[2][STATUS]),
+        'vents_in_use': s2i(vents_in_use),
+        'staff_needed': s2i(staff)
+    }
  
-    # We used to write to a JSON file
-    #df.to_json(r"./oha.json", orient="index", indent=2)
+def build_hoscap_df(gateway):
+    rows = []
+    rows.append(get_hoscap(gateway, 'CMH', Config.HOSCAP_CMH))
+    rows.append(get_hoscap(gateway, 'PSH', Config.HOSCAP_PSH))
+    return pd.DataFrame.from_dict(rows, orient='columns')
 
-    utc = datetime.utcnow().replace(microsecond=0, second=0)
-    #df['utc_date'] = last_updated
-    #print(df)
+def get_ppe(gateway, facility, url):
+    parser = HOSCAPParser()
 
-    # There is always only one feature in this layer.
-    featureset = layer.query()
-    #print(layer.properties.capabilities)
-    original_feature = featureset.features[0]
-    feature = deepcopy(original_feature)
-    for k in df.index:
-        v = df.loc[k, 'Available']
-        try:
-            feature.attributes[k] = v
-        except Exception as e:
-            print("You did something wrong with names.", e)
+    CreateDate = datetime.utcnow().replace(tzinfo=timezone.utc)
+    STATUS = 1  # column containing the values
+    DATE   = 3
+    N95    = 0  # row indexes
+    MASK   = 2 
+    SHIELD = 4
+    GLOVE  = 6
+    GOWN   = 8
 
-    feature.attributes['Creator'] = VERSION
-    feature.attributes['Editor']  = utc
-    feature.attributes['data_enter_date'] = last_updated
-    #print(feature.attributes)
+    # PPMC provides only PPE data, which we put under PSH
+    d = gateway.fetch(url)
+    ppe_df = parser.ppe(d)
+    print(ppe_df)
 
-    #df[oid] = feature.attributes[oid]
-    results = layer.edit_features(updates=[feature])
-    return results['updateResults'][0]['success']
+    return {
+        'facility': facility,
+        'utc_date': CreateDate,
+        'editor': VERSION,
 
+        'n95_date': local2utc(datetime.strptime(ppe_df.iloc[N95][DATE], timeformat)),
+        'n95':      s2i(ppe_df.iloc[N95][STATUS]),
+        'n95_burn': s2i(ppe_df.iloc[N95+1][STATUS]),
+
+        'mask_date': local2utc(datetime.strptime(ppe_df.iloc[MASK][DATE], timeformat)),
+        'mask':      s2i(ppe_df.iloc[MASK][STATUS]),
+        'mask_burn': s2i(ppe_df.iloc[MASK+1][STATUS]),
+
+        'shield_date': local2utc(datetime.strptime(ppe_df.iloc[SHIELD][DATE], timeformat)),
+        'shield':      s2i(ppe_df.iloc[SHIELD][STATUS]),
+        'shield_burn': s2i(ppe_df.iloc[SHIELD+1][STATUS]),
+
+        'glove_date': local2utc(datetime.strptime(ppe_df.iloc[GLOVE][DATE], timeformat)),
+        'glove':      s2i(ppe_df.iloc[GLOVE][STATUS]),
+        'glove_burn': s2i(ppe_df.iloc[GLOVE+1][STATUS]),
+
+        'gown_date': local2utc(datetime.strptime(ppe_df.iloc[GOWN][DATE], timeformat)),
+        'gown':      s2i(ppe_df.iloc[GOWN][STATUS]),
+        'gown_burn': s2i(ppe_df.iloc[GOWN+1][STATUS]),
+    }
+    
+def build_ppe_df(gateway):
+    rows = []
+    rows.append(get_ppe(gateway, 'CMH', Config.HOSCAP_CMH))
+    rows.append(get_ppe(gateway, 'PSH', Config.HOSCAP_PPMC))
+    return pd.DataFrame.from_dict(rows, orient='columns')
+
+def append_df(layer, facility_key, df):
+    n = []
+    for i in range(0, len(df)):
+        d = df.iloc[i].transpose().to_dict()
+        facility = d[facility_key]
+        n.append({
+            'attributes': d,
+            'geometry': geometry_table[facility]
+        })
+    print(n)
+    results = layer.edit_features(adds=n)
+    return results['addResults'][0]['success']
 
 #============================================================================
 if __name__ == "__main__":
 
-    url = "https://govstatus.egov.com/OR-OHA-COVID-19"
-
-# Get hospital data from OHA
+# Get PPE data from HOSCAP
     try:
-        gateway = HTMLGateway()
-        latest_data = gateway.fetch(url)
+        gateway = HOSCAPGateway()
+        gateway.login()
     except Exception as e:
-        print("Could not fetch data.", e)
+        print("Could not connect to data source.", e)
         exit(-1)
 
-# Convert the data into a DataFrame
-    parser = OHAParser()
-    last_updated = parser.parse_last_updated(latest_data)
-    # Get the bed data data from OHA
-    hospital_df = parser.fetch_capacity_df(latest_data)
+    # HOSCAP
 
-# Open portal to make sure it's there!
+    # Build a single dataframe for CMH and PSH
+    df = build_hoscap_df(gateway)
+    print(df)
+
+    # Open portal to make sure it's there!
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
         #print("Logged in as " + str(portal.properties.user.username))
-        layer = connect(portal, public_featurelayer)
+        layer = connect(portal, hoscap_featurelayer)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
         exit(-1)
 
+    # Write the dataframe out to the feature class
     try:
-        success = update_beds(layer, last_updated, hospital_df)
+        success = append_df(layer, 'name', df)
     except Exception as e:
-        print("Could not write Beds data. \"%s\"" % e)
+        print("Could not write HOSCAP data. \"%s\"" % e)
+
+    # PPE
+
+    # Build a single dataframe for CMH and PSH
+    df = build_ppe_df(gateway)
+
+    # Open portal to make sure it's there!
+    try:
+        layer = connect(portal, ppe_featurelayer)
+    except Exception as e:
+        print("Could not find feature class. \"%s\"" % e)
+        print("Make sure the environment variables are set correctly.")
         exit(-1)
 
-    print("All done!")
-    exit(0)
+    # Write the dataframe out to the feature class
+    try:
+        success = append_df(layer, 'facility', df)
+    except Exception as e:
+        print("Could not write PPE data. \"%s\"" % e)
 
 # That's all!

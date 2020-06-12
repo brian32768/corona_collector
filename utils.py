@@ -1,5 +1,4 @@
-from datetime import datetime
-from pytz import timezone
+from datetime import datetime, timezone
 
 def connect(portal, featurelayer):
 
@@ -32,7 +31,6 @@ def s2i(s):
 
 def local2utc(t):
     """ Change a datetime object from local to UTC """
-    return t.astimezone(timezone('UTC'))
-
+    return t.astimezone(timezone.utc).replace(microsecond=0, second=0)
 
 # That's all!

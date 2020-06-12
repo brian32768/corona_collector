@@ -1,7 +1,7 @@
 from bs4 import BeautifulSoup
 import pandas as pd
 import re
-from datetime import datetime, timezone
+from datetime import datetime
 from utils import local2utc
 
 from arcgis.gis import GIS
