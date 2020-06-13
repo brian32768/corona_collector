@@ -1,23 +1,12 @@
+from arcgis.features import FeatureLayer
 from datetime import datetime, timezone
 
-def connect(portal, featurelayer):
-
-    # Amusingly the GIS search function is sloppy and returns several...
-    # there does not appear to be an exact match option.
-
-    layercollectionlist = portal.content.search(query=featurelayer,
-                                          item_type="Feature Layer Collection")
-    if len(layercollectionlist) < 1:
-        error = "No feature services found. \"%s\"" % featurelayer
-        raise Exception(error)
-
-    # Search for the correct Feature Service
-    try:
-        layercollection = [item for item in layercollectionlist if item.title == featurelayer][0]
-    except Exception as e:
-        raise Exception("Layer not found. \"%s\", %s" % (featurelayer, e))
-
-    return layercollection.layers[0]
+def connect(portal, url):
+    layer = FeatureLayer(url, portal)
+    # You can look at properties with
+    # layer.properties
+    # or get the list of fields with layer.properties.fields
+    return layer
 
 
 def s2i(s):
@@ -31,6 +20,49 @@ def s2i(s):
 
 def local2utc(t):
     """ Change a datetime object from local to UTC """
+
+    # I'm not sure but maybe I should just set tzinfo here too??
+    # tzinfo = timezone.utc
     return t.astimezone(timezone.utc).replace(microsecond=0, second=0)
+
+
+# UNIT TESTS
+if __name__ == "__main__": 
+    from arcgis.gis import GIS
+    from config import Config
+
+    assert s2i(None) == None
+    assert s2i(123) == 123
+    assert s2i("1,100") == 1100
+    assert s2i("123456.123456") == 123456
+
+    print(local2utc(datetime.now()))
+
+    portalUrl = Config.PORTAL_URL
+    portalUser = Config.PORTAL_USER
+    portalPasswd = Config.PORTAL_PASSWORD
+
+    layers = [
+        Config.COVID_CASES_URL,
+        Config.PUBLIC_WEEKLY_URL,
+        Config.HOSCAP_URL,
+        Config.PPE_URL,
+    ]
+
+    try:
+        portal = GIS(portalUrl, portalUser, portalPasswd)
+        #print("Logged in as " + str(portal.properties.user.username))
+    except Exception as e:
+        print("Could not connect to portal. \"%s\"" % e)
+        print("Make sure the environment variables are set correctly.")
+        exit(-1)
+
+    for url in layers:
+        try:
+            layer = connect(portal, url)
+            print("yaer name = '%s'" % layer.properties.name)#, layer.properties.fields)
+        except Exception as e:
+            print("Open failed for '%s' : %s" % (url, e))
+            exit(-1)
 
 # That's all!

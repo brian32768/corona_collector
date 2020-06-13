@@ -23,7 +23,7 @@ VERSION = 'wa_cases.py 1.0'
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
-featurelayer = "covid19_cases"
+featurelayerUrl = Config.COVID_CASES_URL
 
 wa_centroid = {"x":-120.74, "y": 47.75}
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
         #print("Logged in as " + str(portal.properties.user.username))
-        layer = connect(portal, featurelayer)
+        layer = connect(portal, featurelayerUrl)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")

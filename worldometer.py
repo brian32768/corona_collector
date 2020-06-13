@@ -17,7 +17,7 @@ from config import Config
 portalUrl    = Config.PORTAL_URL
 portalUser   = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
-featurelayer = "covid19_cases"
+covid_cases_url = Config.COVID_CASES_URL
 
 time_format = "%m/%d/%Y %H:%M"
 
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 # Open portal to make sure it's there!
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
-        layer = connect(portal, featurelayer)
+        layer = connect(portal, covid_cases_url)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")

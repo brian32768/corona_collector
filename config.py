@@ -17,6 +17,12 @@ class Config(object):
     HOSCAP_USER     = os.environ.get('HOSCAP_USER')
     HOSCAP_PASSWORD =  os.environ.get('HOSCAP_PASSWORD')
 
+    # Where to write output
+    COVID_CASES_URL   = os.environ.get('COVID_CASES_URL')
+    PUBLIC_WEEKLY_URL = os.environ.get('PUBLIC_WEEKLY_URL')
+    HOSCAP_URL        = os.environ.get('HOSCAP_URL')
+    PPE_URL           = os.environ.get('PPE_URL')
+
     pass
 
 # That's all!

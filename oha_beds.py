@@ -5,33 +5,27 @@
 """
 from html_gateway import HTMLGateway
 from oha_parser import OHAParser
-from datetime import datetime
-from pytz import timezone
+from datetime import datetime, timezone
 
 import os
 from arcgis.gis import GIS
 import arcgis.features
 import pandas as pd
 from copy import deepcopy
-from utils import connect, s2i
+from utils import connect, s2i, local2utc
 
 from config import Config
 
-VERSION = 'oha_beds.py 1.0'
+VERSION = 'oha_beds.py 1.1'
 
 # Output data here
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
 
-public_featurelayer = "covid19_public_weekly_data"
+public_weekly_url = Config.PUBLIC_WEEKLY_URL
 
-
-def update_beds(layer, last_updated, df):
-    """ Use the data fetched from OHA
-        Add timestamp fields
-        Update the record in an existing database feature class, remapping fieldnames. """
-
+def format_bed_info(df):
     labels = 'Hospital capacity and usage 5'
     # I have a table with 3 columns
     #print(df)
@@ -65,18 +59,22 @@ def update_beds(layer, last_updated, df):
     # Concat them into one dataframe
     df = pd.concat([avail_df, total_df])
     df.drop(['Ventilators'], inplace=True)
-    #print(df)
- 
-    utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
 
-    #df['utc_date'] = last_updated
-    #print(df)
+    return df
+
+def update_beds(layer, last_updated, df):
+    """ Use the data fetched from OHA
+        Add timestamp fields
+        Update the record in an existing database feature class, remapping fieldnames.         """
+
+    utc_date = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone.utc)
 
     # There is always only one feature in this layer.
     featureset = layer.query()
     #print(layer.properties.capabilities)
     original_feature = featureset.features[0]
     feature = deepcopy(original_feature)
+    
     for k in df.index:
         v = df.loc[k, 'Available']
         try:
@@ -85,7 +83,7 @@ def update_beds(layer, last_updated, df):
             print("You did something wrong with names.", e)
 
     feature.attributes['Creator'] = VERSION
-    feature.attributes['Editor']  = utc
+    feature.attributes['Editor']  = utc_date
     feature.attributes['data_enter_date'] = last_updated
     #print(feature.attributes)
 
@@ -94,12 +92,11 @@ def update_beds(layer, last_updated, df):
     results = layer.edit_features(updates=[feature])
     return results['updateResults'][0]['success']
 
-
-def get_data():
+def load_data():
     """ Get hospital data from OHA """
 
-    #with open("./oha.html", "r", encoding="utf-8") as fp:
-    #    return fp.read()
+#    with open("./oha.html", "r", encoding="utf-8") as fp:
+#        return fp.read()
 
     gateway = HTMLGateway()
     return gateway.fetch(url)
@@ -111,7 +108,7 @@ if __name__ == "__main__":
 
 # Get hospital data from OHA
     try:
-        raw_data = get_data()
+        raw_data = load_data()
     except Exception as e:
         print("Could not fetch data.", e)
         exit(-1)
@@ -120,19 +117,20 @@ if __name__ == "__main__":
     parser = OHAParser()
     last_updated = parser.parse_last_updated(raw_data)
     hospital_df = parser.fetch_capacity_df(raw_data)
+    df = format_bed_info(hospital_df)
 
 # Open portal to make sure it's there!
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
         #print("Logged in as " + str(portal.properties.user.username))
-        layer = connect(portal, public_featurelayer)
+        layer = connect(portal, public_weekly_url)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
         exit(-1)
 
     try:
-        success = update_beds(layer, last_updated, hospital_df)
+        success = update_beds(layer, last_updated, df)
     except Exception as e:
         print("Could not write Beds data. \"%s\"" % e)
         exit(-1)

@@ -1,6 +1,6 @@
 #!/usr/bin/env -S conda run -n covid python
 """
-    Collect data from Hoscap.
+    Collect data from HOSCAP.
     Write it to a feature layer on our portal.
 """
 from hoscap_gateway import HOSCAPGateway
@@ -22,8 +22,8 @@ VERSION = 'hoscap.py 1.0'
 portalUrl    = Config.PORTAL_URL
 portalUser   = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
-hoscap_featurelayer = "covid19_inventory"
-ppe_featurelayer    = "covid19_ppe_inventory"
+hoscap_url   = Config.HOSCAP_URL
+ppe_url      = Config.PPE_URL
 
 # 11 Jun 2020 09:54
 timeformat = "%d %b %Y %H:%M"
@@ -38,22 +38,21 @@ geometry_table = {
 def get_hoscap(gateway, facility, url):
     parser = HOSCAPParser()
     
-    CreateDate = datetime.utcnow().replace(tzinfo=timezone.utc)
+    utc_date = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone.utc)
+    
     STATUS = 1 # column containing the values
     DATE = 3
 
     d = gateway.fetch(url)
     covid_df = parser.covid(d)
-    local_update_time = covid_df.iloc[0][3]
-    last_updated = local2utc(datetime.strptime(local_update_time, timeformat))
-    print(local_update_time, '->utc->', last_updated)
+    print('Facility=',facility)
     print(covid_df)
 
     beds_df = parser.beds(d)
+    print(beds_df)
     vents_df = parser.vents(d)
 
     situ_df = parser.situation(d)
-    staff = 0 if situ_df.iloc[7][STATUS] == 'No' else 1
 
     vents_total     = s2i(vents_df.iloc[0][STATUS])
     vents_available = s2i(vents_df.iloc[1][STATUS])
@@ -62,19 +61,32 @@ def get_hoscap(gateway, facility, url):
     vents_in_use    = max([vents_total - vents_available, 0])
 
     return {
-        'name': facility, 
-        'CreateDate'  : CreateDate,
-        'covid_date'  : last_updated,
-        
-        'covid_admits': s2i(covid_df.iloc[0][STATUS]),
+        'facility': facility, 
+        'utc_date'    : utc_date,
+
+        'covid_date': local2utc(datetime.strptime(
+            covid_df.iloc[0][DATE], timeformat)),
+        'covid_admits'  : s2i(covid_df.iloc[0][STATUS]),
         'covid_icu_beds': s2i(covid_df.iloc[2][STATUS]),
-        'covid_vents' : s2i(covid_df.iloc[4][STATUS]),
-        'beds_total'  : s2i(beds_df.iloc[0][STATUS]),
-        'beds_icu'    : s2i(beds_df.iloc[1][STATUS]),
-        'vents_total' : s2i(vents_total),
-        'vents_surge' : s2i(vents_df.iloc[2][STATUS]),
-        'vents_in_use': s2i(vents_in_use),
-        'staff_needed': s2i(staff)
+        'covid_vents'   : s2i(covid_df.iloc[4][STATUS]),
+
+        'beds_date'     : local2utc(datetime.strptime(
+            beds_df.iloc[0][DATE], timeformat)),
+        'beds_total': s2i(beds_df.iloc[0][STATUS]),
+        'beds_icu'      : s2i(beds_df.iloc[1][STATUS]),
+        #'beds_available':
+        #'beds_icu_available:
+
+        'vents_date'     : local2utc(datetime.strptime(
+            beds_df.iloc[0][DATE], timeformat)),
+        'vents_total'   : vents_total,
+        'vents_surge'   : s2i(vents_df.iloc[2][STATUS]),
+        'vents_in_use'  : vents_available,
+        'vents_in_use'  : vents_in_use,
+
+        'situation_date': local2utc(datetime.strptime(
+            situ_df.iloc[0][DATE], timeformat)),
+        'staff_ok': 1 if situ_df.iloc[7][STATUS] == 'No' else 0
     }
  
 def build_hoscap_df(gateway):
@@ -166,15 +178,15 @@ if __name__ == "__main__":
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
         #print("Logged in as " + str(portal.properties.user.username))
-        layer = connect(portal, hoscap_featurelayer)
+        layer = connect(portal, hoscap_url)
     except Exception as e:
-        print("Could not connect to portal. \"%s\"" % e)
+        print("Could not connect to HOSCAP feature class. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
         exit(-1)
 
     # Write the dataframe out to the feature class
     try:
-        success = append_df(layer, 'name', df)
+        success = append_df(layer, 'facility', df)
     except Exception as e:
         print("Could not write HOSCAP data. \"%s\"" % e)
 
@@ -185,9 +197,9 @@ if __name__ == "__main__":
 
     # Open portal to make sure it's there!
     try:
-        layer = connect(portal, ppe_featurelayer)
+        layer = connect(portal, ppe_url)
     except Exception as e:
-        print("Could not find feature class. \"%s\"" % e)
+        print("Could not connect to PPE feature class. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
         exit(-1)
 

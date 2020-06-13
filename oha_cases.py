@@ -20,7 +20,7 @@ from config import Config
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
-covid_cases_featurelayer = "covid19_cases"
+covid_cases_url = Config.COVID_CASES_URL
 
 # Let's make up some geometry data here on the spot
 # These are centroids more or less
@@ -140,7 +140,7 @@ if __name__ == "__main__":
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
         #print("Logged in as " + str(portal.properties.user.username))
-        layer = connect(portal, covid_cases_featurelayer)
+        layer = connect(portal, covid_cases_url)
     except Exception as e:
         print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
