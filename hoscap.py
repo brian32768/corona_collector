@@ -153,7 +153,7 @@ def append_df(layer, facility_key, df):
             'attributes': d,
             'geometry': geometry_table[facility]
         })
-    print(n)
+    #print(n)
     results = layer.edit_features(adds=n)
     return results['addResults'][0]['success']
 
