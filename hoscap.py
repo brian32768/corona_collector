@@ -16,7 +16,7 @@ from utils import connect, s2i
 
 from config import Config
 
-VERSION = 'hoscap.py 1.0'
+VERSION = 'hoscap.py 1.1'
 
 # Output data here
 portalUrl    = Config.PORTAL_URL
