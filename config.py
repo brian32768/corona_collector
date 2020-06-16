@@ -20,14 +20,8 @@ class Config(object):
 
 # NONE OF THIS IS SECRET
 
-    
-    HOSCAP_LOGIN    = os.environ.get('HOSCAP_LOGIN')
-    HOSCAP_PSH      = os.environ.get('HOSCAP_PSH')
-    HOSCAP_PPMC     = os.environ.get('HOSCAP_PPMC')
-    HOSCAP_CMH      = os.environ.get('HOSCAP_CMH')
-
-
-
+    WORLDOMETER_WORLD_URL = "https://www.worldometers.info/coronavirus"
+    WORLDOMETER_STATES_URL = "https://www.worldometers.info/coronavirus/country/us"
     OHA_URL = 'https://govstatus.egov.com/OR-OHA-COVID-19'
 
 # This is the one with current data but difficult to parse

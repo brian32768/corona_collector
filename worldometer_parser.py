@@ -23,7 +23,7 @@ class WorldometerParser:
         return header.replace(", ", "/")
 
     @staticmethod
-    def create_df(raw_data):
+    def create_df(raw_data, table_id, myClassname):
         """
         Parses the raw HTML response and returns as a DataFrame
 
@@ -36,17 +36,15 @@ class WorldometerParser:
 
         soup = BeautifulSoup(raw_data, features="html.parser")
 
-        _id = "main_table_countries_today"
-
-        countries_table = soup.find("table", attrs={"id": _id})
+        table = soup.find("table", attrs={"id": table_id})
 
         columns = [WorldometerParser.format_table_header_column(th) for th
-                   in countries_table.find("thead").findAll("th")]
+                   in table.find("thead").findAll("th")]
    
         #vars
         parsed_data = []
         regx = r'(\n|\+|,)'
-        country_rows = countries_table.find("tbody").find_all("tr")
+        rows = table.find("tbody").find_all("tr")
 
         #utility functions
         def sort_alphabetically(element):
@@ -54,20 +52,19 @@ class WorldometerParser:
             return sorted_element
         
         #sort countries
-        country_rows.sort(key=sort_alphabetically)
+        rows.sort(key=sort_alphabetically)
 
-        for country_row in country_rows:
-            country_classname = re.sub(regx, "", country_row.findAll("td")[0].get_text())
+        for row in rows:
+            classname = re.sub(regx, "", row.findAll("td")[0].get_text().strip())
             #skip continents, we only need countries
 #            if country_classname is '' or 0: continue
             #print("country", country_row, country_classname)
             # We're interested only in USA or continents
-            if country_classname == '' or country_classname == '1':
-                #print("country '%s'" % country_classname)
-
+            if classname == '' or classname == myClassname:
+                #print("classname '%s'" % classname)
                 parsed_data.append([data.get_text().strip() for data
-                                in country_row.findAll("td")])
-            
+                                in row.find_all("td")])
+                pass
         
         df = pd.DataFrame(parsed_data, columns=columns)
         return df.replace(to_replace=[""], value=0)
@@ -86,31 +83,46 @@ class WorldometerParser:
         """
         
         soup = BeautifulSoup(raw_data, features="html.parser")
-        
-        _styles = "font-size:13px; color:#999; margin-top:5px; text-align:center"
-        
-        last_updated = soup.find("div", {"style": _styles}).text
+
         #last_updated = 'Last updated: May 28, 2020, 01:46 GMT'
 
-        return datetime.strptime(
-            last_updated, 
-            "Last updated: %B %d, %Y, %H:%M GMT").replace(tzinfo=timezone.utc)
+        style1 = "font-size:13px; color:#999; margin-top:5px; text-align:center"
+        style2 = "font-size:13px; color:#999; text-align:center"
+        try:
+            div1 = soup.find('div', {"style": style1}).text
+            dt = datetime.strptime(div1, "Last updated: %B %d, %Y, %H:%M GMT")
+        except Exception as e:
+            #print(e)
+            pass
+        try:
+            div2 = soup.find('div', {"style": style2}).text
+            dt = datetime.strptime(div2, "Last updated: %B %d, %Y, %H:%M GMT")
+        except Exception as e:
+            #print(e)
+            pass
+            
+        return dt.replace(tzinfo=timezone.utc)
 
 
 if __name__ == "__main__":
     # Unit test using the file that's create in the _gateway unit test!
 
-    with open("./worldometer.html", "r", encoding="utf-8") as fp:
+    with open("./worldometer_states.html", "r", encoding="utf-8") as fp:
         raw_data = fp.read()
-
     parser = WorldometerParser()
-
-    df = parser.create_df(raw_data)
-    print(df)
-
     last_updated = parser.parse_last_updated(raw_data)
     print(last_updated)
+    df = parser.create_df(raw_data, "usa_table_countries_today", 'Oregon')
+    print(df)
 
-    print("Parser succeeded using worldometer.html data!")
+    with open("./worldometer.html", "r", encoding="utf-8") as fp:
+        raw_data = fp.read()
+    parser = WorldometerParser()
+    last_updated = parser.parse_last_updated(raw_data)
+    print(last_updated)
+    df = parser.create_df(raw_data, "main_table_countries_today", '1')
+    print(df)
+
+    print("Parser succeeded using worldometer html data!")
     exit(0)
 # That's all!

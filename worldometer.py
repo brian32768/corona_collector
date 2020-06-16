@@ -19,57 +19,73 @@ portalUser   = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
 covid_cases_url = Config.COVID_CASES_URL
 
+worldometer_world_url = Config.WORLDOMETER_WORLD_URL
+worldometer_states_url = Config.WORLDOMETER_STATES_URL
+
+usa_geometry = {"x": -98, "y": 39}
+or_geometry = {"x": -121, "y": 44}
+null_island = {"x":   0, "y":  0}
+
 time_format = "%m/%d/%Y %H:%M"
 
-def append_to_database(layer, last_update, df, x=0, y=0):
+def append_to_database(layer, last_update, df, geometry):
     """ Write a dataframe to the feature layer. """
 
     utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
     name = df.name
 
-    n = {"attributes": {
-            "utc_date":     utc,
-            "editor":       portalUser,
-            "source":       "worldometer",
+    attributes = {
+        "utc_date":     utc,
+        "editor":       portalUser,
+        "source":       "worldometer",
 
-            "last_update":  last_update,
-            "name":         name, # USA | World | Clatsop
-            "total_cases":  s2i(df.at['Total Cases']),
-            "new_cases":    s2i(df.at['New Cases']),
+        "last_update":  last_update,
+        "name":         name, # USA | World | Clatsop
+        "total_cases":  s2i(df.at['Total Cases']),
+        "new_cases":    s2i(df.at['New Cases']),
 
-            "total_tests":  s2i(df.at['Total Tests']),
+        "total_tests":  s2i(df.at['Total Tests']),
 
-            "total_recovered": s2i(df.at['Total Recovered']),
-            "active_cases": s2i(df.at['Active Cases']),
+        "active_cases": s2i(df.at['Active Cases']),
 
-            "total_deaths": s2i(df.at['Total Deaths']),
-            "new_deaths":   s2i(df.at['New Deaths']),
-        },
-        "geometry": {
-            "x": x, "y": y
-        }
+        "total_deaths": s2i(df.at['Total Deaths']),
+        "new_deaths":   s2i(df.at['New Deaths']),
     }
+    try: 
+        attributes["total_recovered"] = s2i(df.at['Total Recovered'])
+    except KeyError:
+        pass
+    n = { "attributes": attributes, "geometry": geometry }
     #print(n)
-
     results = layer.edit_features(adds=[n])
     return results['addResults'][0]['success']
 
 #============================================================================
 if __name__ == "__main__":
 
-# Get data from Worldometer
+    world_data = None
     try:
-        worldometer_gateway = HTMLGateway()
-        latest_data = worldometer_gateway.fetch(
-            "https://www.worldometers.info/coronavirus")
+        world_data = HTMLGateway.fetch(worldometer_world_url)
     except Exception as e:
-        print("Could not fetch data.", e)
+        print("Could not fetch world data.", e)
         exit(-1)
 
-# Convert the data into a DataFrame
     parser = WorldometerParser()
-    df = parser.create_df(latest_data)
-    last_updated = parser.parse_last_updated(latest_data)
+
+    # Convert the data into a DataFrame
+    world_df = parser.create_df(world_data, "main_table_countries_today", '1')
+    world_last_updated = parser.parse_last_updated(world_data)
+
+    state_data = None
+    try:
+        state_data = HTMLGateway.fetch(worldometer_states_url)
+    except Exception as e:
+        print("Could not fetch state data.", e)
+        exit(-1)
+    # Convert the data into a DataFrame
+    states_df = parser.create_df(
+        state_data, "usa_table_countries_today", 'Oregon')
+    states_last_updated = parser.parse_last_updated(state_data)
 
 # Open portal to make sure it's there!
     try:
@@ -82,28 +98,25 @@ if __name__ == "__main__":
   
 # Clean the data
 
-    del df['Population']
-    del df['#']
+    del world_df['Population']
+    del world_df['#']
 
-    inx = "Country/Other"
-    df = df.set_index(inx, drop=True)
-    print(df)
-    print()
+    world_df = world_df.set_index("Country/Other", drop=True)
+    or_df = states_df.set_index("USA State", drop=True)
+    or_df = or_df.loc["Oregon"].transpose()
+    print(or_df)
+    or_df.name = 'Oregon'
 
-    usa_df = df.loc["USA"]
-    print(usa_df)
-    print()
+    usa_df = world_df.loc["USA"]
 
-    world_df = df.loc['World']
+    world_df = world_df.loc['World']
     print(world_df)
-
-    print(last_updated)
-    #print(local_tz)
 
 # now put it into a feature layer
     try:
-        result = append_to_database(layer, last_updated, usa_df, -98,39) # We're not in Kansas anymore
-        result = append_to_database(layer, last_updated, world_df, 0, 0) # Null Island
+        result = append_to_database(layer, states_last_updated, or_df, or_geometry)
+        result = append_to_database(layer, world_last_updated, usa_df, usa_geometry)
+        result = append_to_database(layer, world_last_updated, world_df, null_island)
     except Exception as e:
         print("Could not write data to portal. \"%s\"" % e)
         exit(-1)

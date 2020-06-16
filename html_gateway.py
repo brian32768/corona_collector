@@ -33,14 +33,17 @@ if __name__ == "__main__":
             fp.write(data)
             print("Wrote", filename)
 
-    def test_worldometer(url):
+    def test_worldometer(url, output):
         html_data = HTMLGateway.fetch(url)
-        with open("./worldometer.html", "w", encoding="utf-8") as fp:
+        with open(output, "w", encoding="utf-8") as fp:
             fp.write(html_data)
-            print("Wrote worldometer.html")
+            print("Wrote '%s'" % output)
+
+    test_worldometer(Config.WORLDOMETER_STATES_URL, './worldometer_states.html')
+    test_worldometer(Config.WORLDOMETER_WORLD_URL, './worldometer.html')
 
     test_simple(Config.WA_URL, "./wa.json")
     test_simple(Config.OHA_URL, "./oha.html")
-    test_worldometer("https://www.worldometers.info/coronavirus")
+
 
 # That's all!
