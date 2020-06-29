@@ -16,6 +16,8 @@ from utils import connect, s2i
 
 from config import Config
 
+__VERSION__ = "1.0"
+
 # Output data here
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
