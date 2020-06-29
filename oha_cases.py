@@ -47,6 +47,7 @@ def append_cases(layer, last_updated, df):
     df['source']      = 'OHA'
 
     #print(df)
+    numeric_fields = ['total_cases', 'total_negative', 'total_deaths', 'total_tests']
 
     new_features = []
     column_names = list(df.columns)
@@ -56,11 +57,19 @@ def append_cases(layer, last_updated, df):
         i = 0
         for item in row:
             #print(column_names[i], item)
-            attributes[column_names[i]] = item
             if column_names[i] == 'name':
                 name = df['name'].iloc[0]
                 geometry = geometry_table[name]
                 #print(county, geometry)
+                attributes[column_names[i]] = item
+            elif column_names[i] in numeric_fields:
+                d = s2i(item)
+                if d:
+                    # Don't bother adding numeric attributes that are type None
+                    # because they are meaningless and freak out ArcGIS.
+                    attributes[column_names[i]] = d
+            else:
+                attributes[column_names[i]] = item
             i += 1
         new_features.append({
             "attributes": attributes,
@@ -108,6 +117,7 @@ def append_state_cases(layer, last_updated, df):
     for i in unwanted:
         del df[i]
 
+    # Delete columns that have no data in them.
     print(df)
     return append_cases(layer, last_updated, df)
 
