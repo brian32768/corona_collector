@@ -11,10 +11,18 @@ def connect(portal, url):
 
 def s2i(s):
     """ Convert a string to an integer even if it has + and , in it. """
+
+    # Turns out sometimes there can be text in the string, for example "pending",
+    # and that made this function crash.
     if type(s)==type(0):
+        # Input is already a number
         return s
-    if s:
-        return int(float(s.replace(',', '')))
+    try:
+        # Sometimes input has a number with commas in it, remove those.
+        if s:
+            return int(float(s.replace(',', '')))
+    except ValueError:
+        pass
     return None
 
 
@@ -32,6 +40,8 @@ if __name__ == "__main__":
     from config import Config
 
     assert s2i(None) == None
+    assert s2i("") == None
+    assert s2i("pending") == None
     assert s2i(123) == 123
     assert s2i("1,100") == 1100
     assert s2i("123456.123456") == 123456
@@ -60,7 +70,7 @@ if __name__ == "__main__":
     for url in layers:
         try:
             layer = connect(portal, url)
-            print("yaer name = '%s'" % layer.properties.name)#, layer.properties.fields)
+            print("name = '%s'" % layer.properties.name)#, layer.properties.fields)
         except Exception as e:
             print("Open failed for '%s' : %s" % (url, e))
             exit(-1)
