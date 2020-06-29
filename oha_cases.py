@@ -123,7 +123,7 @@ def get_data():
 #============================================================================
 if __name__ == "__main__":
 
-    url = "https://govstatus.egov.com/OR-OHA-COVID-19"
+    url = Config.OHA_URL
     try:
         raw_data = get_data()
     except Exception as e:
