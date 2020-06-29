@@ -1,6 +1,2 @@
 {
-    "python.pythonPath": "C:\\Users\\brian\\AppData\\Local\\ESRI\\conda\\envs\\covid\\python.exe",
-    "terminal.integrated.env.windows": {
-        "PATH":"${env:PATH};../Anaconda3;../Anaconda3/scripts;../Anaconda3/Library/bin"
-    }
 }
