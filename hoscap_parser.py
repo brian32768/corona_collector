@@ -107,5 +107,6 @@ if __name__ == "__main__":
     df = parser.situation(d)
     print(df)
 
+    gateway.close()
     exit(0)
 # That's all!

@@ -29,6 +29,10 @@ class HOSCAPGateway:
         self.driver.get(url)
         return self.driver.page_source
 
+    def close(self):
+        self.driver.close()
+        self.driver.quit()
+
 if __name__ == "__main__":
     # Unit test
 
@@ -46,6 +50,8 @@ if __name__ == "__main__":
     d = gateway.fetch(Config.HOSCAP_PPMC)
     with open("juvare_ppmc.html", "w", encoding="UTF-8") as fp:
         fp.write(d)
+
+    gateway.close()
 
     exit(0)
 # That's all!

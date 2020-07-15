@@ -165,6 +165,7 @@ if __name__ == "__main__":
         gateway = HOSCAPGateway()
         gateway.login()
     except Exception as e:
+        gateway.close()
         print("Could not connect to data source.", e)
         exit(-1)
 
@@ -172,6 +173,7 @@ if __name__ == "__main__":
 
     # Build a single dataframe for CMH and PSH
     df = build_hoscap_df(gateway)
+
     print(df)
 
     # Open portal to make sure it's there!
@@ -182,6 +184,7 @@ if __name__ == "__main__":
     except Exception as e:
         print("Could not connect to HOSCAP feature class. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
+        gateway.close()
         exit(-1)
 
     # Write the dataframe out to the feature class
@@ -194,6 +197,7 @@ if __name__ == "__main__":
 
     # Build a single dataframe for CMH and PSH
     df = build_ppe_df(gateway)
+    gateway.close()
 
     # Open portal to make sure it's there!
     try:
