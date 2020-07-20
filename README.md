@@ -9,12 +9,13 @@ thanks please see:
 
 ## Set up environment
 
-THere is no longer any need to clone ESRI's arcgispro environment,
-the requirements.txt file pulls what is needed from conda forge.
+The requirements.txt file pulls what is needed from conda forge, so you don't need ArcGIS Pro installed for this project to work.
 
-   conda create --name covid
+However, if you ARE working in an ArcGIS Pro world you should use "clone" to avoid getting DLL runtime errors about pandas.
+
+   conda create --name=covid --clone=arcgispro-py3
    conda activate covid
-   conda install -c esri --file requirements.txt
+   conda install -c esri --file=requirements.txt
 
 You have to put a portal user and password into .env
 
