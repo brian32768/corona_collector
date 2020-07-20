@@ -16,8 +16,6 @@ from utils import connect, s2i
 
 from config import Config
 
-__VERSION__ = "1.0"
-
 # Output data here
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
@@ -49,7 +47,6 @@ def append_cases(layer, last_updated, df):
     df['source']      = 'OHA'
 
     #print(df)
-    numeric_fields = ['total_cases', 'total_negative', 'total_deaths', 'total_tests']
 
     new_features = []
     column_names = list(df.columns)
@@ -59,19 +56,11 @@ def append_cases(layer, last_updated, df):
         i = 0
         for item in row:
             #print(column_names[i], item)
+            attributes[column_names[i]] = item
             if column_names[i] == 'name':
                 name = df['name'].iloc[0]
                 geometry = geometry_table[name]
                 #print(county, geometry)
-                attributes[column_names[i]] = item
-            elif column_names[i] in numeric_fields:
-                d = s2i(item)
-                if d:
-                    # Don't bother adding numeric attributes that are type None
-                    # because they are meaningless and freak out ArcGIS.
-                    attributes[column_names[i]] = d
-            else:
-                attributes[column_names[i]] = item
             i += 1
         new_features.append({
             "attributes": attributes,
@@ -119,7 +108,6 @@ def append_state_cases(layer, last_updated, df):
     for i in unwanted:
         del df[i]
 
-    # Delete columns that have no data in them.
     print(df)
     return append_cases(layer, last_updated, df)
 
@@ -135,7 +123,7 @@ def get_data():
 #============================================================================
 if __name__ == "__main__":
 
-    url = Config.OHA_URL
+    url = "https://govstatus.egov.com/OR-OHA-COVID-19"
     try:
         raw_data = get_data()
     except Exception as e:
@@ -143,10 +131,12 @@ if __name__ == "__main__":
         exit(-1)
 
 # Convert the data into DataFrames
-    parser = OHAParser()
-    last_updated = parser.parse_last_updated(raw_data)
-    state_cases_df = parser.fetch_state_cases_df(raw_data)
-    county_cases_df = parser.fetch_feature_df() # Reads feature class directly
+    last_update_state = OHAParser().last_update(raw_data)
+    state_cases_df = OHAParser().fetch_state_cases_df(raw_data)
+
+    # Read feature layer directly from ArcGIS.COM, NOT the HTML
+    last_edit = OHAParser().last_feature_edit()
+    county_cases_df = OHAParser().fetch_feature_df()
     
 # Open portal to make sure it's there!
     try:
@@ -160,14 +150,14 @@ if __name__ == "__main__":
 
 # Append new state record
     try:
-        success = append_state_cases(layer, last_updated, state_cases_df)
+        success = append_state_cases(layer, last_update_state, state_cases_df)
     except Exception as e:
         print("Could not write state Cases data. \"%s\"" % e)
         exit(-1)
 
 # Append new county records
     try:
-        success = append_county_cases(layer, last_updated, county_cases_df)
+        success = append_county_cases(layer, last_edit, county_cases_df)
     except Exception as e:
         print("Could not write county Cases data. \"%s\"" % e)
         exit(-1)
