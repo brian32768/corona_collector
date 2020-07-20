@@ -131,10 +131,12 @@ if __name__ == "__main__":
         exit(-1)
 
 # Convert the data into DataFrames
-    parser = OHAParser()
-    last_updated = parser.parse_last_updated(raw_data)
-    state_cases_df = parser.fetch_state_cases_df(raw_data)
-    county_cases_df = parser.fetch_feature_df() # Reads feature class directly
+    last_update_state = OHAParser().last_update(raw_data)
+    state_cases_df = OHAParser().fetch_state_cases_df(raw_data)
+
+    # Read feature layer directly from ArcGIS.COM, NOT the HTML
+    last_edit = OHAParser().last_feature_edit()
+    county_cases_df = OHAParser().fetch_feature_df()
     
 # Open portal to make sure it's there!
     try:
@@ -148,14 +150,14 @@ if __name__ == "__main__":
 
 # Append new state record
     try:
-        success = append_state_cases(layer, last_updated, state_cases_df)
+        success = append_state_cases(layer, last_update_state, state_cases_df)
     except Exception as e:
         print("Could not write state Cases data. \"%s\"" % e)
         exit(-1)
 
 # Append new county records
     try:
-        success = append_county_cases(layer, last_updated, county_cases_df)
+        success = append_county_cases(layer, last_edit, county_cases_df)
     except Exception as e:
         print("Could not write county Cases data. \"%s\"" % e)
         exit(-1)
