@@ -110,13 +110,11 @@ if __name__ == "__main__":
     try:
         raw_data = load_data()
     except Exception as e:
-        print("Could not fetch data.", e)
-        exit(-1)
+        sys.exit("Could not fetch data.", e)
 
 # Convert the data into a DataFrame
-    parser = OHAParser()
-    last_updated = parser.parse_last_updated(raw_data)
-    hospital_df = parser.fetch_capacity_df(raw_data)
+    last_updated = OHAParser.last_update(raw_data)
+    hospital_df = OHAParser.fetch_capacity_df(raw_data)
     df = format_bed_info(hospital_df)
 
 # Open portal to make sure it's there!
@@ -125,15 +123,13 @@ if __name__ == "__main__":
         #print("Logged in as " + str(portal.properties.user.username))
         layer = connect(portal, public_weekly_url)
     except Exception as e:
-        print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
-        exit(-1)
+        sys.exit("Could not connect to portal. \"%s\"" % e)
 
     try:
         success = update_beds(layer, last_updated, df)
     except Exception as e:
-        print("Could not write Beds data. \"%s\"" % e)
-        exit(-1)
+        sys.exit("Could not write Beds data. \"%s\"" % e)
 
     exit(0)
 # That's all!

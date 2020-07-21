@@ -8,7 +8,7 @@ from oha_parser import OHAParser
 from datetime import datetime
 from pytz import timezone
 
-import os
+import sys, os
 from arcgis.gis import GIS
 import arcgis.features
 import pandas as pd
@@ -34,17 +34,16 @@ geometry_table = {
     'OR':         {"x": -122.07, "y": 44.57},
 }
 
-def append_cases(layer, last_updated, df):
-    """ Use the data fetched from OHA
-        Add timestamp fields
-        Append it to an existing database feature class, remapping fieldnames. """
 
-    utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
+def append_cases(layer, last_updated, utc, df):
+    """ 
+    Append it to an existing database feature class, remapping fieldnames. 
+    """
 
-    df['utc_date']    = utc
+    df['utc_date'] = utc
     df['last_update'] = last_updated
-    df['editor']      = portalUser
-    df['source']      = 'OHA'
+    df['editor'] = portalUser
+    df['source'] = 'OHA'
 
     #print(df)
 
@@ -69,11 +68,12 @@ def append_cases(layer, last_updated, df):
 #        print(attributes)
 #        print(geometry)
 
+    print(new_features)
     results = layer.edit_features(adds=new_features)
     return results['addResults'][0]['success']
-    return False
 
-def append_county_cases(layer, last_updated, df):
+
+def append_county_cases(layer, last_updated, utc, df):
 
     # Remap field names to what I use
     df.rename(columns={
@@ -90,10 +90,10 @@ def append_county_cases(layer, last_updated, df):
         del df[i]
 
     print(df)
-    return append_cases(layer, last_updated, df)
+    return append_cases(layer, last_updated, utc, df)
 
 
-def append_state_cases(layer, last_updated, df):
+def append_state_cases(layer, last_updated, utc, df):
 
     # Remap field names to what I use
     df.rename(columns={
@@ -109,14 +109,13 @@ def append_state_cases(layer, last_updated, df):
         del df[i]
 
     print(df)
-    return append_cases(layer, last_updated, df)
+    return append_cases(layer, last_updated, utc, df)
 
 def get_data():
     """ Get hospital data from OHA """
 
 #    with open("./oha.html", "r", encoding="utf-8") as fp:
 #        return fp.read()
-    
     gateway = HTMLGateway()
     return gateway.fetch(url)
 
@@ -127,8 +126,7 @@ if __name__ == "__main__":
     try:
         raw_data = get_data()
     except Exception as e:
-        print("Could not fetch data.", e)
-        exit(-1)
+        sys.exit("Could not fetch data.", e)
 
 # Convert the data into DataFrames
     last_update_state = OHAParser().last_update(raw_data)
@@ -144,24 +142,23 @@ if __name__ == "__main__":
         #print("Logged in as " + str(portal.properties.user.username))
         layer = connect(portal, covid_cases_url)
     except Exception as e:
-        print("Could not connect to portal. \"%s\"" % e)
         print("Make sure the environment variables are set correctly.")
-        exit(-1)
+        sys.exit("Could not connect to portal. \"%s\"" % e)
+
+    utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
 
 # Append new state record
     try:
-        success = append_state_cases(layer, last_update_state, state_cases_df)
+        success = append_state_cases(layer, last_update_state, utc, state_cases_df)
     except Exception as e:
-        print("Could not write state Cases data. \"%s\"" % e)
-        exit(-1)
+        sys.exit("Could not write state Cases data. \"%s\"" % e)
 
 # Append new county records
     try:
-        success = append_county_cases(layer, last_edit, county_cases_df)
+        success = append_county_cases(layer, last_edit, utc, county_cases_df)
     except Exception as e:
-        print("Could not write county Cases data. \"%s\"" % e)
-        exit(-1)
-
+        sys.exit("Could not write county Cases data. \"%s\"" % e)
+        
     exit(0)
 
 # That's all!
