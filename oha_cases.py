@@ -69,6 +69,7 @@ def append_cases(layer, last_updated, utc, df):
 #        print(geometry)
 
     #print(new_features)
+    #return True
     results = layer.edit_features(adds=new_features)
     return results['addResults'][0]['success']
 

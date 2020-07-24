@@ -89,6 +89,7 @@ def update_beds(layer, last_updated, df):
 
     #df[oid] = feature.attributes[oid]
     print(df)
+    #return True
     results = layer.edit_features(updates=[feature])
     return results['updateResults'][0]['success']
 
