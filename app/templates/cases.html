@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>OHA cases</title>
+    </head>
+    <link rel="stylesheet" type="text/css" href="{{url_for('static',filename='ms.css')}}" />
+    <body>
+
+        {% block page_content %}
+        <div id="rural" class="cases">
+            <div class="title">HPO1 {{region}} Cases: <b>{{df['Cases'].sum()}}</b></div>
+
+            {%for i in range(0,df.shape[0])%}
+                <div>
+                    <div class="county">{{df.loc[i, "instName"]}}</div>
+                    Cases: <b>{{df.loc[i, "Cases"]}}</b> 
+                    Negative tests: <b>{{df.loc[i, "NegativeTests"]}}</b>
+                    Deaths: <b>{{df.loc[i, "Deaths"]}}</b>
+                    <hr />
+                </div>
+            {%endfor%}
+        
+        <div class="byline">source: {{source|safe}} last edit: {{last_update}}</div>
+        </div>
+        {% endblock %}
+    </body>
+</html>
