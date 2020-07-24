@@ -8,6 +8,7 @@ from hoscap_parser import HOSCAPParser
 from datetime import datetime, timezone
 from utils import local2utc
 
+import sys
 import os
 from arcgis.gis import GIS
 import arcgis.features
@@ -16,7 +17,7 @@ from utils import connect, s2i
 
 from config import Config
 
-VERSION = 'hoscap.py 1.1'
+VERSION = 'hoscap 1.2'
 
 # Output data here
 portalUrl    = Config.PORTAL_URL
@@ -154,6 +155,7 @@ def append_df(layer, facility_key, df):
             'geometry': geometry_table[facility]
         })
     #print(n)
+    #return True
     results = layer.edit_features(adds=n)
     return results['addResults'][0]['success']
 
@@ -165,8 +167,7 @@ if __name__ == "__main__":
         gateway = HOSCAPGateway()
         gateway.login()
     except Exception as e:
-        print("Could not connect to data source.", e)
-        exit(-1)
+        sys.exit("Could not connect to data source. %s" % e)
 
     # HOSCAP
 
