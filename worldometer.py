@@ -57,6 +57,7 @@ def append_to_database(layer, last_update, df, geometry):
         pass
     n = { "attributes": attributes, "geometry": geometry }
     #print(n)
+    #return True
     results = layer.edit_features(adds=[n])
     return results['addResults'][0]['success']
 

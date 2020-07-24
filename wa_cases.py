@@ -67,6 +67,7 @@ def append_cases(layer, last_updated, df):
     #print(n)
 
     print(df)
+    #return True
     results = layer.edit_features(adds=[n])
     return results['addResults'][0]['success']
 

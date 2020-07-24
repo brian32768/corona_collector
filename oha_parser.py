@@ -5,7 +5,7 @@ from datetime import datetime
 from utils import local2utc
 from html_gateway import HTMLGateway
 from arcgis.gis import GIS
-import arcgis.features
+from arcgis.features import FeatureLayer
 import json
 
 featureLayerUrl = "https://services.arcgis.com/uUvqNMGPm7axC2dD/ArcGIS/rest/services/COVID_Cases_Oregon_Public/FeatureServer/0"
@@ -148,7 +148,7 @@ class OHAParser:
         Spatially enabled data frame.
         """
 
-        layer = arcgis.features.FeatureLayer(url=featureLayerUrl)
+        layer = FeatureLayer(url=featureLayerUrl)
 
         # The data displayed in the dashboard can come from here or from the web form 
 

@@ -1,0 +1,21 @@
+body {
+    font-family: Arial, sans-serif;
+}
+
+.cases {
+    width: 300px;
+    height: 60px;
+}
+.title {
+    font-size: 18pt;
+    color: darkgrey;  
+}
+.county {
+    font-weight: bold;
+}
+.sum {
+}
+.byline {
+    font-size: 9pt;
+    color: grey;  
+}

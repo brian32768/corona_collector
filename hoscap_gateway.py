@@ -1,3 +1,4 @@
+import sys
 from selenium import webdriver
 from datetime import datetime, timezone
 
@@ -14,16 +15,37 @@ class HOSCAPGateway:
         self.driver.get(Config.HOSCAP_LOGIN)
         self.driver.implicitly_wait(5)
 
-        login = self.driver.find_element_by_name('LoginBtn')
-        username = self.driver.find_element_by_id('username')
-        password = self.driver.find_element_by_id('password')
+        # Login page has two stages, first enter name and click button
+        # Then enter password and click button
+        # Looks like it's just hiding and unhiding some fields
+        # so maybe I can do it all in one go?
+
+        try:
+            username = self.driver.find_element_by_id('username')
+        except Exception as e:
+            sys.exit("Could not find username field. %s" % e)
 
         username.send_keys(Config.HOSCAP_USER)
+
+        try:
+            checkname_button = self.driver.find_element_by_id('checkUsername')
+            checkname_button.click()
+        except Exception as e:
+            sys.exit("Could not find the check name button. %s" % e)
+
+        try:
+            password = self.driver.find_element_by_id('password')
+        except Exception as e:
+            sys.exit("Could not find password field. %s" % e)
         password.send_keys(Config.HOSCAP_PASSWORD)
 
-        login.click()
+        try:
+            login_button = self.driver.find_element_by_id('loginBtn')
+        except Exception as e:
+            sys.exit("Could not find login button. %s" % e)
+        rval = login_button.click()
 
-        return
+        return rval
 
     def fetch(self, url):
         self.driver.get(url)
@@ -35,6 +57,9 @@ class HOSCAPGateway:
 
 if __name__ == "__main__":
     # Unit test
+
+    assert(Config.HOSCAP_USER)
+    assert(Config.HOSCAP_PASSWORD)
 
     gateway = HOSCAPGateway()
     gateway.login()

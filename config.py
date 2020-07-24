@@ -13,8 +13,6 @@ class Config(object):
     HOSCAP_URL = os.environ.get('HOSCAP_URL')
     PPE_URL = os.environ.get('PPE_URL')
 
-
-
     HOSCAP_USER = os.environ.get('HOSCAP_USER')
     HOSCAP_PASSWORD = os.environ.get('HOSCAP_PASSWORD')
 
@@ -36,6 +34,9 @@ class Config(object):
     HOSCAP_PPMC = _hoscap_table + '&nextStepDetail=23542'
     HOSCAP_CMH = _hoscap_table + '&nextStepDetail=23515'
 
+    pass
+
+if __name__ == "__main__":
     pass
 
 # That's all!

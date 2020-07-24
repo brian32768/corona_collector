@@ -1,7 +1,7 @@
-arcgis
+arcgis>=1.8
 bs4
 tzlocal
 autopep8
 requests
-selenium
+selenium>=3.141
 chromedriver-binary
