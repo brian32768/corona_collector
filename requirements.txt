@@ -5,3 +5,4 @@ autopep8
 requests
 selenium>=3.141
 chromedriver-binary
+jinja2

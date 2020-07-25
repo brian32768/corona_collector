@@ -3,7 +3,7 @@ body {
 }
 
 .cases {
-    width: 300px;
+    width: 350px;
     height: 60px;
 }
 .title {
@@ -11,7 +11,6 @@ body {
     color: darkgrey;  
 }
 .county {
-    font-weight: bold;
 }
 .sum {
 }
