@@ -26,14 +26,25 @@ I did this in the catalog in ArcGISPro and then published it to my Portal.
 
 ## Run
 
-   python main.py
+There are multiple executables here.
 
-This will store the data into a feature class.
+These all store the data into local feature classes via Portal.
+hoscap.py     scrapes the HOSCAP site
+oha_beds.py   scrapes the OHA site for bed capacity data
+oha_cases.py  scrapes the OHA site AND reads feature data, for cases
+wa_cases.py   scrapes the WA site for cases
+
+This generates static HTML pages. Included in dashboards.
+generator.py  generates from OHA cases feature data
+	      using static/ and templates/
+
 
 ## Deploy
 
-I plan on installing it on a Debian machine and running it from
-cron every 4 hours.
+These are all run from cron on Debian machine.
+
+
+
 
 
 Source of data for OR and WA data
