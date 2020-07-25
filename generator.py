@@ -1,3 +1,4 @@
+#!/usr/bin/env -S conda run -n covid python
 """
 Generates static html file(s)
 
