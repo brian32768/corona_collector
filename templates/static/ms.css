@@ -1,14 +1,14 @@
 body {
     font-family: Arial, sans-serif;
+    font-size: 11pt;
     color: rgb(100, 100, 100);  
-    background-color: lightgray;
+    background-color: white;
 }
 b {
     color: rgb(40,40,40);
 }
 .cases {
-    width: 350px;
-    background-color: white;
+    padding: 4px;
 }
 .title {
     font-size: 18pt;
