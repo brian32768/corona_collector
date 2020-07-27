@@ -1,14 +1,18 @@
 body {
     font-family: Arial, sans-serif;
+    color: rgb(100, 100, 100);  
+    background-color: lightgray;
 }
-
+b {
+    color: rgb(40,40,40);
+}
 .cases {
     width: 350px;
-    height: 60px;
+    background-color: white;
 }
 .title {
     font-size: 18pt;
-    color: darkgrey;  
+    padding-bottom: 3pt;
 }
 .county {
 }

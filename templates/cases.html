@@ -8,19 +8,35 @@
 
         {% block page_content %}
         <div id="rural" class="cases">
-            <div class="title">HPO1 {{region}} Cases: <b>{{df['Cases'].sum()}}</b></div>
-
-            {%for i in range(0,df.shape[0])%}
-                <div>
-                    <div class="county">{{df.loc[i, "instName"]}}</div>
-                    Cases: <b>{{df.loc[i, "Cases"]}}</b> 
-                    Negative tests: <b>{{df.loc[i, "NegativeTests"]}}</b>
-                    Deaths: <b>{{df.loc[i, "Deaths"]}}</b>
-                    <hr />
-                </div>
-            {%endfor%}
+            <div class="title">HPO1 {{Rural}} Cases: <b>{{ruraldf['Cases'].sum()}}</b></div>
         
-        <div class="byline">source: {{source|safe}} last edit: {{last_update}}</div>
+            {%for i in range(0,ruraldf.shape[0])%}
+            <div>
+                <div class="county">{{ruraldf.loc[i, "instName"]}}</div>
+                Cases: <b>{{ruraldf.loc[i, "Cases"]}}</b>
+                Negative tests: <b>{{ruraldf.loc[i, "NegativeTests"]}}</b>
+                Deaths: <b>{{ruraldf.loc[i, "Deaths"]}}</b>
+                <hr />
+            </div>
+            {%endfor%}
+        </div>
+        <div id="metro" class="cases">
+            <div class="title">HPO1 Metro Cases: <b>{{metrodf['Cases'].sum()}}</b></div>
+        
+            {%for i in range(0,metrodf.shape[0])%}
+            <div>
+                <div class="county">{{metrodf.loc[i, "instName"]}}</div>
+                Cases: <b>{{metrodf.loc[i, "Cases"]}}</b>
+                Negative tests: <b>{{metrodf.loc[i, "NegativeTests"]}}</b>
+                Deaths: <b>{{metrodf.loc[i, "Deaths"]}}</b>
+                <hr />
+            </div>
+            {%endfor%}
+        </div>
+        <div class="byline">
+            source: {{source|safe}} 
+            last edit: {{last_update}}
+            &nbsp; update: {{localnow}}
         </div>
         {% endblock %}
     </body>

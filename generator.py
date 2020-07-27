@@ -42,42 +42,30 @@ def get_cases(whereclause, records):
     return results_df
 
 
-def cases(region, df):
-    #    utc_date = pd.to_datetime(df.loc[0, "utc_date"]).replace(
-    #        tzinfo=datetime.timezone.utc)
-    #    runtime = utc_date.astimezone(timezone('America/Los_Angeles'))
-    #    print(runtime)
+def cases_html():
+    timeformat = "%m/%d/%y %H:%M"
 
-    #    last_update = pd.to_datetime(df.loc[0, "last_update"]).replace(
-    #        tzinfo=datetime.timezone.utc)
+    w = "altName='Clatsop' or altName='Tillamook' or altName='Columbia'"
+    rural = get_cases(w, 3)
+    w = "altName='Multnomah' or altName='Clackamas' or altName='Washington'"
+    metro = get_cases(w, 3)
+
+    now = datetime.datetime.now().strftime(timeformat)
+
     last_update = OHAParser.last_feature_edit().replace(
         tzinfo=datetime.timezone.utc)
     edittime = last_update.astimezone(
-        timezone('America/Los_Angeles')).strftime("%m/%d/%y %H:%M %Z")
+        timezone('America/Los_Angeles')).strftime(timeformat)
     #print(edittime)
-
     ohaUrl = '<a href="https://govstatus.egov.com/OR-OHA-COVID-19">OHA</a>'
 
     template = jinja.get_template('cases.html')
     html = template.render(
-            region=region,
-            source=ohaUrl, 
-            last_update=edittime, 
-            df=df
+        source=ohaUrl,
+        last_update=edittime, localnow=now,
+        ruraldf=rural, metrodf=metro
     )
     return html
-
-
-def ruralcases():
-    w = "altName='Clatsop' or altName='Tillamook' or altName='Columbia'"
-    df = get_cases(w, 3)
-    return cases('Rural', df)
-
-def metrocases():
-    #   "source='OHA' AND (name='Multnomah' OR name='Clackamas' OR name='Washington')", 3)
-    w = "altName='Multnomah' or altName='Clackamas' or altName='Washington'"
-    df = get_cases(w, 3)
-    return cases('Metro', df)
 
 
 def recursive_overwrite(src, dest, ignore=None):
@@ -102,18 +90,14 @@ if __name__ == "__main__":
     # Wipe output and
     # Copy static content to output. 
     try:
-        recursive_overwrite('static', 'public/static')
+        recursive_overwrite('templates/static', 'public/static')
     except Exception as e:
         print("Error copying static files. %s" % e)
 
     # Generate static pages
 
-    with open('public/rural.html', 'w') as fp:
-        html = ruralcases()
-        fp.write(html)
-
-    with open('public/metro.html', 'w') as fp:
-        html = metrocases()
+    with open('public/cases.html', 'w') as fp:
+        html = cases_html()
         fp.write(html)
 
 # That's all
