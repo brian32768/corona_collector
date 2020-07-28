@@ -195,16 +195,12 @@ if __name__ == "__main__":
 
     # Generate static pages
 
-    oha = False
-    if oha:
-        with open('public/cases.html', 'w') as fp:
-            html = oha_cases_html()
-            fp.write(html)
+    with open('public/cases.html', 'w') as fp:
+        html = oha_cases_html()
+        fp.write(html)
 
-    world = True
-    if world:
-        with open('public/world_cases.html', 'w') as fp:
-            html = world_cases_html()
-            fp.write(html)
+    with open('public/world_cases.html', 'w') as fp:
+        html = world_cases_html()
+        fp.write(html)
 
 # That's all
