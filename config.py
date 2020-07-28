@@ -24,6 +24,7 @@ class Config(object):
 
 # This is the one with current data but difficult to parse
 #WA_URL=https://www.doh.wa.gov/Emergencies/NovelCoronavirusOutbreak2020COVID19/DataDashboard
+    COVIDTRACKING_URL = 'https://covidtracking.com'
     WA_URL = 'https://covidtracking.com/api/v1/states/wa/current.json'
 
     _hoscap = 'https://emresource.juvare.com/'

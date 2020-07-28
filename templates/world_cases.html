@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>World cases</title>
+    </head>
+    <link rel="stylesheet" type="text/css" href="static/ms.css" />
+    <body>
+
+        {% block page_content %}
+        <div id="world" class="cases">
+            <div class="title">World Cases: <b>{{worlddf.loc[8,'Total Cases']}}</b></div>
+                <div class="byline">
+                    source: {{worldometer|safe}}
+                    {{world_last_update}}
+                </div>
+            <hr />
+                
+            <div class="region">{{worlddf.loc[7, "Country/Other"]}}
+                    &nbsp;
+                <span class="byline">
+                    source: {{worldometer|safe}}
+                    {{world_last_update}}
+                </span>
+            </div>
+            Cases: <b>{{worlddf.loc[7, "Total Cases"]}}</b>
+            Tests: <b>{{worlddf.loc[7, "Total Tests"]}}</b>
+            Deaths: <b>{{worlddf.loc[7, "Total Deaths"]}}</b>
+            <hr />
+
+            <div class="region">{{ordf.loc[0, "USA State"]}}
+                    &nbsp;
+                <span class="byline">
+                    source: {{worldometer|safe}}
+                    {{world_last_update}}
+                </span>
+            </div>
+            Cases: <b>{{ordf.loc[0, "Total Cases"]}}</b>
+            Tests: <b>{{ordf.loc[0, "Total Tests"]}}</b>
+            Deaths: <b>{{ordf.loc[0, "Total Deaths"]}}</b>
+            <hr />
+
+            <div class="region">{{wadf.loc[1, "state"]}}
+                    &nbsp;
+                <span class="byline">
+                    source: {{covidtracking|safe}}
+                    {{world_last_update}}
+                </span>
+            </div>
+            Cases: <b>{{wadf.loc[1, "positive"]}}</b>
+            Tests: <b>{{wadf.loc[1, "totalTestResults"]}}</b>
+            Deaths: <b>{{wadf.loc[1, "death"]}}</b>
+            <hr />
+
+            <div class="byline">
+                updated: {{localnow}}
+            </div>
+        </div>
+        {% endblock %}
+    </body>
+</html>

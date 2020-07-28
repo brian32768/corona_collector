@@ -66,13 +66,11 @@ def wa_read():
 if __name__ == "__main__":
     # Unit test using the file that's created in the html_gateway unit test!
 
-    parser = WAParser()
-
     json_data = wa_read()
-    df = parser.fetch_cases(json_data)
+    df = WAParser.fetch_cases(json_data)
     print(df)
 
-    last_updated = parser.parse_last_updated(json_data)
+    last_updated = WAParser.parse_last_updated(json_data)
     print(last_updated)
 
     print("Parser succeeded using stored data!")
