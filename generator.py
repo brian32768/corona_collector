@@ -152,9 +152,9 @@ def world_cases_html():
     d = wa_read()
     wa_update = WAParser.parse_last_updated(d).astimezone(
         timezone('America/Los_Angeles')).strftime(timeformat)
-    print(wa_update)
+    #print(wa_update)
     wa_df = WAParser.fetch_cases(d)
-    print(wa_df)
+    #print(wa_df)
 
     template = jinja.get_template('world_cases.html')
     html = template.render(localnow=now, 
@@ -167,40 +167,47 @@ def world_cases_html():
     return html
 
 
-def recursive_overwrite(src, dest, ignore=None):
-    if os.path.isdir(src):
-        if not os.path.isdir(dest):
-            os.makedirs(dest)
-        files = os.listdir(src)
-        if ignore is not None:
-            ignored = ignore(src, files)
-        else:
-            ignored = set()
-        for f in files:
-            if f not in ignored:
-                recursive_overwrite(os.path.join(src, f),
-                                    os.path.join(dest, f),
-                                    ignore)
-    else:
-        shutil.copyfile(src, dest)
-
 if __name__ == "__main__":
 
-    # Wipe output and
-    # Copy static content to output. 
-    try:
-        recursive_overwrite('templates/static', 'public/static')
-    except Exception as e:
-        print("Error copying static files. %s" % e)
+    outputdir = 'public/static'
+
+    # Set up output folder for supporting files
+    if not os.path.exists(outputdir):
+        os.makedirs(outputdir)
+    
+    # Copy supporting files
+    file = 'ms.css'
+    outputfile = os.path.join(outputdir, file)
+    if os.path.exists(outputfile):
+        os.unlink(outputfile)
+    shutil.copyfile(os.path.join('templates/static', file), outputfile)
+
+    # Copy index page... should render this I suppose
+    shutil.copyfile('templates/index.html', 'public/index.html')
 
     # Generate static pages
+    # Gather data first; don't destroy page if can't read new data!
 
-    with open('public/cases.html', 'w') as fp:
-        html = oha_cases_html()
-        fp.write(html)
+    ohahtml = oha_cases_html()
+    if ohahtml:
+        with open('public/cases.html', 'w') as fp:
+            fp.write(ohahtml)
+        print("Wrote cases.html")
 
-    with open('public/world_cases.html', 'w') as fp:
-        html = world_cases_html()
-        fp.write(html)
+    worldhtml = world_cases_html()
+    if worldhtml:
+        with open('public/world_cases.html', 'w') as fp:
+            fp.write(worldhtml)
+        print("Wrote world_cases.html")
+
+    # Send something meaningful as an error message
+
+    if not ohahtml or not worldhtml:
+        msg = ""
+        if not ohahtml:
+            msg += "oha "
+        if not worldhtml:
+            msg += "world"
+        sys.exit("Data read failed on", msg)
 
 # That's all
