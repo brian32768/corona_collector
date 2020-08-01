@@ -11,6 +11,7 @@ b {
 th {
     color: darkorange;
     background-color: rgb(250, 250, 250);
+    font-size: 10pt;
 }
 tbody, td {
     vertical-align: top;
