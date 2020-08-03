@@ -1,0 +1,809 @@
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<link rel="icon" href="/images/favicons/favicon-32.png" sizes="32x32"/>
+    <link rel="icon" href="/images/favicons/favicon-57.png" sizes="57x57"/>
+    <link rel="icon" href="/images/favicons/favicon-76.png" sizes="76x76"/>
+    <link rel="icon" href="/images/favicons/favicon-96.png" sizes="96x96"/>
+    <link rel="icon" href="/images/favicons/favicon-128.png" sizes="128x128"/>
+    <link rel="icon" href="/images/favicons/favicon-228.png" sizes="228x228"/>
+    <link rel="shortcut icon" sizes="196x196" href="/images/favicons/favicon-196.png"/>
+    <link rel="apple-touch-icon" href="/images/favicons/favicon-120.png" sizes="120x120"/>
+    <link rel="apple-touch-icon" href="/images/favicons/favicon-152.png" sizes="152x152"/>
+    <link rel="apple-touch-icon" href="/images/favicons/favicon-180.png" sizes="180x180"/>
+    <meta name="msapplication-TileColor" content="#FFFFFF"/>
+    <meta name="msapplication-TileImage" content="/images/favicons/favicon-144.png"/>
+    <meta name="msapplication-config" content="/images/favicons/browserconfig.xml" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta http-equiv="pragma"  content="no-cache" />
+<meta http-equiv="expires" content="0" />
+<title>Event Status</title>
+<link rel="stylesheet" type="text/css" href="/css/master.css?v=3.46-release-2"/>
+<link rel="stylesheet" type="text/css" href="/css/rebrand/juvare-rebrand.css?v=3.46-release-2"/>
+<link rel="stylesheet" type="text/css" href="/css/alt.css?v=3.46-release-2"/>
+<!--[if lte IE 7]>
+<style>.clearFix,.header{display:inline-block}#header{zoom:1}</style>
+<![endif]-->
+<script async src='https://www.googletagmanager.com/gtag/js?id=UA-125895201-2'></script>
+<script type="text/javascript">window.dataLayer = window.dataLayer || [];
+function gtag() {dataLayer.push(arguments);}
+gtag('js', new Date());gtag('config', 'UA-125895201-2');</script><script type="text/javascript">	var buildNumber='3.46-release-2';</script><script type="text/javascript" src="/js/modules/string.js?v=3.46-release-2"></script><script type="text/javascript" src="/js/master.js?v=3.46-release-2"></script><script type="text/javascript" src="/js/modules/common/audioModule.js?v=3.46-release-2"></script><script type="text/javascript" src="/js/modules/common/loadingModule.js?v=3.46-release-2"></script><script type="text/javascript" src="/js/dropdown.js?v=3.46-release-2"></script>
+    <link rel="stylesheet" type="text/css" href="/css/viewstatus/view.css?v=3.46-release-2"/>
+<script type="text/javascript">
+	var viewType="EVENT";
+	var regionID="3103";
+	var viewDetailID=669031;
+	var lastUpdate=1591496032419;
+	var lastResourceStatus=0;
+	var refreshInterval=180;
+	var MAX_NAME_LENGTH=25;
+	var MAX_COMMENT_LENGTH=100;
+	
+</script>
+<script type="text/javascript" src="/js/viewstatus/viewRefresh.js?v=3.46-release-2"></script>
+    <script type="text/javascript" src="/js/jquery-ui-1.10.3.custom.min.js?v=3.46-release-2"></script>
+    <link rel="stylesheet" type="text/css" href="/css/jquery-ui.css?v=3.46-release-2"/>
+</head>
+
+<body id="view">
+<!-- Begin Header -->
+<div id='header' class='clearFix'><div class='juvare'><header class='suit-header'><div class='suit-page-container'><a href='/EMSystem?nextStep=DISPLAY_VIEW&amp;uc=VIEWSTATUS' target='Data'><h1>Juvare</h1></a><ul class='suit-utility-nav suit-nav--mobile-hidden'><li><a href='/EMSystem?uc=RESOURCE&amp;nextStep=displaySearch' target='Data'>Search</a></li><li><a href='#' onclick="newwin = window.open('/resource/helpcenter/help', 'help', 'resizable=yes,scrollbars=yes,menubar=yes,width=1024,height=600,toolbar=yes,status=yes,location=yes'); newwin.focus(); return(false);">Help</a></li><li><a href='/contactUs?TB_iframe=true&amp;width=500&amp;height=300' title='Contact' class='thickbox'>Contact</a></li></ul><div class='suit-status suit-nav--mobile-hidden'><div class='dropdown'><a class='dropdown-toggle' href='#' data-toggle='dropdown' data-target='#' id='product-switcher' aria-haspopup='true' aria-expanded='false'><span class='truncate-title'>EMResource</span></a><p><span class='truncate-fullname'>R1LPHA (R1LPHA) </span></p>&nbsp;<a href='/logout' target='_top' onclick='appLogout();'>Log Out</a>                </div>            </div>        </div>    </header></div><div id='reloadingMessage'><img src='/img/icons/reload.gif' alt='reloading'/><span id='reloadingText'></span></div>
+<div id='divConferenceInvite' style='display: none;'><a id='conferenceInvite' href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=imConferenceInvite&amp;TB_iframe=true&amp;width=400&amp;height=400'title='Conference Invite' class='thickbox'>Conference Invite</a>
+</div>
+<div id='divChatInvite' style='display: none;'><a id='chatInvite' href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=imChatInvite&amp;TB_iframe=true&amp;width=400&amp;height=400'title='Instant Message' class='thickbox'>Instant Message</a>
+</div><div id='topSubNav' class='clearFix'><h1>Event Status</h1><table id='headAlert' summary='alerts' cellspacing='0' cellpadding='0'><tr><td>
+<div style='display:none'>
+<div class='rcTop'><div class="rc1"><!-- --></div><div class="rc2"><!-- --></div><div class="rc3"><!-- --></div></div>
+<div class='rcMid'>
+<div id='alertSystemMessage' style='display:none'><a href='/systemNotification/display?TB_iframe=true&amp;width=500&amp;height=300' title='System Notice' class='thickbox'><img src='/img/icons/notice.gif' alt='System Message'/>system notice</a></div>
+<div id='alertForms'  style='display:none'><a href='/EMSystem?uc=MESSAGE&amp;nextStep=LIST_REPLY_MESSAGE' target='Data'><img src='/img/icons/forms.gif' alt='Pending forms'/>pending forms(<span id='pfc'>0</span>)</a></div>
+<div id='alertDisconnected' style='display:none;'><img src='/img/icons/connectionLost.gif' alt='Connection to server is lost'/>connection lost</div><div style="clear:both;float:none;"></div>
+</div>
+<div class='rcTop'><div class="rc3"><!-- --></div><div class="rc2"><!-- --></div><div class="rc1"><!-- --></div></div>
+</div></td></tr></table><div id="beforeSnapshot" style="clear:both;float:none;"></div></div>
+</div>
+<!-- End Header -->
+
+<div id="mainContainer">
+
+<div id="viewContainer">
+
+
+	
+<table id='rtt_6344' summary='Status for Region 1 Central' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6344' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6344&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 1 Central</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6344_23516 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23516' class='viewDetails' id='r_23516'>DC - Doernbecher Childrens Hospital</a></td>
+<td id='c_23516' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23516' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23516'>&nbsp;</td>
+</tr>
+<tr class='rtr_6344_23536 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23536' class='viewDetails' id='r_23536'>EM - Legacy Emanuel</a></td>
+<td id='c_23536' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23536' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23536'>&nbsp;</td>
+</tr>
+<tr class='rtr_6344_23537 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23537' class='viewDetails' id='r_23537'>GS - Legacy Good Samaritan Hospital</a></td>
+<td id='c_23537' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23537' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23537'>&nbsp;</td>
+</tr>
+<tr class='rtr_6344_24455 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=24455' class='viewDetails' id='r_24455'>RCH - Randall Childrens Hospital at LEH</a></td>
+<td id='c_24455' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_24455' nowrap='nowrap'>&nbsp;</td>
+<td id='u_24455'>&nbsp;</td>
+</tr>
+<tr class='rtr_6344_23540 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23540' class='viewDetails' id='r_23540'>UH - OHSU</a></td>
+<td id='c_23540' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23540' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23540'>&nbsp;</td>
+</tr>
+<tr class='rtr_6344_23578 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23578' class='viewDetails' id='r_23578'>VA - VA Portland HC System-VAPORHCS</a></td>
+<td id='c_23578' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23578' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23578'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6444' summary='Status for Region 1 Eastern ' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6444' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6444&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 1 Eastern </a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6444_23539 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23539' class='viewDetails' id='r_23539'>MH - Legacy Mt Hood Medical Center</a></td>
+<td id='c_23539' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23539' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23539'>&nbsp;</td>
+</tr>
+<tr class='rtr_6444_23495 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23495' class='viewDetails' id='r_23495'>PA - Adventist Medical Center</a></td>
+<td id='c_23495' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23495' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23495'>&nbsp;</td>
+</tr>
+<tr class='rtr_6444_23542 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23542' class='viewDetails' id='r_23542'>PR - Providence Portland Medical Center</a></td>
+<td id='c_23542' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23542' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23542'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6445' summary='Status for Region 1 - Western' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6445' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6445&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 1 - Western</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6445_23538 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23538' class='viewDetails' id='r_23538'>MP - Legacy Meridian Park Hospital</a></td>
+<td id='c_23538' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23538' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23538'>&nbsp;</td>
+</tr>
+<tr class='rtr_6445_166175 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=166175' class='viewDetails' id='r_166175'>SV Children's - Providence St. Vincent</a></td>
+<td id='c_166175' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_166175' nowrap='nowrap'>&nbsp;</td>
+<td id='u_166175'>&nbsp;</td>
+</tr>
+<tr class='rtr_6445_23544 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23544' class='viewDetails' id='r_23544'>SV - Providence St Vincent Medical Cntr</a></td>
+<td id='c_23544' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23544' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23544'>&nbsp;</td>
+</tr>
+<tr class='rtr_6445_23577 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23577' class='viewDetails' id='r_23577'>TH - Tuality - Hillsboro</a></td>
+<td id='c_23577' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23577' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23577'>&nbsp;</td>
+</tr>
+<tr class='rtr_6445_90624 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=90624' class='viewDetails' id='r_90624'>WK - Kaiser Westside Medical Center</a></td>
+<td id='c_90624' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_90624' nowrap='nowrap'>&nbsp;</td>
+<td id='u_90624'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_17474' summary='Status for Region 1 - South' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_17474' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=17474&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 1 - South</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_17474_23541 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23541' class='viewDetails' id='r_23541'>PM - Providence Milwaukie Hospital</a></td>
+<td id='c_23541' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23541' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23541'>&nbsp;</td>
+</tr>
+<tr class='rtr_17474_23535 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23535' class='viewDetails' id='r_23535'>SK - Kaiser Sunnyside Medical Center</a></td>
+<td id='c_23535' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23535' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23535'>&nbsp;</td>
+</tr>
+<tr class='rtr_17474_23545 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23545' class='viewDetails' id='r_23545'>WF - Providence Willamette Falls Med Ctr</a></td>
+<td id='c_23545' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23545' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23545'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6464' summary='Status for Region 1 - Shore/WA' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6464' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6464&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 1 - Shore/WA</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6464_23575 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23575' class='viewDetails' id='r_23575'>Adventist Health Tillamook</a></td>
+<td id='c_23575' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23575' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23575'>&nbsp;</td>
+</tr>
+<tr class='rtr_6464_23515 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23515' class='viewDetails' id='r_23515'>Columbia Memorial Hospital</a></td>
+<td id='c_23515' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23515' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23515'>&nbsp;</td>
+</tr>
+<tr class='rtr_6464_23543 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23543' class='viewDetails' id='r_23543'>Providence Seaside Hospital</a></td>
+<td id='c_23543' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23543' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23543'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6484' summary='Status for Region 1 - Specialty' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6484' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6484&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 1 - Specialty</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6484_24196 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=24196' class='viewDetails' id='r_24196'>Cedar Hills Behavioral Health</a></td>
+<td id='c_24196' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_24196' nowrap='nowrap'>&nbsp;</td>
+<td id='u_24196'>&nbsp;</td>
+</tr>
+<tr class='rtr_6484_157088 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=157088' class='viewDetails' id='r_157088'>PES - Unity Behavioral Health </a></td>
+<td id='c_157088' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_157088' nowrap='nowrap'>&nbsp;</td>
+<td id='u_157088'>&nbsp;</td>
+</tr>
+<tr class='rtr_6484_23555 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23555' class='viewDetails' id='r_23555'>Shriners Hospital for Children</a></td>
+<td id='c_23555' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23555' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23555'>&nbsp;</td>
+</tr>
+<tr class='rtr_6484_24195 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=24195' class='viewDetails' id='r_24195'>Vibra LTAC</a></td>
+<td id='c_24195' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_24195' nowrap='nowrap'>&nbsp;</td>
+<td id='u_24195'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6345' summary='Status for Region 2' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6345' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6345&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 2</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6345_23579 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23579' class='viewDetails' id='r_23579'>Good Samaritan - Corvallis</a></td>
+<td id='c_23579' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23579' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23579'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23580 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23580' class='viewDetails' id='r_23580'>Oregon State Psychiatric Hospital</a></td>
+<td id='c_23580' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23580' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23580'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23581 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23581' class='viewDetails' id='r_23581'>Providence Newberg Medical Center</a></td>
+<td id='c_23581' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23581' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23581'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23589 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23589' class='viewDetails' id='r_23589'>Salem Health West Valley</a></td>
+<td id='c_23589' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23589' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23589'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23582 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23582' class='viewDetails' id='r_23582'>Salem Hospital</a></td>
+<td id='c_23582' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23582' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23582'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23583 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23583' class='viewDetails' id='r_23583'>Samaritan Albany General Hospital</a></td>
+<td id='c_23583' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23583' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23583'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23584 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23584' class='viewDetails' id='r_23584'>Samaritan Lebanon Community Hospital</a></td>
+<td id='c_23584' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23584' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23584'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23585 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23585' class='viewDetails' id='r_23585'>Samaritan North Lincoln Hospital</a></td>
+<td id='c_23585' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23585' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23585'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23586 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23586' class='viewDetails' id='r_23586'>Samaritan Pacific Communities Hospital</a></td>
+<td id='c_23586' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23586' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23586'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23587 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23587' class='viewDetails' id='r_23587'>Santiam Memorial Hospital</a></td>
+<td id='c_23587' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23587' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23587'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23588 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23588' class='viewDetails' id='r_23588'>Silverton Hospital</a></td>
+<td id='c_23588' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23588' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23588'>&nbsp;</td>
+</tr>
+<tr class='rtr_6345_23590 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23590' class='viewDetails' id='r_23590'>Willamette Valley Medical Center</a></td>
+<td id='c_23590' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23590' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23590'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6346' summary='Status for Region 3' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6346' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6346&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 3</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6346_23595 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23595' class='viewDetails' id='r_23595'>Bay Area Hospital</a></td>
+<td id='c_23595' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23595' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23595'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23596 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23596' class='viewDetails' id='r_23596'>Coquille Valley Hospital</a></td>
+<td id='c_23596' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23596' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23596'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23598 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23598' class='viewDetails' id='r_23598'>Curry General Hospital</a></td>
+<td id='c_23598' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23598' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23598'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23599 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23599' class='viewDetails' id='r_23599'>Lower Umpqua Hospital</a></td>
+<td id='c_23599' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23599' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23599'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23600 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23600' class='viewDetails' id='r_23600'>McKenzie-Willamette Medical Center</a></td>
+<td id='c_23600' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23600' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23600'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23601 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23601' class='viewDetails' id='r_23601'>Mercy Medical Center</a></td>
+<td id='c_23601' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23601' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23601'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_138913 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=138913' class='viewDetails' id='r_138913'>Oregon State Hospital - Junction City</a></td>
+<td id='c_138913' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_138913' nowrap='nowrap'>&nbsp;</td>
+<td id='u_138913'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23597 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23597' class='viewDetails' id='r_23597'>PeaceHealth Cottage Grove Community Hosp</a></td>
+<td id='c_23597' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23597' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23597'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23602 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23602' class='viewDetails' id='r_23602'>PeaceHealth Peace Harbor Hospital</a></td>
+<td id='c_23602' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23602' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23602'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23603 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23603' class='viewDetails' id='r_23603'>PeaceHealth Sacred Heart MC - Riverbend</a></td>
+<td id='c_23603' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23603' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23603'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23604 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23604' class='viewDetails' id='r_23604'>PeaceHealth Sacred Heart MC - University</a></td>
+<td id='c_23604' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23604' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23604'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23615 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23615' class='viewDetails' id='r_23615'>Southern Coos Hospital and Health Center</a></td>
+<td id='c_23615' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23615' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23615'>&nbsp;</td>
+</tr>
+<tr class='rtr_6346_23616 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23616' class='viewDetails' id='r_23616'>VA Medical Center - Roseburg</a></td>
+<td id='c_23616' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23616' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23616'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6348' summary='Status for Region 5' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6348' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6348&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 5</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6348_23635 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23635' class='viewDetails' id='r_23635'>Asante Ashland Community Hospital</a></td>
+<td id='c_23635' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23635' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23635'>&nbsp;</td>
+</tr>
+<tr class='rtr_6348_23656 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23656' class='viewDetails' id='r_23656'>Asante Rogue Regional Medical Center</a></td>
+<td id='c_23656' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23656' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23656'>&nbsp;</td>
+</tr>
+<tr class='rtr_6348_23657 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23657' class='viewDetails' id='r_23657'>Asante Three Rivers Medical Center</a></td>
+<td id='c_23657' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23657' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23657'>&nbsp;</td>
+</tr>
+<tr class='rtr_6348_23655 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23655' class='viewDetails' id='r_23655'>Providence Medford Medical Center</a></td>
+<td id='c_23655' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23655' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23655'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6349' summary='Status for Region 6/WA Region 4' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6349' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6349&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 6/WA Region 4</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6349_23658 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23658' class='viewDetails' id='r_23658'>Mid-Columbia Medical Center</a></td>
+<td id='c_23658' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23658' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23658'>&nbsp;</td>
+</tr>
+<tr class='rtr_6349_23659 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23659' class='viewDetails' id='r_23659'>Providence Hood River Memorial Hospital</a></td>
+<td id='c_23659' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23659' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23659'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6350' summary='Status for Region 7' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6350' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6350&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 7</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6350_23660 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23660' class='viewDetails' id='r_23660'>Blue Mountain Hospital District</a></td>
+<td id='c_23660' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23660' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23660'>&nbsp;</td>
+</tr>
+<tr class='rtr_6350_23661 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23661' class='viewDetails' id='r_23661'>Harney District Hospital</a></td>
+<td id='c_23661' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23661' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23661'>&nbsp;</td>
+</tr>
+<tr class='rtr_6350_23662 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23662' class='viewDetails' id='r_23662'>Lake District Hospital</a></td>
+<td id='c_23662' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23662' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23662'>&nbsp;</td>
+</tr>
+<tr class='rtr_6350_23675 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23675' class='viewDetails' id='r_23675'>Sky Lakes Medical Center</a></td>
+<td id='c_23675' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23675' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23675'>&nbsp;</td>
+</tr>
+<tr class='rtr_6350_23663 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23663' class='viewDetails' id='r_23663'>St Charles - Madras</a></td>
+<td id='c_23663' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23663' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23663'>&nbsp;</td>
+</tr>
+<tr class='rtr_6350_23676 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23676' class='viewDetails' id='r_23676'>St Charles Medical Center - Bend</a></td>
+<td id='c_23676' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23676' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23676'>&nbsp;</td>
+</tr>
+<tr class='rtr_6350_23677 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23677' class='viewDetails' id='r_23677'>St Charles Medical Center - Redmond</a></td>
+<td id='c_23677' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23677' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23677'>&nbsp;</td>
+</tr>
+<tr class='rtr_6350_23664 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23664' class='viewDetails' id='r_23664'>St Charles - Prineville</a></td>
+<td id='c_23664' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23664' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23664'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+<table id='rtt_6352' summary='Status for Region 9' class='displayTable striped borders' cellpadding='0' cellspacing='0'>
+<colgroup width='20'/>
+<colgroup width='25%'/>
+<colgroup span='0'/>
+<colgroup/>
+<colgroup style='white-space: nowrap;'/>
+<colgroup/>
+<thead>
+<tr><th class='nosort'><img class='daColapser' src='/img/icons/collapse_close.gif' alt=''/></th>
+<th width="100%"><a  id='rt_6352' href='/EMSystem?nextStep=view_rt_def&amp;uc=VIEWSTATUS&amp;rt_id=6352&amp;TB_iframe=true&amp;width=300&amp;height=300' title='Resource Type Definition' class='thickbox'>Region 9</a></th>
+<th>Comment</th>
+<th>Last&nbsp;Update</th>
+<th>By&nbsp;User</th>
+</tr>
+</thead><tbody>
+<tr class='rtr_6352_23696 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23696' class='viewDetails' id='r_23696'>Good Shepherd Health Care System</a></td>
+<td id='c_23696' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23696' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23696'>&nbsp;</td>
+</tr>
+<tr class='rtr_6352_23697 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23697' class='viewDetails' id='r_23697'>Grande Ronde Hospital</a></td>
+<td id='c_23697' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23697' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23697'>&nbsp;</td>
+</tr>
+<tr class='rtr_6352_23716 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23716' class='viewDetails' id='r_23716'>Pioneer Memorial Hospital - Heppner</a></td>
+<td id='c_23716' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23716' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23716'>&nbsp;</td>
+</tr>
+<tr class='rtr_6352_23718 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23718' class='viewDetails' id='r_23718'>St Alphonsus Medical Center- Baker City</a></td>
+<td id='c_23718' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23718' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23718'>&nbsp;</td>
+</tr>
+<tr class='rtr_6352_23715 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23715' class='viewDetails' id='r_23715'>St Alphonsus Medical Center-Ontario</a></td>
+<td id='c_23715' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23715' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23715'>&nbsp;</td>
+</tr>
+<tr class='rtr_6352_23717 even'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23717' class='viewDetails' id='r_23717'>St Anthony Hospital</a></td>
+<td id='c_23717' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23717' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23717'>&nbsp;</td>
+</tr>
+<tr class='rtr_6352_23719 odd'>
+<td valign='middle'><img src='img/icons/_blank.gif' width='16' height='20' alt='' class='noprint'/></td>
+<td class='resourceName' valign='middle'><a href='/EMSystem?uc=VIEWSTATUS&amp;nextStep=VIEW_RSD&amp;nextStepDetail=23719' class='viewDetails' id='r_23719'>Wallowa Memorial Hospital</a></td>
+<td id='c_23719' class='addToolTipText text-overflow'>&nbsp;</td>
+<td id='t_23719' nowrap='nowrap'>&nbsp;</td>
+<td id='u_23719'>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+<script type='text/javascript'>
+</script>
+
+</div>
+</div>
+<div class='juvare'><footer class='suit-footer suit-footer--product'><section class='suit-footer_copyright suit-footer_one-line clearfix'><p class='suit-footer_copyright_content'>&copy; 2020 EMSystems LLC. EMResource 3.46-release-2</p><nav class='suit-footer_links'><a class='suit-footer_link' onclick='window.open(this.href); return false;' href='https://www.juvare.com/legal/privacy-policy'>Privacy Policy</a><a class='suit-footer_link' onclick='window.open(this.href); return false;' href='https://www.juvare.com/legal/terms_conditions'>Terms and Conditions</a><a class='suit-footer_link' href='/EMSystem?uc=mobi&amp;nextStep=mainMenu'>Mobile View</a></nav>
+</body>
+</html>
+
+
+
