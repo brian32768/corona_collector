@@ -13,97 +13,25 @@
 
     <div id="rural" class="cases">
         <div class="title">County Metrics HPO1 Rural</div>
-        July 5 - Aug 8
+        {{ date_range }}
         <table>
             <thead>
             <tr>
-                <th>County</th>
-                <th>Week begin</th>
-                <th>Case rate <br />per 100,000</th>
-                <th>Test Positive <br /> Rate</th>
+            {% for h in headers %}
+                <th>{{ h }}</th>
+            {% endfor %}
             </tr>
             </thead>
             <tbody>
+            {% for row in table %}
             <tr>
-                <td rowspan="5" class="county"><b>Clatsop</b></td>
-                <td class="date">7/05/20</td>
-                <td>10</td>
-                <td>2.3%</td>
+                <td class="county">{{ row[0] }}</td>
+                <td class="date">{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+                <td>{{ row[4] }}</td>
             </tr>
-            <tr>
-                <td class="date">7/12/20</td>
-                <td>18</td>
-                <td>2.1%</td>
-            </tr>
-            <tr>
-                <td class="date">7/19/20</td>
-                <td>15</td>
-                <td>1.3%</td>
-            </tr>
-            <tr>
-                <td class="date">7/26/20</td>
-                <td>25</td>
-                <td>3.7%</td>
-            </tr>
-            <tr>
-                <td class="date">8/02/20</td>
-                <td>18</td>
-                <td>2.2%</td>
-            </tr>
-
-            <tr>
-                <td rowspan="5" class="county"><b>Columbia</b></td>
-                <td class="date">7/05/20</td>
-                <td>17</td>
-                <td>3.3%</td>
-            </tr>
-            <tr>
-                <td class="date">7/12/20</td>
-                <td>25</td>
-                <td>1.9%</td>
-            </tr>
-            <tr>
-                <td class="date">7/19/20</td>
-                <td>15</td>
-                <td>1.5%</td>
-            </tr>
-            <tr>
-                <td class="date">7/26/20</td>
-                <td>19</td>
-                <td>4.6%</td>
-            </tr>
-            <tr>
-                <td class="date">8/02/20</td>
-                <td>32</td>
-                <td>4.1%</td>
-            </tr>
-
-            <tr>
-                <td rowspan="5" class="county"><b>Tillamook</b></td>
-                <td class="date">7/05/20</td>
-                <td>8</td>
-                <td>2.4%</td>
-            </tr>
-            <tr>
-                <td class="date">7/12/20</td>
-                <td>26</td>
-                <td>3.0%</td>
-            </tr>
-            <tr>
-                <td class="date">7/19/20</td>
-                <td>4</td>
-                <td>0.8%</td>
-            </tr>
-            <tr>
-                <td class="date">7/26/20</td>
-                <td>15</td>
-                <td>3.8%</td>
-            </tr>
-            <tr>
-                <td class="date">8/02/20</td>
-                <td>23</td>
-                <td>0.8% <i>(this is wrong)</i></td>
-            </tr>
+            {% endfor %}
             </tbody>
         </table>
     </div>
@@ -112,8 +40,8 @@
     </div>
 
     <div class="byline">
-        source: <a href="https://www.oregon.gov/oha/PH/DISEASESCONDITIONS/DISEASESAZ/Emerging%20Respitory%20Infections/Weekly-County-Metrics.pdf">OHA</a>>
-        &nbsp; update: 8/11/2020
+        source: <a href="https://www.oregon.gov/oha/PH/DISEASESCONDITIONS/DISEASESAZ/Emerging%20Respitory%20Infections/Weekly-County-Metrics.pdf">OHA</a>
+        &nbsp; update: {{ now }}
     </div>
 
 </body>
