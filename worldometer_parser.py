@@ -107,6 +107,7 @@ class WorldometerParser:
 if __name__ == "__main__":
     # Unit test using the file that's create in the _gateway unit test!
 
+    # curl -o worldometer_states.html https://www.worldometers.info/coronavirus/country/us
     with open("./worldometer_states.html", "r", encoding="utf-8") as fp:
         raw_data = fp.read()
     parser = WorldometerParser()
@@ -114,6 +115,7 @@ if __name__ == "__main__":
     print(last_updated)
     df = parser.create_df(raw_data, "usa_table_countries_today", 'Oregon')
     print(df)
+    assert df.loc['Oregon']
 
     with open("./worldometer.html", "r", encoding="utf-8") as fp:
         raw_data = fp.read()
