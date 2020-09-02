@@ -83,9 +83,14 @@ if __name__ == "__main__":
     except Exception as e:
         print("Could not fetch state data.", e)
         exit(-1)
+
     # Convert the data into a DataFrame
-    states_df = parser.create_df(
-        state_data, "usa_table_countries_today", 'Oregon')
+    try:
+        states_df = parser.create_df(
+            state_data, "usa_table_countries_today", 'Oregon')
+    except KeyError:
+        print("KeyError 'Oregon' on", state_data)
+        sys.exit("KeyError on Oregon")
     states_last_updated = parser.parse_last_updated(state_data)
 
 # Open portal to make sure it's there!
@@ -104,8 +109,8 @@ if __name__ == "__main__":
 
     world_df = world_df.set_index("Country/Other", drop=True)
     or_df = states_df.set_index("USA State", drop=True)
-    or_df = or_df.loc["Oregon"].transpose()
     print(or_df)
+    or_df = or_df.loc["Oregon"].transpose()
     or_df.name = 'Oregon'
 
     usa_df = world_df.loc["USA"]
