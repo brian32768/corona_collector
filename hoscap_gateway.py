@@ -11,10 +11,15 @@ class HOSCAPGateway:
         options.add_argument('headless')
         options.add_argument('window-size=1200x600')
 
-        self.driver = webdriver.Chrome(options=options)
-        self.driver.get(Config.HOSCAP_LOGIN)
-        self.driver.implicitly_wait(5)
-
+        try:
+            self.driver = webdriver.Chrome(options=options)
+            self.driver.get(Config.HOSCAP_LOGIN)
+            self.driver.implicitly_wait(5)
+        except Exception as e:
+            print("Failed to open Chrome, this can happen if Chrome and chromedriver versions don't match.")
+            print(e)
+            exit(-1)
+        
         # Login page has two stages, first enter name and click button
         # Then enter password and click button
         # Looks like it's just hiding and unhiding some fields

@@ -54,13 +54,14 @@ WA_URL=https://www.doh.wa.gov/Emergencies/NovelCoronavirusOutbreak2020COVID19/Da
 
 
 Code to install the chromedriver on Linux; 
+DON'T use Conda version
 
 # platform options: linux32, linux64, mac64, win32
 PLATFORM=linux64
 VERSION=$(curl http://chromedriver.storage.googleapis.com/LATEST_RELEASE)
 curl http://chromedriver.storage.googleapis.com/$VERSION/chromedriver_$PLATFORM.zip \
 | bsdtar -xvf - -C ~/.conda/envs/covid/bin
-chmod +x ~/.conda/envs/covid/bin chromedriver
+chmod +x ~/.conda/envs/covid/bin/chromedriver
 
 wget https://dl-ssl.google.com/linux/linux_signing_key.pub
 sudo

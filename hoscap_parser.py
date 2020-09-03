@@ -60,7 +60,7 @@ if __name__ == "__main__":
     # Unit test
 
     online = True  # normal mode
-    online = False # debug mode
+    #online = False # debug mode
 
     gateway = HOSCAPGateway()
     if online:

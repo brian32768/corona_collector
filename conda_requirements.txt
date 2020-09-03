@@ -4,7 +4,9 @@ tzlocal
 autopep8
 requests
 selenium>=3.141
-chromedriver-binary
+# This has to match your installed google-chrome
+# so this version is probably not for you, it currently works with Chrome 83 and 85 is installed.
+# chromedriver-binary
 jinja2
 # There is a bug in camelot if you install the latest pdfminer
 pdfminer.six==20200517
