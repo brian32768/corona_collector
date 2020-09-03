@@ -23,25 +23,24 @@ class WorldometerParser:
         return header.replace(", ", "/")
 
     @staticmethod
-    def create_df(raw_data, table_id, myClassname):
+    def create_df(raw_data, table_id, myClassname, rowindex=0):
         """
         Parses the raw HTML response and returns as a DataFrame
 
         @Params:
-        raw_data (string): request.text
-
+        raw_data (string): request.text in HTML
+        table_id (string): name of the table in the HTML
+        myClassname (string): what to look for, eg 'Oregon'
+        rowindex (int): which row to search in the table
         @Returns:
         DataFrame
         """
 
         soup = BeautifulSoup(raw_data, features="html.parser")
-
         table = soup.find("table", attrs={"id": table_id})
-
         columns = [WorldometerParser.format_table_header_column(th) for th
                    in table.find("thead").findAll("th")]
-   
-        #vars
+
         parsed_data = []
         regx = r'(\n|\+|,)'
         rows = table.find("tbody").find_all("tr")
@@ -51,17 +50,12 @@ class WorldometerParser:
             sorted_element = element.findAll("td")[1].get_text().strip()
             return sorted_element
         
-        #sort countries
         rows.sort(key=sort_alphabetically)
 
         for row in rows:
-            classname = re.sub(regx, "", row.findAll("td")[0].get_text().strip())
-            #skip continents, we only need countries
-#            if country_classname is '' or 0: continue
-            #print("country", country_row, country_classname)
-            # We're interested only in USA or continents
-            if classname == '' or classname == myClassname:
-                #print("classname '%s'" % classname)
+            classname = re.sub(regx, "", row.findAll("td")[rowindex].get_text().strip())
+            #print("classname '%s'" % classname)
+            if  classname == '' or classname == myClassname:
                 parsed_data.append([data.get_text().strip() for data
                                 in row.find_all("td")])
                 pass
@@ -113,9 +107,9 @@ if __name__ == "__main__":
     parser = WorldometerParser()
     last_updated = parser.parse_last_updated(raw_data)
     print(last_updated)
-    df = parser.create_df(raw_data, "usa_table_countries_today", 'Oregon')
+    df = parser.create_df(raw_data, "usa_table_countries_today", 'Oregon', rowindex=1)
     print(df)
-    assert df.loc['Oregon']
+    assert df.at[0, 'USA State'] == 'Oregon'
 
     with open("./worldometer.html", "r", encoding="utf-8") as fp:
         raw_data = fp.read()
