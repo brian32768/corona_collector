@@ -56,10 +56,11 @@ def append_to_database(layer, last_update, df, geometry):
     except KeyError:
         pass
     n = { "attributes": attributes, "geometry": geometry }
-    #print(n)
+    print(n)
     #return True
     results = layer.edit_features(adds=[n])
-    return results['addResults'][0]['success']
+    rval = results['addResults'][0]['success']
+    return rval
 
 #============================================================================
 if __name__ == "__main__":
@@ -89,13 +90,14 @@ if __name__ == "__main__":
     # Convert the data into a DataFrame
     try:
         states_df = parser.create_df(
-            state_data, "usa_table_countries_today", STATE_KEY)
+            state_data, "usa_table_countries_today", STATE_KEY, rowindex=1)
     except KeyError:
         print("KeyError Oregon on", state_data)
         sys.exit("KeyError = Oregon")
     states_last_updated = parser.parse_last_updated(state_data)
 
 # Open portal to make sure it's there!
+# this won't work unless the environment is properly set up
     try:
         portal = GIS(portalUrl, portalUser, portalPasswd)
         layer = connect(portal, covid_cases_url)
