@@ -41,7 +41,7 @@ generator.py  generates from OHA cases feature data
 
 ## Deploy
 
-These are all run from cron on Debian machine.
+These are all run from cron on Debian machines.
 
 
 
