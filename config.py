@@ -1,4 +1,9 @@
 import os
+
+# In PRODUCTION conda sets up the environment,
+# so look in ~/.conda/envs/covid/etc/conda/activate.d/env_vars.sh
+# to see how it is set up.
+
 class Config(object):
     """ Read environment here to create configuration data. """
     SECRET_KEY=os.environ.get('SECRET_KEY') or "12345678"
@@ -18,7 +23,7 @@ class Config(object):
 
 # NONE OF THIS IS SECRET
 
-    WORLDOMETER_WORLD_URL = "https://www.worldometers.info/coronavirus"
+    WORLDOMETER_WORLD_URL = "https://www.worldometers.info/coronavirus/"
     WORLDOMETER_STATES_URL = "https://www.worldometers.info/coronavirus/country/us"
     OHA_URL = 'https://govstatus.egov.com/OR-OHA-COVID-19'
 
@@ -38,6 +43,14 @@ class Config(object):
     pass
 
 if __name__ == "__main__":
+
+    # To test this in VSCODE
+    # source ~/.conda/envs/covid/etc/conda/activate.d/env_vars.sh
+    
+    assert Config.PORTAL_URL != None
+    assert Config.PORTAL_USER != None
+    assert Config.PORTAL_PASSWORD != None
+
     pass
 
 # That's all!
