@@ -33,7 +33,7 @@ with open(DATA_FILE, "r") as fp:
 
 rowcount /= 3
 
-date_range = "Aug 4 - Oct 31"
+date_range = "Oct 04 - Oct 31, 2020"
 now = datetime.now().strftime(timeformat)
 # Get the template and render it to a string. Pass table in as a var called table.
 html = env.get_template(TEMPLATE_FILE).render(headers=headers, table=table, now=now, date_range=date_range)
