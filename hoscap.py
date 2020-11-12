@@ -168,7 +168,7 @@ if __name__ == "__main__":
         gateway.login()
     except Exception as e:
         gateway.close()
-        sys.exit("Could not connect to data source. %s" % e)
+        sys.exit("Could not connect to data source.")
 
     # HOSCAP
 

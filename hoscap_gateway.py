@@ -23,7 +23,6 @@ class HOSCAPGateway:
         # Login page has two stages, first enter name and click button
         # Then enter password and click button
         # Looks like it's just hiding and unhiding some fields
-        # so maybe I can do it all in one go?
 
         try:
             username = self.driver.find_element_by_id('username')
@@ -48,9 +47,10 @@ class HOSCAPGateway:
             login_button = self.driver.find_element_by_id('loginBtn')
         except Exception as e:
             sys.exit("Could not find login button. %s" % e)
-        rval = login_button.click()
+        login_button.click()
 
-        return rval
+        # I wish I could easily tell that login succeeded but I can't.
+        return True
 
     def fetch(self, url):
         self.driver.get(url)
@@ -59,16 +59,20 @@ class HOSCAPGateway:
     def close(self):
         self.driver.close()
         self.driver.quit()
+        return
 
 if __name__ == "__main__":
     # Unit test
 
     assert(Config.HOSCAP_USER)
     assert(Config.HOSCAP_PASSWORD)
-
     gateway = HOSCAPGateway()
-    gateway.login()
+    assert gateway.login()
     
+    d = gateway.fetch(Config.HOSCAP_SUMMARY)
+    with open("juvare_summary.html", "w", encoding="UTF-8") as fp:
+        fp.write(d)
+
     d = gateway.fetch(Config.HOSCAP_CMH)
     with open("juvare_cmh.html", "w", encoding="UTF-8") as fp:
         fp.write(d)

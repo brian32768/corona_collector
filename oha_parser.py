@@ -3,7 +3,7 @@ import pandas as pd
 import re
 from datetime import datetime
 from utils import local2utc
-from html_gateway import HTMLGateway
+from tableau_gateway import TableauGateway
 from arcgis.gis import GIS
 from arcgis.features import FeatureLayer
 import json

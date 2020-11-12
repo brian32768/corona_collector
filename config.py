@@ -26,6 +26,7 @@ class Config(object):
     WORLDOMETER_WORLD_URL = "https://www.worldometers.info/coronavirus/"
     WORLDOMETER_STATES_URL = "https://www.worldometers.info/coronavirus/country/us"
     OHA_URL = 'https://govstatus.egov.com/OR-OHA-COVID-19'
+    OHA_BED_CAPACITY_URL = "https://public.tableau.com/profile/oregon.health.authority.covid.19#!/vizhome/OregonCOVID-19Update/HospitalCapacity"
 
 # This is the one with current data but difficult to parse
 #WA_URL=https://www.doh.wa.gov/Emergencies/NovelCoronavirusOutbreak2020COVID19/DataDashboard
@@ -35,12 +36,13 @@ class Config(object):
     _hoscap = 'https://emresource.juvare.com/'
     HOSCAP_LOGIN = _hoscap + 'login'
     
-    _hoscap_table = 'https://emresource.juvare.com/EMSystem?uc=VIEWSTATUS&nextStep=VIEW_RSD'
-    HOSCAP_PSH = _hoscap_table + '&nextStepDetail=23543'
-    HOSCAP_PPMC = _hoscap_table + '&nextStepDetail=23542'
-    HOSCAP_CMH = _hoscap_table + '&nextStepDetail=23515'
-
+    _hoscap_table = 'https://emresource.juvare.com/EMSystem?uc=VIEWSTATUS'
+    HOSCAP_PSH =     _hoscap_table + '&nextStep=VIEW_RSD&nextStepDetail=23543'
+    HOSCAP_PPMC =    _hoscap_table + '&nextStep=VIEW_RSD&nextStepDetail=23542'
+    HOSCAP_CMH =     _hoscap_table + '&nextStep=VIEW_RSD&nextStepDetail=23515'
+    HOSCAP_SUMMARY = _hoscap_table + "&nextStep=VIEW_EVENT&currentStep&nextStep=view_event&nextStepDetail=664143&regionID=3103"
     pass
+
 
 if __name__ == "__main__":
 

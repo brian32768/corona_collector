@@ -1,12 +1,13 @@
 #!/usr/bin/env -S conda run -n covid python
 """
-    Collect data from the Oregon Health Authority.
+    Collect data from HOSCAP.
     Write it to a feature layer on our portal.
 """
-from html_gateway import HTMLGateway
-from oha_parser import OHAParser
+from hoscap_gateway import HOSCAPGateway
+from hoscap_parser import HOSCAPParser
 from datetime import datetime, timezone
 
+import sys
 import os
 from arcgis.gis import GIS
 import arcgis.features
@@ -16,7 +17,7 @@ from utils import connect, s2i, local2utc
 
 from config import Config
 
-VERSION = 'oha_beds.py 1.1'
+VERSION = 'oha_beds.py 2.0'
 
 # Output data here
 portalUrl = Config.PORTAL_URL
@@ -26,41 +27,68 @@ portalPasswd = Config.PORTAL_PASSWORD
 public_weekly_url = Config.PUBLIC_WEEKLY_URL
 
 def format_bed_info(df):
-    labels = 'Hospital capacity and usage 5'
-    # I have a table with 3 columns
-    #print(df)
+    # Create a new df containing only the data we want.
 
-    # Split the table in two, based on columns.
-    avail_df = df.loc[df.index, [labels, 'Available']].set_index(labels)
-    #print(avail_df)
-    total_df = df.loc[df.index, [labels, 'Total staffed']].set_index(labels)
-    #print(total_df)
+    l_staffed = [
+        #'Staffed Beds: Burn Unit',
+        'Staffed Beds: Emergency Dept',
+        #'Staffed Beds: Med/Surg',
+        'Staffed Beds: Negative Flow',
+        #'Staffed Beds: OR',
+        'Staffed Beds: Obstetric',
+        'Staffed Beds: Other',
+        'Staffed Beds: Psych',
+    ]
+    l_available = [
+        #'Available Beds: Burn Unit',
+        'Available Beds: Emergency Department',
+        #'Available Beds: Med/Surg',
+        'Available Beds: Negative Flow',
+        #'Available Beds: OR',
+        'Available Beds: Obstetric',
+        'Available Beds: Other',
+        'Available Beds: Psych',
+    ]
 
-    # Remap field names to what I use in the output feature class
+    staffed = 0
+    available = 0
+    for category in l_available:
+        available += int(df.loc[category, 'Total'].replace(',', ''))
+    for category in l_staffed:
+        staffed += int(df.loc[category, 'Total'].replace(',', ''))
+    print(available, staffed)
 
-    avail_df.rename({
-        'Adult non-ICU\xa0beds':    'OHA_non_ICU_bed_avail',
-        'Pediatric non-ICU beds':   'OHA_Ped_non_ICU_bed_avail',
-        'Adult ICU beds':           'OHA_ICU_bed_avail',
-        'Pediatric NICU/PICU beds': 'OHA_Ped_ICU_bed_avail',
-    }, axis='index', inplace=True)
-    #print(avail_df)
+    bed_df = pd.DataFrame([
+        [available],
+        [staffed],
 
-    total_df.rename({
-        'Adult non-ICU\xa0beds':    'OHA_non_ICU_bed_total',
-        'Pediatric non-ICU beds':   'OHA_Ped_non_ICU_bed_total',
-        'Adult ICU beds':           'OHA_ICU_bed_total',
-        'Pediatric NICU/PICU beds': 'OHA_Ped_ICU_bed_total',
-    }, axis='index', inplace=True)
+        [int(df.loc['Available Beds: Pediatric', 'Total'].replace(',', ''))],
+        [int(df.loc['Staffed Beds: Pediatrics', 'Total'].replace(',', ''))],
 
-    total_df.rename(columns={'Total staffed': 'Available'}, inplace=True)
-    #print(total_df)
+        [int(df.loc['Available Beds: Adult ICU', 'Total'].replace(',', ''))],
+        [int(df.loc['Staffed Beds: Adult ICU', 'Total'].replace(',', ''))],
 
-    # Concat them into one dataframe
-    df = pd.concat([avail_df, total_df])
-    df.drop(['Ventilators'], inplace=True)
+        [int(df.loc['Available Beds: Pediatric ICU', 'Total'].replace(',', ''))
+        + int(df.loc['Available Beds: Neonatal ICU', 'Total'].replace(',', ''))],
 
-    return df
+        [int(df.loc['Staffed Beds: Pediatric ICU', 'Total'].replace(',', ''))
+        + int(df.loc['Staffed Beds: Neonatal ICU', 'Total'].replace(',', ''))],
+
+    ], index=['OHA_non_ICU_bed_avail',
+        'OHA_non_ICU_bed_total',
+
+        'OHA_Ped_non_ICU_bed_avail',
+        'OHA_Ped_non_ICU_bed_total',
+
+        'OHA_ICU_bed_avail',
+        'OHA_ICU_bed_total',
+
+        'OHA_Ped_ICU_bed_avail',
+        'OHA_Ped_ICU_bed_total'],
+        columns=['Total']
+    )
+    print(bed_df)
+    return bed_df
 
 def update_beds(layer, last_updated, df):
     """ Use the data fetched from OHA
@@ -93,30 +121,25 @@ def update_beds(layer, last_updated, df):
     results = layer.edit_features(updates=[feature])
     return results['updateResults'][0]['success']
 
-def load_data():
-    """ Get hospital data from OHA """
+def load_df(online):
+    if online:
+        # Get hospital data from HOSCAP
+        gateway = HOSCAPGateway()
+        gateway.login()
+        summary_data = gateway.fetch(Config.HOSCAP_SUMMARY)
+    else:
+        with open("juvare_summary.html", "r", encoding="UTF-8") as fp:
+            summary_data = fp.read()
 
-#    with open("./oha.html", "r", encoding="utf-8") as fp:
-#        return fp.read()
-
-    gateway = HTMLGateway()
-    return gateway.fetch(url)
+    parser = HOSCAPParser()   
+    return parser.summary(summary_data)
 
 #============================================================================
 if __name__ == "__main__":
 
-    url = "https://govstatus.egov.com/OR-OHA-COVID-19"
-
-# Get hospital data from OHA
-    try:
-        raw_data = load_data()
-    except Exception as e:
-        sys.exit("Could not fetch data.", e)
-
-# Convert the data into a DataFrame
-    last_updated = OHAParser.last_update(raw_data)
-    hospital_df = OHAParser.fetch_capacity_df(raw_data)
-    df = format_bed_info(hospital_df)
+    hoscap_df = load_df(True)
+    print(hoscap_df)
+    df = format_bed_info(hoscap_df)
 
 # Open portal to make sure it's there!
     try:
