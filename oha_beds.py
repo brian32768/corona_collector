@@ -1,10 +1,12 @@
 #!/usr/bin/env -S conda run -n covid python
 """
-    Collect data from HOSCAP.
+    Collect bed data from HOSCAP or maybe it's OHA here today.
     Write it to a feature layer on our portal.
 """
-from hoscap_gateway import HOSCAPGateway
-from hoscap_parser import HOSCAPParser
+#from hoscap_gateway import HOSCAPGateway
+#from hoscap_parser import HOSCAPParser
+from tableau_gateway import TableauGateway
+from tableau_parser import TableauParser
 from datetime import datetime, timezone
 
 import sys
@@ -29,52 +31,20 @@ public_weekly_url = Config.PUBLIC_WEEKLY_URL
 def format_bed_info(df):
     # Create a new df containing only the data we want.
 
-    l_staffed = [
-        #'Staffed Beds: Burn Unit',
-        'Staffed Beds: Emergency Dept',
-        #'Staffed Beds: Med/Surg',
-        'Staffed Beds: Negative Flow',
-        #'Staffed Beds: OR',
-        'Staffed Beds: Obstetric',
-        'Staffed Beds: Other',
-        'Staffed Beds: Psych',
-    ]
-    l_available = [
-        #'Available Beds: Burn Unit',
-        'Available Beds: Emergency Department',
-        #'Available Beds: Med/Surg',
-        'Available Beds: Negative Flow',
-        #'Available Beds: OR',
-        'Available Beds: Obstetric',
-        'Available Beds: Other',
-        'Available Beds: Psych',
-    ]
-
-    staffed = 0
-    available = 0
-    for category in l_available:
-        available += int(df.loc[category, 'Total'].replace(',', ''))
-    for category in l_staffed:
-        staffed += int(df.loc[category, 'Total'].replace(',', ''))
-    print(available, staffed)
-
     bed_df = pd.DataFrame([
-        [available],
-        [staffed],
+        [df.loc['Adult non-ICU Beds','value']],
+        [df.loc['Staffed Adult non-ICU Beds','value']],
 
-        [int(df.loc['Available Beds: Pediatric', 'Total'].replace(',', ''))],
-        [int(df.loc['Staffed Beds: Pediatrics', 'Total'].replace(',', ''))],
+        [df.loc['Pediatric non-ICU Beds','value']],
+        [df.loc['Staffed Pediatric non-ICU Beds','value']],
 
-        [int(df.loc['Available Beds: Adult ICU', 'Total'].replace(',', ''))],
-        [int(df.loc['Staffed Beds: Adult ICU', 'Total'].replace(',', ''))],
+        [df.loc['Adult ICU Beds','value']],
+        [df.loc['Staffed Adult ICU Beds','value']],
 
-        [int(df.loc['Available Beds: Pediatric ICU', 'Total'].replace(',', ''))
-        + int(df.loc['Available Beds: Neonatal ICU', 'Total'].replace(',', ''))],
-
-        [int(df.loc['Staffed Beds: Pediatric ICU', 'Total'].replace(',', ''))
-        + int(df.loc['Staffed Beds: Neonatal ICU', 'Total'].replace(',', ''))],
-
-    ], index=['OHA_non_ICU_bed_avail',
+        [df.loc['NICU/PICU Beds','value']],
+        [df.loc['Staffed NICU/PICU Beds','value']],
+    ], index=[
+        'OHA_non_ICU_bed_avail',
         'OHA_non_ICU_bed_total',
 
         'OHA_Ped_non_ICU_bed_avail',
@@ -124,22 +94,23 @@ def update_beds(layer, last_updated, df):
 def load_df(online):
     if online:
         # Get hospital data from HOSCAP
-        gateway = HOSCAPGateway()
+        gateway = TableauGateway()
         gateway.login()
-        summary_data = gateway.fetch(Config.HOSCAP_SUMMARY)
+        d = gateway.fetch()
+        gateway.close()
     else:
-        with open("juvare_summary.html", "r", encoding="UTF-8") as fp:
-            summary_data = fp.read()
+        with open("oha_bed_capacity.html", "r", encoding="UTF-8") as fp:
+            d = fp.read()
 
-    parser = HOSCAPParser()   
-    return parser.summary(summary_data)
+    parser = TableauParser()   
+    return parser.summary(d)
 
 #============================================================================
 if __name__ == "__main__":
 
-    hoscap_df = load_df(True)
-    print(hoscap_df)
-    df = format_bed_info(hoscap_df)
+    data = load_df(True)
+    print(data)
+    df = format_bed_info(data)
 
 # Open portal to make sure it's there!
     try:

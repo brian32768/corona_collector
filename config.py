@@ -26,8 +26,7 @@ class Config(object):
     WORLDOMETER_WORLD_URL = "https://www.worldometers.info/coronavirus/"
     WORLDOMETER_STATES_URL = "https://www.worldometers.info/coronavirus/country/us"
     OHA_URL = 'https://govstatus.egov.com/OR-OHA-COVID-19'
-    OHA_BED_CAPACITY_URL = "https://public.tableau.com/profile/oregon.health.authority.covid.19#!/vizhome/OregonCOVID-19Update/HospitalCapacity"
-
+    OHA_BED_CAPACITY_URL = "https://public.tableau.com/views/OregonCOVID-19Update/HospitalCapacity?%3Aembed=y&%3AshowVizHome=no&%3Adisplay_count=y&%3Adisplay_static_image=y&%3AbootstrapWhenNotified=true&%3Alanguage=en&:embed=y&:showVizHome=n&:apiID=host0#navType=1&navSrc=Parse"
 # This is the one with current data but difficult to parse
 #WA_URL=https://www.doh.wa.gov/Emergencies/NovelCoronavirusOutbreak2020COVID19/DataDashboard
     COVIDTRACKING_URL = 'https://covidtracking.com'

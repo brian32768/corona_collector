@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import re
 from datetime import datetime
+from utils import local2utc
 
 from config import Config
 
@@ -63,12 +64,10 @@ class HOSCAPParser:
         span = soup.find("span", attrs={"id":"statusTime"}).contents[0]
 
         # 10 Nov 12:01
-        local = datetime.strptime(span, "%d %b %H:%M")
-
-# Set the year to 2020
-        assert False
-        
-        return 0
+        # Set the year to 2020
+        local = datetime.strptime(span, "%d %b %H:%M").replace(year=2020)
+      
+        return local2utc(local)
 
     @staticmethod
     def summary(d):
