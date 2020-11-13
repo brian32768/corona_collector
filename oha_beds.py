@@ -28,7 +28,7 @@ portalPasswd = Config.PORTAL_PASSWORD
 
 public_weekly_url = Config.PUBLIC_WEEKLY_URL
 
-def format_bed_info(df):
+def format_bed_info(df, column):
     # Create a new df containing only the data we want.
 
     bed_df = pd.DataFrame([
@@ -55,12 +55,11 @@ def format_bed_info(df):
 
         'OHA_Ped_ICU_bed_avail',
         'OHA_Ped_ICU_bed_total'],
-        columns=['Total']
+        columns=[column]
     )
-    print(bed_df)
     return bed_df
 
-def update_beds(layer, last_updated, df):
+def update_beds(layer, last_updated, df, column):
     """ Use the data fetched from OHA
         Add timestamp fields
         Update the record in an existing database feature class, remapping fieldnames.         """
@@ -74,11 +73,8 @@ def update_beds(layer, last_updated, df):
     feature = deepcopy(original_feature)
     
     for k in df.index:
-        v = df.loc[k, 'Available']
-        try:
-            feature.attributes[k] = v
-        except Exception as e:
-            print("You did something wrong with names.", e)
+        v = df.loc[k, column]
+        feature.attributes[k] = v
 
     feature.attributes['Creator'] = VERSION
     feature.attributes['Editor']  = utc_date
@@ -86,31 +82,34 @@ def update_beds(layer, last_updated, df):
     #print(feature.attributes)
 
     #df[oid] = feature.attributes[oid]
-    print(df)
     #return True
     results = layer.edit_features(updates=[feature])
     return results['updateResults'][0]['success']
 
-def load_df(online):
-    if online:
-        # Get hospital data from HOSCAP
-        gateway = TableauGateway()
-        gateway.login()
-        d = gateway.fetch()
-        gateway.close()
-    else:
-        with open("oha_bed_capacity.html", "r", encoding="UTF-8") as fp:
-            d = fp.read()
-
-    parser = TableauParser()   
-    return parser.summary(d)
-
 #============================================================================
 if __name__ == "__main__":
 
-    data = load_df(True)
-    print(data)
-    df = format_bed_info(data)
+    # Get hospital data from HOSCAP
+    gateway = TableauGateway()
+    gateway.login()
+    rawdata = gateway.fetch()
+    gateway.close()
+    
+    parser = TableauParser()   
+    last_updated = parser.last_update(rawdata)
+    print("Last updated:",last_updated)
+
+    summary_df = parser.summary(rawdata)
+
+    value_column = 'Total'
+    bed_df = format_bed_info(summary_df, value_column)
+    print(bed_df)
+
+    # These have to be set or we die here.
+    assert portalUrl
+    assert portalUser
+    assert portalPasswd
+    assert public_weekly_url
 
 # Open portal to make sure it's there!
     try:
@@ -122,7 +121,7 @@ if __name__ == "__main__":
         sys.exit("Could not connect to portal. \"%s\"" % e)
 
     try:
-        success = update_beds(layer, last_updated, df)
+        success = update_beds(layer, last_updated, bed_df, value_column)
     except Exception as e:
         sys.exit("Could not write Beds data. \"%s\"" % e)
 
