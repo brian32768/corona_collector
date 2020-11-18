@@ -4,6 +4,8 @@ import csv
 import jinja2
 from datetime import datetime
 
+date_range = "Oct 18 - Nov 14, 2020"
+
 TEMPLATE_DIR = 'templates'
 DATA_FILE = 'data/oha_county_metrics.csv'
 TEMPLATE_FILE = 'county_metrics.html'
@@ -33,7 +35,7 @@ with open(DATA_FILE, "r") as fp:
 
 rowcount /= 3
 
-date_range = "Oct 11 - Nov 7, 2020"
+
 now = datetime.now().strftime(timeformat)
 # Get the template and render it to a string. Pass table in as a var called table.
 html = env.get_template(TEMPLATE_FILE).render(headers=headers, table=table, now=now, date_range=date_range)
