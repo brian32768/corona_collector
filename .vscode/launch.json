@@ -13,7 +13,8 @@
             "console": "integratedTerminal",
             "env": {
                 "Path": "${env:Path};C:/Users/brian/AppData/Local/ESRI/conda/envs/covid/Library/bin/"
-            }
+            },
+            "envFile": "${workspaceFolder}/.env",
         },
         {
             "name": "Python: Flask",
