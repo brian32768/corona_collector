@@ -13,5 +13,3 @@ pdfminer.six==20200517
 camelot-py>=0.8.0
 pyexcel-ods3
 
-# For SMS notification support
-twilio
