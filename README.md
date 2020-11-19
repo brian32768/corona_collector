@@ -43,9 +43,8 @@ generator.py  generates from OHA cases feature data
 
 These are all run from cron on Debian machines.
 
-
-
-
+One machine runs scripts that write into ArcGIS, since that machine does not need to be publicly visible.
+The other has to publish a web page so it's on a machine that _is_ visible.
 
 Source of data for OR and WA data
 
@@ -70,3 +69,14 @@ apt-key add linux_signing_key.pub
 apt update
 apt upgrade
 apt install google-chrome-stable
+
+### Notifications
+
+My Debian machines are not set up to send out email so when crontab runs these scripts
+the email piles up. If I break anything or just as likely the sites change and the
+scripts break, then I want to know about it.
+
+So I put together a bash script that will send me text messages via Twilio.
+The script sources a .env file that has secrets in it.
+
+
