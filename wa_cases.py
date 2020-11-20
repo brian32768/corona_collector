@@ -15,8 +15,6 @@ import pandas as pd
 from copy import deepcopy
 from utils import connect, s2i
 
-from notifications import SendNotification
-
 from config import Config
 
 VERSION = 'wa_cases.py 1.0'
