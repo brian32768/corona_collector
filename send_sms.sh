@@ -17,21 +17,26 @@
 source .env
 
 MSGBODY="/tmp/sms_message"
+MSG="/tmp/sms_sent"
 
-# date > $MSGBODY
+# hostname > $MSGBODY
 # echo Aint got time for this >> $MSGBODY
 
 # if file exists and is not empty
 if [ -s ${MSGBODY} ]; then
-
+    # prepend hostname
+    hostname > $MSG
+    cat < $MSGBODY >> $MSG
+    rm -f ${MSGBODY}
+    # erase MSGBODY so it does not get resent
+    # leave $MSG around for debugging
+    
     curl > /dev/null --silent \
       -X POST https://api.twilio.com/2010-04-01/Accounts/$ACCOUNT_SID/Messages.json \
       --data-urlencode "From=${SENDER}" \
       --data-urlencode "To=+${RECIPIENT}" \
-      --data-urlencode Body@${MSGBODY} \
+      --data-urlencode Body@${MSG} \
       -u $ACCOUNT_SID:$AUTH_TOKEN
-
-    rm -f ${MSGBODY}
 fi
 
 # Uncomment this and crontab email will be generated when nothing is wrong
