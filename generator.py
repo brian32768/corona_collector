@@ -127,6 +127,12 @@ def wa_read():
 def world_cases_html():
     """ Create the HTML for the worldometer and covidtracking and WA data.
 
+        Output will have 
+        * world cases
+        * US cases, tests, deaths
+        * OR cases, tests, deaths
+        * WA cases, tests, deaths
+
     Returns
     -------
         HTML data in a string.
@@ -134,20 +140,22 @@ def world_cases_html():
     worldometer_href = '<a href="%s">worldometer</a>' % worldometer_world_url
     covidtracking_href = '<a href="%s">covidtracking</a>' % covidtracking_url
 
+    parser = WorldometerParser()
+
     raw_data = worldometer_world_read()
-    last_updated = WorldometerParser.parse_last_updated(raw_data).astimezone(
+    last_updated = parser.parse_last_updated(raw_data).astimezone(
         timezone('America/Los_Angeles')).strftime(timeformat)
     #print(last_updated)
-    world_df = WorldometerParser.create_df(raw_data, "main_table_countries_today", '1')
+    world_df = parser.create_df(raw_data, "main_table_countries_today", '1')
     #print(world_df)
 
     raw_data = worldometer_states_read()
-    or_update = WorldometerParser.parse_last_updated(raw_data).astimezone(
+    or_update = parser.parse_last_updated(raw_data).astimezone(
         timezone('America/Los_Angeles')).strftime(timeformat)
     #print(or_update)
-    or_df = WorldometerParser.create_df(
-        raw_data, "usa_table_countries_today", 'Oregon')
-    #print(or_df)
+    or_df = parser.create_df(raw_data, "usa_table_countries_today", 'Oregon', rowindex=1)
+    print(or_df)
+    assert or_df.at[0, 'USA State'] == 'Oregon'
 
     d = wa_read()
     wa_update = WAParser.parse_last_updated(d).astimezone(

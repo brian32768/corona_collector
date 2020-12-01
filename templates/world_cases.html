@@ -11,6 +11,8 @@
 
         {% block page_content %}
         <div id="world" class="cases">
+
+            <!-- WORLD -->
             <div class="title">World Cases: <b>{{worlddf.loc[8,'Total Cases']}}</b></div>
                 <div class="byline">
                     source: {{worldometer|safe}}
@@ -18,6 +20,7 @@
                 </div>
             <hr />
                 
+            <!-- USA -->
             <div class="region">{{worlddf.loc[7, "Country/Other"]}}
                     &nbsp;
                 <span class="byline">
@@ -30,6 +33,7 @@
             Deaths: <b>{{worlddf.loc[7, "Total Deaths"]}}</b>
             <hr />
 
+            <!-- OREGON -->
             <div class="region">{{ordf.loc[0, "USA State"]}}
                     &nbsp;
                 <span class="byline">
@@ -42,6 +46,7 @@
             Deaths: <b>{{ordf.loc[0, "Total Deaths"]}}</b>
             <hr />
 
+            <!-- WASHINGTON STATE -->
             <div class="region">{{wadf.loc[1, "state"]}}
                     &nbsp;
                 <span class="byline">
