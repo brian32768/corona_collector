@@ -97,7 +97,7 @@ class OHAParser:
         columns = ['name']
         parsed_data = ['OR']
         interesting_rows = ['Total cases', 'Total deaths',
-                            'Positive tests', 'Negative tests', 'Total tested']
+                            'Positive tests', 'Negative tests', 'Total tests']
         
         for row in state_table:
             data = row.findAll("td")
