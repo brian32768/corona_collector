@@ -56,7 +56,7 @@ def append_to_database(layer, last_update, df, geometry):
     except KeyError:
         pass
     n = { "attributes": attributes, "geometry": geometry }
-    print(n)
+    #print(n)
     #return True
     results = layer.edit_features(adds=[n])
     rval = results['addResults'][0]['success']
@@ -113,14 +113,14 @@ if __name__ == "__main__":
 
     world_df = world_df.set_index("Country/Other", drop=True)
     or_df = states_df.set_index("USA State", drop=True)
-    print(or_df)
+    #print(or_df)
     or_df = or_df.loc["Oregon"].transpose()
     or_df.name = 'Oregon'
 
     usa_df = world_df.loc["USA"]
 
     world_df = world_df.loc['World']
-    print(world_df)
+    #print(world_df)
 
 # now put it into a feature layer
     try:
