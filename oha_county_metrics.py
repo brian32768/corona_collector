@@ -4,7 +4,7 @@ import csv
 import jinja2
 from datetime import datetime
 
-date_range = "Nov 1 - Nov 28, 2020"
+date_range = "Nov 8 - Dec 5, 2020"
 
 TEMPLATE_DIR = 'templates'
 DATA_FILE = 'data/oha_county_metrics.csv'
