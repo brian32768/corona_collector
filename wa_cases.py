@@ -24,6 +24,10 @@ portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
 featurelayerUrl = Config.COVID_CASES_URL
+assert portalUrl
+assert portalUser
+assert portalPasswd
+assert featurelayerUrl
 
 wa_centroid = {"x":-120.74, "y": 47.75}
 

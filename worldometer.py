@@ -18,9 +18,15 @@ portalUrl    = Config.PORTAL_URL
 portalUser   = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
 covid_cases_url = Config.COVID_CASES_URL
+assert portalUrl
+assert portalUser
+assert portalPasswd
+assert covid_cases_url
 
 worldometer_world_url = Config.WORLDOMETER_WORLD_URL
 worldometer_states_url = Config.WORLDOMETER_STATES_URL
+assert worldometer_world_url
+assert worldometer_states_url
 
 usa_geometry = {"x": -98, "y": 39}
 or_geometry = {"x": -121, "y": 44}
@@ -120,7 +126,7 @@ if __name__ == "__main__":
     usa_df = world_df.loc["USA"]
 
     world_df = world_df.loc['World']
-    #print(world_df)
+    print(world_df)
 
 # now put it into a feature layer
     try:
