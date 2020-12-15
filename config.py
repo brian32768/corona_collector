@@ -6,6 +6,14 @@ import os
 
 class Config(object):
     """ Read environment here to create configuration data. """
+    # SMS THINGS ARE NOT CURRENTLY USED IN PYTHON,
+    # they are for a bash script
+    ACCOUNT_SID = os.environ.get('ACCOUNT_SID')
+    AUTH_TOKEN = os.environ.get('AUTH_TOKEN')
+    MESSAGING_SID = os.environ.get('MESSAGING_SID')
+    SENDER = os.environ.get('SENDER')
+    RECIPIENT = os.environ.get('RECIPIENT')
+    
     SECRET_KEY=os.environ.get('SECRET_KEY') or "12345678"
  
     PORTAL_URL      = os.environ.get('PORTAL_URL')
@@ -47,11 +55,20 @@ if __name__ == "__main__":
 
     # To test this in VSCODE
     # source ~/.conda/envs/covid/etc/conda/activate.d/env_vars.sh
-    
-    assert Config.PORTAL_URL != None
-    assert Config.PORTAL_USER != None
-    assert Config.PORTAL_PASSWORD != None
 
+    assert Config.ACCOUNT_SID
+    assert Config.AUTH_TOKEN
+    assert Config.MESSAGING_SID
+    assert Config.SENDER
+    assert Config.RECIPIENT
+
+    assert Config.PORTAL_URL
+    assert Config.PORTAL_USER
+    assert Config.PORTAL_PASSWORD
+
+    assert Config.HOSCAP_USER
+    assert Config.HOSCAP_PASSWORD
+    
     pass
 
 # That's all!
