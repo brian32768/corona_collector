@@ -1,0 +1,18 @@
+#rates,#cases,#deaths { width: 100%; position: relative; }
+.chartnote { font-size: 13px; font-weight: bold; fill: #000; text-shadow: -1px -1px 0 #fff, -1px 1px 0 #fff, 1px -1px 0 #fff, 1px 1px 0 #fff; }
+.chartnote-sm { font-size: 12px; }
+.blue { fill: #084594; }
+.lite { font-weight: normal; }
+.grid line { stroke: #efefef; shape-rendering: crispEdges; }
+.datetip { position: absolute; width: 86px; font-size: 10px; background-color: #fff; padding: 6px; border: 1px solid #444; }
+.hidden { display: none; }
+.bar:hover { cursor: pointer; }
+#rates .bar:hover { fill: #4292c6; }
+#cases .bar:hover { fill: #f768a1; }
+#deaths .bar:hover { fill: #999; }
+.datedisp { font-weight: bold; }
+*, ::after, ::before { box-sizing: border-box; }
+.pointer { fill: none; stroke: #666; stroke-width:.5px; shape-rendering: crispEdges; }
+.axis text { stroke: none; fill: #888; font-size: 10px; }
+.datenote { display: none; }
+#cases .datenote { display: block; }

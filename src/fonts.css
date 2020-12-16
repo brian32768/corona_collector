@@ -1,0 +1,56 @@
+@font-face {
+  font-family: "Benton Sans";
+  src: url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Regular/166b5d40-3430-46a0-8fb2-43f30962dec7-2.eot");
+  src: url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Regular/166b5d40-3430-46a0-8fb2-43f30962dec7-2.eot?") format("embedded-opentype"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Regular/166b5d40-3430-46a0-8fb2-43f30962dec7-3.woff") format("woff"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Regular/166b5d40-3430-46a0-8fb2-43f30962dec7-1.ttf") format("truetype"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Regular/166b5d40-3430-46a0-8fb2-43f30962dec7-4.svg#web") format("svg");
+  font-style: normal;
+  font-weight: normal;
+}
+@font-face {
+  font-family: "Benton Sans Medium";
+  src: url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Medium/448c4642-c106-472f-9c6a-a4d7b5347b03-2.eot");
+  src: url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Medium/448c4642-c106-472f-9c6a-a4d7b5347b03-2.eot?") format("embedded-opentype"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Medium/448c4642-c106-472f-9c6a-a4d7b5347b03-3.woff") format("woff"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Medium/448c4642-c106-472f-9c6a-a4d7b5347b03-1.ttf") format("truetype"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Medium/448c4642-c106-472f-9c6a-a4d7b5347b03-4.svg#web") format("svg");
+  font-style: normal;
+  font-weight: bold;
+}
+@font-face {
+  font-family: "Benton Sans";
+  src: url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Bold/a408f907-3ee4-4578-a3d1-4134558cb82a-2.eot");
+  src: url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Bold/a408f907-3ee4-4578-a3d1-4134558cb82a-2.eot?") format("embedded-opentype"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Bold/a408f907-3ee4-4578-a3d1-4134558cb82a-3.woff") format("woff"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Bold/a408f907-3ee4-4578-a3d1-4134558cb82a-1.ttf") format("truetype"),
+       url("//projects.oregonlive.com/fonts/v1/Benton-Sans-Bold/a408f907-3ee4-4578-a3d1-4134558cb82a-4.svg#web") format("svg");
+  font-style: normal;
+  font-weight: bold;
+}
+@font-face {
+    font-family: Farnham Regular;
+    font-display: swap;
+    src: url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-regular.eot);
+    src: url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-regular.eot?) format("embedded-opentype"), url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-regular.woff) format("woff"), url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-regular.woff2) format("woff2");
+    font-style: normal;
+    font-weight: 400
+}
+
+@font-face {
+    font-family: Farnham Medium;
+    font-display: swap;
+    src: url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-medium.eot);
+    src: url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-medium.eot?) format("embedded-opentype"), url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-medium.woff) format("woff"), url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-medium.woff2) format("woff2");
+    font-style: normal;
+    font-weight: 700
+}
+
+@font-face {
+    font-family: Farnham Semi Bold;
+    font-display: swap;
+    src: url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-semi-bold.eot);
+    src: url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-semi-bold.eot?) format("embedded-opentype"), url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-semi-bold.woff) format("woff"), url(https://www.oregonlive.com/pb/resources/dist/fonts/farnhamheadline-semi-bold.woff2) format("woff2");
+    font-style: normal;
+    font-weight: 700
+}

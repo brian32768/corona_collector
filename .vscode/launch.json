@@ -34,6 +34,17 @@
                 "--cert=adhoc"
             ],
             "jinja": true
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
+            "name": "Launch Chrome against localhost",
+            "url": "http://localhost:1234",
+            "webRoot": "${workspaceFolder}",
+            "breakOnLoad": true,
+            "sourceMapPathOverrides": {
+                "../*": "${webRoot}/*"
+            }
         }
     ]
 }
