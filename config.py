@@ -65,10 +65,12 @@ if __name__ == "__main__":
     assert Config.PORTAL_URL
     assert Config.PORTAL_USER
     assert Config.PORTAL_PASSWORD
+    assert Config.COVID_CASES_URL
+    assert Config.PUBLIC_WEEKLY_URL
+    assert Config.HOSCAP_URL
 
     assert Config.HOSCAP_USER
     assert Config.HOSCAP_PASSWORD
-    
     pass
 
 # That's all!
