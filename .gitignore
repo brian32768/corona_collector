@@ -1,4 +1,5 @@
 public/
+node_modules/
 
 # Emacs files
 *~
@@ -132,3 +133,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+node_modules
