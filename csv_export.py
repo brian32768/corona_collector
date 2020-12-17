@@ -41,7 +41,9 @@ def utc2local(col):
         p = utc.astimezone(pactz)
         # We're only interested in the date
 
-        rval.append(p.date())
+        # and we want it in the stupid USA format
+
+        rval.append(p.strftime("%m/%d/%y"))
 
     return rval
 
@@ -53,19 +55,19 @@ def clean_sdf(sdf):
     sdf = sdf[(sdf.editor == 'EMD') & (sdf.total_cases<10000)]
 
     # Convert to localtime.
-    sdf['local'] = utc2local(sdf['utc_date'])
+    sdf['date'] = utc2local(sdf['utc_date'])
 
     # Get rid of everything but the time and count.
-    keepers = ['local', 'total_cases']
+    keepers = ['date', 'total_cases']
     local_df = sdf.filter(items=keepers)
     #print(local_df)
 
     # Get rid of extra readings (just one a day is good)
     # With EMD data, these are just test cases when I was developing webforms
-    df = local_df.drop_duplicates(subset='local')
+    df = local_df.drop_duplicates(subset='date')
 #    print(len(local_df), len(df))
 
-    return df.set_index('local')
+    return df.set_index('date')
 
 #============================================================================
 if __name__ == "__main__":
