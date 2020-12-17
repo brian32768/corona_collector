@@ -16,7 +16,6 @@
             {%for i in range(0,ruraldf.shape[0])%}
                 <div class="county">{{ruraldf.loc[i, "instName"]}}</div>
                 Cases: <b>{{ruraldf.loc[i, "Cases"]}}</b>
-                Negative tests: <b>{{ruraldf.loc[i, "NegativeTests"]}}</b>
                 Deaths: <b>{{ruraldf.loc[i, "Deaths"]}}</b>
                 <hr/>
             {%endfor%}
@@ -27,7 +26,6 @@
             {%for i in range(0,metrodf.shape[0])%}
                 <div class="county">{{metrodf.loc[i, "instName"]}}</div>
                 Cases: <b>{{metrodf.loc[i, "Cases"]}}</b>
-                Negative tests: <b>{{metrodf.loc[i, "NegativeTests"]}}</b>
                 Deaths: <b>{{metrodf.loc[i, "Deaths"]}}</b>
                 <hr />
             {%endfor%}
