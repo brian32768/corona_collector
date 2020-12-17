@@ -38,16 +38,14 @@ def utc2local(col):
         utc = utc_naive.tz_localize(timezone.utc)
         #print('utc=', utc, type(utc))
         
-        p = utc.astimezone(pactz)
         # We're only interested in the date
+        p = utc.astimezone(pactz).date()
 
-        # and we want it in the stupid USA format
-
-        rval.append(p.strftime("%m/%d/%y"))
+        rval.append(p.strftime('%m/%d/%y'))
 
     return rval
 
-def clean_sdf(sdf):
+def clean_data(sdf):
     #print(sdf.columns)
 
     # We're only interested in data manually entered for Clatsop
@@ -57,17 +55,35 @@ def clean_sdf(sdf):
     # Convert to localtime.
     sdf['date'] = utc2local(sdf['utc_date'])
 
-    # Get rid of everything but the time and count.
-    keepers = ['date', 'total_cases']
-    local_df = sdf.filter(items=keepers)
-    #print(local_df)
-
     # Get rid of extra readings (just one a day is good)
     # With EMD data, these are just test cases when I was developing webforms
-    df = local_df.drop_duplicates(subset='date')
+    df = sdf.drop_duplicates(subset='date')
 #    print(len(local_df), len(df))
 
-    return df.set_index('date')
+    # Get rid of everything but the time and count.
+    keepers = ['utc_date', 'total_cases']
+    dedupe = df.filter(items=keepers)
+
+    # Get ready to calc new_cases    
+    sorted = dedupe.set_index('utc_date')
+
+    # save the total cases so we can add it back in
+    total_cases = sorted['total_cases']
+    
+    # Calculate proper value for new_cases
+    newdf = sorted.diff()
+    rdf = newdf.rename(columns={'total_cases':'new_cases'})
+
+    # put total_cases back in
+    rdf['total_cases'] = total_cases
+
+    # Convert to localtime, again.
+    rdf['date'] = utc2local(rdf.index)
+    final = rdf.set_index('date')
+
+    print(final)
+
+    return final
 
 #============================================================================
 if __name__ == "__main__":
@@ -82,9 +98,9 @@ if __name__ == "__main__":
         exit(-1)
 
     sdf = pd.DataFrame.spatial.from_layer(layer)
-    local_df = clean_sdf(sdf)
+    local_df = clean_data(sdf)
     print(local_df)
-    local_df.to_csv('data/emd_cases.csv', header=True, index=True)
+    local_df.to_csv('data/emd_daily_cases.csv', header=True, index=True)
 
     print("...and we're done")
     exit(0)
