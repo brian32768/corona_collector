@@ -145,6 +145,11 @@ if __name__ == "__main__":
 
     utc = datetime.utcnow().replace(microsecond=0, second=0, tzinfo=timezone('UTC'))
 
+# Make sure I can edit.
+    capabilities = layer.properties.capabilities
+    if not 'Editing' in capabilities:
+        sys.exit("Ack, we cannot edit.")
+    
 # Append new state record
     try:
         success = append_state_cases(layer, last_update_state, utc, state_cases_df)

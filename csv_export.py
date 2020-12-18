@@ -53,37 +53,42 @@ def clean_data(sdf):
     sdf = sdf[(sdf.editor == 'EMD') & (sdf.total_cases<10000)]
 
     # Convert to localtime.
-    sdf['date'] = utc2local(sdf['utc_date'])
+    #sdf['date'] = utc2local(sdf['utc_date'])
 
     # Get rid of extra readings (just one a day is good)
     # With EMD data, these are just test cases when I was developing webforms
-    df = sdf.drop_duplicates(subset='date')
+    #df = sdf.drop_duplicates(subset='date')
 #    print(len(local_df), len(df))
 
     # Get rid of everything but the time and count.
-    keepers = ['utc_date', 'total_cases']
-    dedupe = df.filter(items=keepers)
+    #keepers = ['utc_date', 'total_cases']
+    #dedupe = df.filter(items=keepers)
 
     # Get ready to calc new_cases    
-    sorted = dedupe.set_index('utc_date')
+    #sorted = dedupe.set_index('utc_date')
 
     # save the total cases so we can add it back in
-    total_cases = sorted['total_cases']
-    
-    # Calculate proper value for new_cases
-    newdf = sorted.diff()
-    rdf = newdf.rename(columns={'total_cases':'new_cases'})
-
+    #total_cases = sorted['total_cases']
+    #
+    ## Calculate proper value for new_cases
+    #newdf = sorted.diff()
+    #rdf = newdf.rename(columns={'total_cases':'new_cases'})
+    #
     # put total_cases back in
-    rdf['total_cases'] = total_cases
+    #rdf['total_cases'] = total_cases
 
-    # Convert to localtime, again.
-    rdf['date'] = utc2local(rdf.index)
-    final = rdf.set_index('date')
+    # Convert to localtime
+    sdf['date'] = utc2local(sdf['utc_date'])
+    df = sdf.set_index('date')
 
-    print(final)
+    # Get rid of everything but the time and count.
+    keepers = ['date', 'new_cases']
+    df = df.filter(items=keepers)
 
-    return final
+    # Calculate a 7 day average, some day...
+    df['avg'] = 0
+
+    return df
 
 #============================================================================
 if __name__ == "__main__":
