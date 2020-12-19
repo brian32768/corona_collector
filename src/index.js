@@ -1,4 +1,4 @@
-import posRates from "./posrates"
+import posRates from './posrates';
 import "./barline.css"
 
 const title = "Clatsop County Daily"

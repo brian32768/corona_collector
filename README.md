@@ -80,3 +80,6 @@ So I put together a bash script that will send me text messages via Twilio.
 The script sources a .env file that has secrets in it.
 
 
+
+https://projects.oregonlive.com/coronavirus/caseavg.html?initialWidth=540&childId=promo&parentTitle=Coronavirus%20in%20Oregon%3A%201%2C180%20new%20cases%2C%20six%20deaths%2C%20as%20state%20welcomes%20historic%20vaccine%20arrival%20-%20oregonlive.com&parentUrl=https%3A%2F%2Fwww.oregonlive.com%2Fcoronavirus%2F2020%2F12%2Fcoronavirus-in-oregon-1180-new-cases-six-deaths-as-state-welcomes-historic-vaccine-arrival.html
+
