@@ -29,8 +29,6 @@ function addCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
-var csvdata = 'date,cases,avg\n06/02/20,,0\n06/04/20,0.0,0\n06/04/20,0.0,0\n'
-
 export default function posRates(chart) {
     
     var colorlist = { 'rates': { 'bar': '#c6dbef', 'line': '#084594', 'hover': '#4292c6', 'end': '#2171b5' },'cases': { 'bar': '#fcc5c0', 'line': '#7a0177', 'hover': '#dd3497', 'end': '#ae017e' },'deaths': { 'bar': '#ccc', 'line': '#333', 'hover': '#999', 'end': '#666' }};
@@ -44,10 +42,11 @@ export default function posRates(chart) {
         .x(function(d) { return xState(d.date); })
         .y(function(d) { return yState(d.avg); });
     
-    //const url = "https://capacity.co.clatsop.or.us/data/cases.csv"
-    //console.log('das url ist ' + url)
-    d3.csvParse(csvdata, (error, data) => {
+    const url = "./emd_total_cases.csv"
+    d3.csv(url, (error, data) => {
             data.forEach( (d) => {
+                    console.log(d);
+                    d.avg = 10;
                     d[chart] = +d[chart];
                     if (d.avg == 0) {
                         d.avg = 'null';
