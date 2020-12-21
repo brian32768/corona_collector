@@ -192,7 +192,7 @@ if __name__ == "__main__":
     shutil.copyfile(os.path.join('templates/static', file), outputfile)
 
     # Copy index page... should render this I suppose
-    shutil.copyfile('templates/index.html', os.path.join(outputdir, 'index.html')
+    shutil.copyfile('templates/index.html', os.path.join(outputdir, 'index.html'))
 
     # Generate static pages
     # Gather data first; don't destroy page if can't read new data!
