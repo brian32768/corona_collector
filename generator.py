@@ -177,34 +177,35 @@ def world_cases_html():
 
 if __name__ == "__main__":
 
-    outputdir = 'public/static'
+    outputdir = '../docker/capacity/html'
+    staticdir = os.path.join(outputdir, 'static')
 
     # Set up output folder for supporting files
-    if not os.path.exists(outputdir):
-        os.makedirs(outputdir)
+    if not os.path.exists(staticdir):
+        os.makedirs(staticdir)
     
     # Copy supporting files
     file = 'ms.css'
-    outputfile = os.path.join(outputdir, file)
+    outputfile = os.path.join(staticdir, file)
     if os.path.exists(outputfile):
         os.unlink(outputfile)
     shutil.copyfile(os.path.join('templates/static', file), outputfile)
 
     # Copy index page... should render this I suppose
-    shutil.copyfile('templates/index.html', 'public/index.html')
+    shutil.copyfile('templates/index.html', os.path.join(outputdir, 'index.html')
 
     # Generate static pages
     # Gather data first; don't destroy page if can't read new data!
 
     ohahtml = oha_cases_html()
     if ohahtml:
-        with open('public/cases.html', 'w') as fp:
+        with open(os.path.join(outputdir, 'cases.html'), 'w') as fp:
             fp.write(ohahtml)
         print("Wrote cases.html")
 
     worldhtml = world_cases_html()
     if worldhtml:
-        with open('public/world_cases.html', 'w') as fp:
+        with open(os.path.join(outputdir, 'world_cases.html'), 'w') as fp:
             fp.write(worldhtml)
         print("Wrote world_cases.html")
 
