@@ -83,12 +83,19 @@ def clean_data(sdf):
 
     # Get rid of everything but the time and count.
     keepers = ['date', 'new_cases']
-    df = df.filter(items=keepers)
+    new_df = df.filter(items=keepers)
 
     # Calculate a 7 day average, some day...
-    df['avg'] = 0
+    new_df['avg'] = 0
 
-    return df
+    # Get rid of everything but the time and count.
+    keepers = ['date', 'total_cases']
+    total_df = df.filter(items=keepers)
+
+    # Calculate a 7 day average, some day...
+    total_df['avg'] = 0
+
+    return (new_df, total_df)
 
 #============================================================================
 if __name__ == "__main__":
@@ -103,9 +110,11 @@ if __name__ == "__main__":
         exit(-1)
 
     sdf = pd.DataFrame.spatial.from_layer(layer)
-    local_df = clean_data(sdf)
-    print(local_df)
-    local_df.to_csv('data/emd_daily_cases.csv', header=True, index=True)
+    (new_df, total_df) = clean_data(sdf)
+    print(new_df)
+    new_df.to_csv('src/emd_daily_cases.csv', header=True, index=True)
+    print(total_df)
+    total_df.to_csv('src/emd_total_cases.csv', header=True, index=True)
 
     print("...and we're done")
     exit(0)
