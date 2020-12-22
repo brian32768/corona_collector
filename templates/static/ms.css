@@ -18,23 +18,19 @@ tbody, td {
     text-align: right;
     border-bottom: 1px solid #ddd;
 }
-.date {
+.week_begin {
     text-align: left;
 }
 .county {
     text-align: left;
 }
 
-.cases {
+.case_count {
     padding: 4px;
 }
 .title {
     font-size: 16pt;
     padding-bottom: 3pt;
-}
-.county {
-}
-.sum {
 }
 .byline {
     font-size: 9pt;

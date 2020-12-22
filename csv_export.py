@@ -5,6 +5,7 @@ import os
 import pytz
 from arcgis.gis import GIS
 import pandas as pd
+import numpy as np
 import csv
 from datetime import datetime, timezone
 
@@ -84,16 +85,18 @@ def clean_data(sdf):
     # Get rid of everything but the time and count.
     keepers = ['date', 'new_cases']
     new_df = df.filter(items=keepers)
+    new_df.rename(columns={'new_cases':'cases'},inplace=True)
 
     # Calculate a 7 day average, some day...
-    new_df['avg'] = 0
+    new_df['avg'] = new_df.iloc[:,0].rolling(window=7).mean()
 
     # Get rid of everything but the time and count.
     keepers = ['date', 'total_cases']
     total_df = df.filter(items=keepers)
+    total_df.rename(columns={'total_cases':'cases'},inplace=True)
 
     # Calculate a 7 day average, some day...
-    total_df['avg'] = 0
+    total_df['avg'] = total_df.iloc[:,0].rolling(window=7).mean()
 
     return (new_df, total_df)
 

@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>County metrics HPO1 Rural</title>
+    <title>School metrics HPO1 Rural</title>
 </head>
 <link rel="stylesheet" type="text/css" href="static/ms.css" />
 
@@ -20,15 +20,13 @@
             </tr>
             </thead>
             <tbody>
-            {% for row in table %}
-            <tr>
-                <td class="county">{{ row[0] }}</td>
-                <td class="date">{{ row[1] }}</td>
-                <td>{{ row[2] }}</td>
-                <td>{{ row[3] }}</td>
-                <td>{{ row[4] }}</td>
-            </tr>
-            {% endfor %}
+                {% for ri,row in df.iterrows() %}
+                <tr>
+                    {% for si,value in row.items() %}
+                        <td class="{{ si }}"">{{ value }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
             </tbody>
         </table>
     </div>
