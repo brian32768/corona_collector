@@ -25,6 +25,7 @@ class Config(object):
     PUBLIC_WEEKLY_URL = os.environ.get('PUBLIC_WEEKLY_URL')
     HOSCAP_URL = os.environ.get('HOSCAP_URL')
     PPE_URL = os.environ.get('PPE_URL')
+    OHA_COUNTY_METRICS_URL = 'https://delta.co.clatsop.or.us/server/rest/services/Hosted/covid19_oha_county_metrics/FeatureServer/0'
 
     HOSCAP_USER = os.environ.get('HOSCAP_USER')
     HOSCAP_PASSWORD = os.environ.get('HOSCAP_PASSWORD')
