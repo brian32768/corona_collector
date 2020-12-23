@@ -1,5 +1,8 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
+#!/usr/bin/env -S conda run -n covid python
+"""
+    Read a table from ArcGIS containing oha county school reopening metrics
+    and generate an HTML page from it.
+"""
 import datetime
 import jinja2
 from arcgis.features import FeatureLayer
