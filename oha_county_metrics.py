@@ -65,7 +65,11 @@ if __name__ == "__main__":
         'Case rate / 100,000',
         'Test positivity %'
     ]
-    
+
+    # To do: eliminate duplicated county names,
+    # it looks better in the HTML.
+    # I can do that most easily in the dataframe.              
+                        
     # Get the template and render it to a string. Pass table in as a var called table.
     html = env.get_template(TEMPLATE_FILE).render(headers=table_column_names, df=sdf, now=now, date_range=date_range)
 
