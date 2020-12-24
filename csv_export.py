@@ -1,6 +1,8 @@
-# read covid cases into a dataframe
-# export it as a csv file
-
+#!/usr/bin/env -S conda run -n covid python
+"""
+    Read covid cases from Portal into a dataframe.
+    Export it as a csv file so D3 in JavaScript can read it.
+"""
 import os
 import pytz
 from arcgis.gis import GIS
