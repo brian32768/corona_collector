@@ -42,11 +42,9 @@ export default function posRates(chart) {
         .x(function(d) { return xState(d.date); })
         .y(function(d) { return yState(d.avg); });
     
-    const url = "./emd_total_cases.csv"
+    const url = "emd_daily_cases.csv"
     d3.csv(url, (error, data) => {
             data.forEach( (d) => {
-                    console.log(d);
-                    d.avg = 10;
                     d[chart] = +d[chart];
                     if (d.avg == 0) {
                         d.avg = 'null';

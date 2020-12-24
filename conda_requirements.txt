@@ -1,6 +1,6 @@
-arcgis>=1.8
-bs4
-tzlocal
+arcgis>=1.8.2
+bs4>=4.9
+tzlocal>=2.1
 autopep8
 requests
 selenium>=3.141
@@ -12,4 +12,3 @@ jinja2
 pdfminer.six==20200517
 camelot-py>=0.8.0
 pyexcel-ods3
-httpserver
