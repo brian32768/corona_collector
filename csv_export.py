@@ -14,7 +14,7 @@ from datetime import datetime, timezone
 from utils import connect
 from config import Config
 
-# Output data here
+# read data from here
 portalUrl = Config.PORTAL_URL
 portalUser = Config.PORTAL_USER
 portalPasswd = Config.PORTAL_PASSWORD
@@ -49,6 +49,8 @@ def utc2local(col):
     return rval
 
 def clean_data(sdf):
+    """ Return two df's, one for total cases and one for daily cases. """
+    
     #print(sdf.columns)
 
     # We're only interested in data manually entered for Clatsop
@@ -116,9 +118,20 @@ if __name__ == "__main__":
 
     sdf = pd.DataFrame.spatial.from_layer(layer)
     (new_df, total_df) = clean_data(sdf)
+
+    # Easy peasy once the data is in a DF.
+
     print(new_df)
-    new_df.to_csv('src/emd_daily_cases.csv', header=True, index=True)
     print(total_df)
+
+    # deployed
+    if os.path.exists('public/cases'):
+        new_df.to_csv('public/cases/emd_daily_cases.csv', header=True, index=True)
+        total_df.to_csv('public/cases/emd_total_cases.csv', header=True, index=True)
+        print("deployed")
+        
+    # test
+    new_df.to_csv('src/emd_daily_cases.csv', header=True, index=True)
     total_df.to_csv('src/emd_total_cases.csv', header=True, index=True)
 
     print("...and we're done")
