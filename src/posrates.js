@@ -68,7 +68,7 @@ export default function posRates(chart) {
                 .append("g")
                 .attr("transform", "translate(" + state_margin.left + "," + state_margin.top + ")");
 
-            // add the Y gridlines
+            // add the Y (horizontal) gridlines
             svg4.append("g")
                 .attr("class", "grid")
                 .call(make_y_gridlines()
@@ -234,26 +234,26 @@ export default function posRates(chart) {
                     d3.selectAll("#" + chart + " .datetip,.data-circle")
                         .classed("hidden", true);
                 });
-/*
 // This block does the 7-day average line and it's not working right yet.
 
-            // Add the line path elements. 
+            // Add the line path elements.
+            
+            // white halo
             svg4.append("path")
                 .data([data])
                 .attr("class", "line")
-                .style("stroke", "#fff")
                 .style("stroke-width", 5)
+                .style("stroke", "#fff")
                 .attr("d", line);
 
+            // black line
             svg4.append("path")
                 .data([data])
                 .attr("class", "line")
                 .style("stroke", colorlist[chart].line)
-                .style("stroke-width", 3)
                 .attr("d", line);
 
-
-
+            // label as "7-day average" with leader line
             svg4.append("text")
                 .data([data])
                 .attr("x", function (d) {
@@ -286,7 +286,6 @@ export default function posRates(chart) {
 
             var dots = svg4.append("g")
                 .attr("class", "dots");
-
 
             dots.selectAll("dots")
                 .data(data)
@@ -337,6 +336,7 @@ export default function posRates(chart) {
                         return addCommas(d[data.length - 1][chart]);
                     }
                 });
+                
 
             svg4.append("line")
                 .data([data])
@@ -360,15 +360,6 @@ export default function posRates(chart) {
                 });
 
 
-
-
-
-*/
-
-
-
-
-
             // attempt to add axes
             svg4.append("g")
                 .attr("id", "yAxisG")
@@ -381,12 +372,8 @@ export default function posRates(chart) {
                 .attr("transform", "translate(0," + state_height + ")")
                 .call(d3.axisBottom(xState).ticks(5).tickSizeOuter(0));
 
-
             d3.selectAll("path.domain").remove();
             d3.selectAll(".axis line").remove();
 
         });
-
-
-
 }
