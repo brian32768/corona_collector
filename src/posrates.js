@@ -3,10 +3,10 @@ import * as d3 from 'd3';
 
 var statewid = $("#cases").width();
     
-var state_margin = {top: 40, right: 25, bottom: 20, left: 30},
+var state_margin = {top: 40, right: 35, bottom: 20, left: 30},
     state_width = statewid - state_margin.left - state_margin.right,
     state_height = state_width*.6 - state_margin.top - state_margin.bottom;
-
+    
 var parseDate = d3.timeParse("%m/%d/%y");
 var formatDate = d3.timeFormat("%B %e");
 var formatClass = d3.timeFormat("%B%d");
@@ -31,7 +31,17 @@ function addCommas(x) {
 
 export default function posRates(chart) {
     
-    var colorlist = { 'rates': { 'bar': '#c6dbef', 'line': '#084594', 'hover': '#4292c6', 'end': '#2171b5' },'cases': { 'bar': '#fcc5c0', 'line': '#7a0177', 'hover': '#dd3497', 'end': '#ae017e' },'deaths': { 'bar': '#ccc', 'line': '#333', 'hover': '#999', 'end': '#666' }};
+    var colorlist = { 
+        'rates': {
+            'bar': '#c6dbef', 'line': '#084594', 'hover': '#4292c6', 'end': '#2171b5' 
+        },
+        'cases': {
+            'bar': '#fcc5c0', 'line': '#7a0177', 'hover': '#dd3497', 'end': '#ae017e' 
+        },
+        'deaths': { 
+            'bar': '#ccc', 'line': '#333', 'hover': '#999', 'end': '#666' 
+        }
+    };
     
     var ticker = { 'rates': '.0%', 'cases': ',', 'deaths': ','};
     var note_pos = { 'rates': 0.08, 'cases': 200 };
@@ -60,7 +70,8 @@ export default function posRates(chart) {
             var rectwidth = (state_width / data.length) - .5;
             var halfway = (data.length / 4).toFixed();
 
-            var svg4 = d3.select("#" + chart).append("svg")
+            var svg4 = d3.select("#" + chart)
+                .append("svg")
                 .style("margin-bottom", "10px")
                 .attr("class", "case-svg")
                 .attr("width", state_width + state_margin.left + state_margin.right)
@@ -76,89 +87,7 @@ export default function posRates(chart) {
                     .tickFormat("")
                 );
 
-            /*
-                   svg4.append("text")
-                    .data([data])
-                    .attr("x",function(d) {
-                        return xState(parseDate("3/23/20"));
-                    })
-                    .attr("y", function(d) {
-                        return yState(200);
-                    })
-                    .attr("class","order chartnote chartnote-sm")
-                    .style("text-anchor", "middle")
-                    .text("March 23");
-                    
-                   svg4.append("text")
-                    .data([data])
-                    .attr("x",function(d) {
-                        return xState(parseDate("3/23/20"));
-                    })
-                    .attr("y", function(d) {
-                        return yState(200);
-                    })
-                    .attr("dy",15)
-                    .attr("class","order chartnote chartnote-sm lite")
-                    .style("text-anchor", "middle")
-                    .text("Stay-home order");
-            
-                  svg4.append("line")
-                    .data([data])
-                      .attr("class","order datenote pointer")
-                      .attr("x1", function(d) {
-                          return xState(parseDate("3/23/20"));
-                      })
-                      .attr("x2", function(d) {
-                          return xState(parseDate("3/23/20"));
-                      })
-                      .attr("y1", function(d) {
-                          return yState(200)+20;
-                      })
-                      .attr("y2", function(d) {
-                          return yState(0);
-                      });
-            
-                  svg4.append("text")
-                    .data([data])
-                    .attr("x",function(d) {
-                        return xState(parseDate("5/15/20"));
-                    })
-                    .attr("y", function(d) {
-                        return yState(200);
-                    })
-                    .attr("class","order datenote chartnote chartnote-sm")
-                    .style("text-anchor", "middle")
-                    .text("May 15");
-                    
-                   svg4.append("text")
-                    .data([data])
-                    .attr("x",function(d) {
-                        return xState(parseDate("5/15/20"));
-                    })
-                    .attr("y", function(d) {
-                        return yState(200);
-                    })
-                    .attr("dy",15)
-                    .attr("class","order datenote chartnote chartnote-sm lite")
-                    .style("text-anchor", "middle")
-                    .text("Reopening begins");
-            
-                  svg4.append("line")
-                    .data([data])
-                      .attr("class","order datenote pointer")
-                      .attr("x1", function(d) {
-                          return xState(parseDate("5/15/20"));
-                      })
-                      .attr("x2", function(d) {
-                          return xState(parseDate("5/15/20"));
-                      })
-                      .attr("y1", function(d) {
-                          return yState(200)+20;
-                      })
-                      .attr("y2", function(d) {
-                          return yState(0);
-                      });
-            */
+
             svg4.selectAll(".bar")
                 .data(data)
                 .enter().append("rect")
@@ -181,60 +110,60 @@ export default function posRates(chart) {
                 .on("mousemove", function (d) {
                     var datedisp = d.date;
                     var testnums = "";
+
+                    let avg = 0;
+                    let rate = 0;
+
                     if (chart == 'rates') {
                         var pos = +d.pos;
                         var neg = +d.neg;
                         var tot = pos + neg;
                         testnums = "<div>Tests: <strong>" + addCommas(tot) + "</strong></div>"
                             + "<div>Positives: <strong>" + addCommas(pos) + "</strong></div>";
-                        var rate = (d[chart] * 100).toFixed(1) + "%";
-                        var avg = (d.avg * 100).toFixed(1) + "%";
+                        rate = (d[chart] * 100).toFixed(1) + "%";
+                        avg = (d.avg * 100).toFixed(1) + "%";
                     } else {
-                        var rate = d[chart];
-                        var avg = d.avg.toFixed(1);
+                        rate = d[chart];
+                        if (!isNaN(d.avg)) {
+                            avg = avg.toFixed(1);
+                        }
                     }
-                    if (!isNaN(d.avg)) {
-                        var rate_avg = "Wk. avg: <strong>" + avg + "</strong>";
+
+                    // line 3, 7-day average
+                    if (!isNaN(avg)) {
+                        var rate_avg = "7 day avg: <strong>" + avg + "</strong>";
                         var height_adj = 60;
                     } else {
                         var rate_avg = "";
                         var height_adj = 50;
                     }
-                    /*
-                                  var xpos = xState(d.date)+state_margin.left-43;
-                                  var ypos = yState(d[chart])-height_adj;
-                                  if (xpos <= state_margin.left) {
-                                      var xtool = state_margin.left;
-                                  } else {
-                                      xtool = xpos;
-                                  }
-                    */
+
+                    // Placement of the hover popup
                     var coords = d3.mouse(this);
-                    var xpos = coords[0] + 43;
+                    var xpos = coords[0] + 40;
                     var ypos = coords[1];
                     var xtool = xpos;
                     if (xpos >= state_width + state_margin.right - 86) {
                         xtool = xpos - 116;
                     }
 
-
                     d3.select("#" + chart + " .datetip")
                         .classed("hidden", false)
                         .style("top", ypos + "px")
                         .style("left", xtool + "px");
-                    d3.select("#" + chart + " .datetip .datedisp").text(formatDate(datedisp));
-                    d3.select("#" + chart + " .datetip .ratedisp").html("Daily: <strong>" + addCommas(rate) + "</strong>");
-                    d3.select("#" + chart + " .datetip .rateavg").html(rate_avg);
+
+                    d3.select("#" + chart + " .datetip .datedisp").html(formatDate(datedisp) + "<br />" +
+                        "Daily: <strong>" + addCommas(rate) + "</strong><br />" + // Line 2
+                        rate_avg); // Line 3
+
+
                     d3.select("#" + chart + " .datetip .testnums").html(testnums);
-                    d3.select("#" + chart + " .data-circle.circle_" + formatClass(d.date))
-                        .classed("hidden", false);
+                    d3.select("#" + chart + " .data-circle.circle_" + formatClass(d.date)).classed("hidden", false);
 
                 })
                 .on("mouseout", function (d) {
-                    d3.selectAll("#" + chart + " .datetip,.data-circle")
-                        .classed("hidden", true);
+                    d3.selectAll("#" + chart + " .datetip,.data-circle").classed("hidden", true);
                 });
-// This block does the 7-day average line and it's not working right yet.
 
             // Add the line path elements.
             

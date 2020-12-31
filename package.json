@@ -36,7 +36,7 @@
     "lint": "eslint .",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel serve src/index.html",
-    "build": "parcel build --public-url /cases --no-minify src/index.html"
+    "build": "parcel build --public-url /cases src/index.html"
   },
   "babel": {
     "presets": [

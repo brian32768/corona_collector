@@ -24,7 +24,7 @@ You have to put a portal user and password into .env
 You have to create a suitable feature class as the target for output.
 I did this in the catalog in ArcGISPro and then published it to my Portal.
 
-## Run
+# Run
 
 There are multiple executables here.
 
@@ -72,14 +72,29 @@ apt install google-chrome-stable
 
 ### Notifications
 
-My Debian machines are not set up to send out email so when crontab runs these scripts
-the email piles up. If I break anything or just as likely the sites change and the
+Originally my Debian virtual machines were not set up to send out email so when crontab runs these scripts the email piled up. 
+I changed that recently, now they use Sendgrid and the mail
+comes to me directly every time a cronjob runs. 
+
+But if I break anything or just as likely the data source sites change and the
 scripts break, then I want to know about it.
 
-So I put together a bash script that will send me text messages via Twilio.
-The script sources a .env file that has secrets in it.
+So I put together a bash script "send_sms.sh" that will send text messages to 
+my phone via Twilio. The script sources a .env file that has Twilio secrets in it.
 
+## Visualizations
 
+I successfully ported the OregonLive app (see link) but now
+I am working on a Dash app.
 
 https://projects.oregonlive.com/coronavirus/caseavg.html?initialWidth=540&childId=promo&parentTitle=Coronavirus%20in%20Oregon%3A%201%2C180%20new%20cases%2C%20six%20deaths%2C%20as%20state%20welcomes%20historic%20vaccine%20arrival%20-%20oregonlive.com&parentUrl=https%3A%2F%2Fwww.oregonlive.com%2Fcoronavirus%2F2020%2F12%2Fcoronavirus-in-oregon-1180-new-cases-six-deaths-as-state-welcomes-historic-vaccine-arrival.html
 
+The Javascript/D3 app inspired from OregonLive is currently mostly in src/
+
+The Dash/Plotly app is mostly in app/ and start_app.py.
+
+There are configurations to launch each of these for debugging.
+
+Since I plan to delete the D3 app I am not writing more about it here.
+
+More documentation on the Dash app will be in app/README.md.

@@ -1,0 +1,9 @@
+dash
+plotly
+numpy
+pandas
+matplotlib
+seaborn
+scikit-learn
+keras
+arcgis>=1.8.3

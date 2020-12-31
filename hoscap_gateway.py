@@ -30,7 +30,6 @@ class HOSCAPGateway:
             sys.exit("Could not find username field. %s" % e)
 
         username.send_keys(Config.HOSCAP_USER)
-
         try:
             checkname_button = self.driver.find_element_by_id('checkUsername')
             checkname_button.click()
