@@ -43,11 +43,11 @@ jinja = Environment(loader=FileSystemLoader('templates'))
 timeformat = "%m/%d/%y %H:%M"
 now = datetime.datetime.now().strftime(timeformat)
 
-def get_cases(whereclause, records):
+def get_cases(url, whereclause, records):
     #    portal = GIS(portal_url, portal_user, portal_password)
     #    results_df = FeatureLayer(cases_url).query(where=whereclause, order_by_fields="utc_date DESC, name ASC",
     #                     return_all_records=False, result_record_count=records, return_geometry=False).sdf
-    results_df = FeatureLayer(url=featureLayerUrl).query(where=whereclause, order_by_fields="OBJECTID DESC, altName ASC",
+    results_df = FeatureLayer(url=url).query(where=whereclause, order_by_fields="OBJECTID DESC, altName ASC",
                                                          return_all_records=False, result_record_count=records, return_geometry=False).sdf
     #print(results_df)
     return results_df
@@ -60,11 +60,14 @@ def oha_cases_html():
     -------
         HTML data in a string.
     """
-
-    w = "altName='Clatsop' or altName='Tillamook' or altName='Columbia'"
-    rural = get_cases(w, 3)
-    w = "altName='Multnomah' or altName='Clackamas' or altName='Washington'"
-    metro = get_cases(w, 3)
+    try:
+        w = "altName='Clatsop' or altName='Tillamook' or altName='Columbia'"
+        rural = get_cases(featureLayerUrl, w, 3)
+        w = "altName='Multnomah' or altName='Clackamas' or altName='Washington'"
+        metro = get_cases(featureLayerUrl, w, 3)
+    except Exception as e:
+        print("Can't read cases from '%s' : %s" % (featureLayerUrl, e))
+        return None
 
     last_update = OHAParser.last_feature_edit().replace(
         tzinfo=datetime.timezone.utc)

@@ -7,10 +7,11 @@ class HTMLGateway:
         try:
             res = requests.get(url, timeout=30)
         except requests.Timeout:
-            raise HTMLGatewayError("Timeout retrieving data from '%s'" % url)
-        
+            raise HTMLGatewayError("Timeout error '%s'" % url)
         except requests.RequestException:
-            raise HTMLGatewayError("Error fetching data from '%s' : %s" % (url, requests.RequestException))
+            raise HTMLGatewayError("Request Exception '%s' : %s" % (url, requests.RequestException))
+        except Exception as e:
+            raise HTMLGatewayError("Timeout error '%s' : %s" % url, e)
 
         if res.status_code != 200:
             raise HTMLGatewayError("Website '%s' returned status code %s" % (url, res.status_code))
