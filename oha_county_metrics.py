@@ -7,6 +7,7 @@ import datetime
 import jinja2
 from arcgis.features import FeatureLayer
 from pandas.core.frame import DataFrame
+import pandas as pd
 
 from config import Config
 portalUrl    = Config.PORTAL_URL
@@ -59,22 +60,34 @@ if __name__ == "__main__":
     dfmt = '%m/%d'
     df['week_begin'] = df.apply(lambda row: row['week_begin'].strftime(dfmt) + '-' + row['week_end'].strftime(dfmt), axis=1) 
     sdf = df.drop(['week_end'], axis=1)
+    sdf = sdf.rename(columns={
+        'county':'County', 
+        'week_begin':'Weeks', 
+        'case_count': 'Case count', 
+        'case_rate_per_100_000':'Case rate / 100,000',
+        'test_positivity__':'Test positivity %'
+    })
 
     now = datetime.datetime.now().strftime(timeformat)
-    table_column_names = [
-        'County', 
-        'Weeks',
-        'Case count', 
-        'Case rate / 100,000',
-        'Test positivity %'
-    ]
+    
+    # Eliminate duplicated county names, it looks better in the HTML.
+    # I can do that most easily in the dataframe
 
-    # To do: eliminate duplicated county names,
-    # it looks better in the HTML.
-    # I can do that most easily in the dataframe.              
+    # I don't have to understand how I have to make the 
+    # df into a multiindex series and then make it back into a df
+    # so that I can make it into html
+    # I just do that.
+
+    m = pd.MultiIndex.from_frame(sdf)
+    s = pd.Series(index=m)
+    # converting series to frame
+    # adds an empty column for some reason
+    # so I have to drop it here
+    # For some reason header=True adds an extra line at the top
+    dfhtml = s.to_frame().drop(columns=0).to_html(header=False)
                         
     # Get the template and render it to a string. Pass table in as a var called table.
-    html = env.get_template(TEMPLATE_FILE).render(headers=table_column_names, df=sdf, now=now, date_range=date_range)
+    html = env.get_template(TEMPLATE_FILE).render(dataframe=dfhtml, now=now, date_range=date_range)
 
     # Write the html string to our OUTPUT_FILE
     o = open(OUTPUT_FILE, 'w')

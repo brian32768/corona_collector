@@ -11,24 +11,7 @@
     <div id="rural" class="cases">
         <div class="title"><a href="https://www.oregon.gov/oha/PH/DISEASESCONDITIONS/DISEASESAZ/Emerging%20Respitory%20Infections/Weekly-County-Metrics.pdf" target="pd">County Metrics HPO1 Rural</a></div>
         {{ date_range }}
-        <table>
-            <thead>
-            <tr>
-            {% for h in headers %}
-                <th>{{ h }}</th>
-            {% endfor %}
-            </tr>
-            </thead>
-            <tbody>
-                {% for ri,row in df.iterrows() %}
-                <tr>
-                    {% for si,value in row.items() %}
-                        <td class="{{ si }}"">{{ value }}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        {{ dataframe|safe }}
     </div>
 
     <div id="metro" class="cases">
