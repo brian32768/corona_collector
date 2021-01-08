@@ -7,13 +7,17 @@ body {
 b {
     color: rgb(40,40,40);
 }
-
-th {
+table {
+    border-color: #fff;
+    border-collapse: collapse;
+}
+thead {
     color: darkorange;
     background-color: rgb(250, 250, 250);
+    border-color: #fff;
     font-size: 10pt;
 }
-tbody, td {
+tbody {
     vertical-align: top;
     text-align: right;
     border-bottom: 1px solid #ddd;
